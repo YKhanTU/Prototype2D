@@ -1,0 +1,19 @@
+<component name="libraryTable">
+  <library name="lwjgl-natives-windows">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/../lwjgl-3.1.6/lwjgl/lwjgl-natives-windows.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../lwjgl-3.1.6/lwjgl/lwjgl.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../lwjgl-3.1.6/lwjgl-glfw/lwjgl-glfw.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../lwjgl-3.1.6/lwjgl-opengl/lwjgl-opengl.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../lwjgl-3.1.6/lwjgl-glfw/lwjgl-glfw-natives-windows.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../lwjgl-3.1.6/lwjgl-opengl/lwjgl-opengl-natives-windows.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../TWL.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../lwjgl-3.1.6/lwjgl-stb/lwjgl-stb.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../lwjgl-3.1.6/lwjgl-stb/lwjgl-stb-natives-windows.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$PROJECT_DIR$/../lwjgl-3.1.6/lwjgl/lwjgl-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES />
+  </library>
+</component>
