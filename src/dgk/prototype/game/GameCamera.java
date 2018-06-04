@@ -8,8 +8,21 @@ import static org.lwjgl.glfw.GLFW.GLFW_KEY_UP;
 
 public class GameCamera extends Camera {
 
+    private double chaseFactor;
+
     public GameCamera(double x, double y, double width, double height) {
         super(x, y, width, height);
+
+        this.chaseFactor = 25;
+    }
+
+    public void setChaseFactor(float factor) {
+        if(factor <= .1f) {
+            this.chaseFactor = 25;
+            return;
+        }
+
+        this.chaseFactor = factor * 100;
     }
 
     public void onUpdate(GameWindow gameWindow) {
@@ -23,7 +36,7 @@ public class GameCamera extends Camera {
             // Destination Vector - Source Vector
             Vec2D vec = targetVector.subtract(getPosition());
 
-            vec.divide(10);
+            vec.divide(chaseFactor);
 
             getPosition().add(vec);
 

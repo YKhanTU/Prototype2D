@@ -55,7 +55,7 @@ public class GUIMenu implements GUIElement {
 
         GL11.glTranslated(x - viewport.getPosition().getY(), y - viewport.getPosition().getX(), 0);
 
-        GL11.glColor4f(.2f, .2f, .2f, .95f);
+        GL11.glColor4f(.1f, .1f, .1f, .95f);
 
         GL11.glBegin(GL11.GL_QUADS);
         {

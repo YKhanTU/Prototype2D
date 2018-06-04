@@ -41,6 +41,8 @@ public class World {
 
         ruler = new Ruler(32, 64);
 
+        GameWindow.getInstance().getWorldCamera().setTarget(ruler);
+
         entities.add(ruler);
         entities.add(new Peasant(96, 64));
     }

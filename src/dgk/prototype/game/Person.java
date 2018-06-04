@@ -118,4 +118,8 @@ public abstract class Person extends Entity {
     public void setTarget(IEntity target) {
         this.target = target;
     }
+
+    public boolean hasArmor() {
+        return this.getArmorPoints() > 0;
+    }
 }
