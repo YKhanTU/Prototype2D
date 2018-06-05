@@ -74,15 +74,25 @@ public class GUI {
     //}
 
     public void drawLine(Vec2D start, Vec2D end, float width) {
+        GL11.glMatrixMode(GL11.GL_MODELVIEW_MATRIX);
+        GL11.glPushMatrix();
+
+        GL11.glTranslated(start.getX(), start.getY(), 0);
+
         GL11.glLineWidth(width);
 
         GL11.glBegin(GL11.GL_LINES);
-            GL11.glVertex2d(start.getX(), start.getY());
+            GL11.glVertex2d(0, 0);
             GL11.glVertex2d(end.getX(), end.getY());
         GL11.glEnd();
+
+        GL11.glPopMatrix();
     }
 
     public void drawRect(double x, double y, double width, double height) {
+        GL11.glMatrixMode(GL11.GL_MODELVIEW_MATRIX);
+        GL11.glPushMatrix();
+
         GL11.glTranslated(x, y, 0);
 
         GL11.glBegin(GL11.GL_QUADS);
@@ -93,9 +103,14 @@ public class GUI {
             GL11.glVertex2d(0, height);
         }
         GL11.glEnd();
+
+        GL11.glPopMatrix();
     }
 
-    public void drawBorder(double x, double y, double width, double height, float borderWidth) {
+    private void drawBorder(double x, double y, double width, double height, float borderWidth) {
+        GL11.glMatrixMode(GL11.GL_MODELVIEW_MATRIX);
+        GL11.glPushMatrix();
+
         GL11.glTranslated(x, y, 0);
 
         GL11.glLineWidth(borderWidth);
@@ -112,6 +127,8 @@ public class GUI {
             GL11.glVertex2d(0, height);
         }
         GL11.glEnd();
+
+        GL11.glPopMatrix();
     }
 
     public void drawBorderedRect(double x, double y, double width, double height, float borderWidth) {

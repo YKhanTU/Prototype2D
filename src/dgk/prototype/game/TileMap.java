@@ -14,6 +14,7 @@ public class TileMap implements Serializable {
      */
     public static final transient boolean DEBUG_MODE = true;
 
+    // TODO: Make the TileMap compatible for multiple layers per 64x64
     private Block[][] tileMap;
 
     public TileMap() {

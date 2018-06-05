@@ -25,6 +25,8 @@ public class GUIMenu implements GUIElement {
 
     private ArrayList<GUIElement> elements;
 
+    private boolean isDraggable;
+
     private boolean shouldRemove;
 
     public GUIMenu(GUI gui, String name, double x, double y, double width, double height, boolean alwaysOnTop, boolean isDraggable) {
@@ -40,11 +42,20 @@ public class GUIMenu implements GUIElement {
 
         this.elements = new ArrayList<GUIElement>();
 
+        this.isDraggable = isDraggable;
+
         this.shouldRemove = false;
     }
 
     public void addElement(GUIElement element) {
         elements.add(element);
+    }
+
+    /**
+     * This function adds the exit, minimize, maximize, and pin buttons to the UI.
+     */
+    private void addUtilButtons() {
+
     }
 
     public void drawMenu() {
@@ -55,7 +66,7 @@ public class GUIMenu implements GUIElement {
 
         GL11.glTranslated(x - viewport.getPosition().getY(), y - viewport.getPosition().getX(), 0);
 
-        GL11.glColor4f(.1f, .1f, .1f, .95f);
+        GL11.glColor4f(.7f, .7f, .7f, .85f);
 
         GL11.glBegin(GL11.GL_QUADS);
         {
