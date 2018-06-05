@@ -57,7 +57,7 @@ public abstract class GUIButton implements GUIElement {
 
         GL11.glColor4f(0f, 0f, 0f, 1.0f);
 
-        GL11.glLineWidth(2f);
+        GL11.glLineWidth(1f);
 
         GL11.glBegin(GL11.GL_LINES);
             GL11.glVertex2d(0, 0);
@@ -77,6 +77,10 @@ public abstract class GUIButton implements GUIElement {
         GL11.glColor3f(1f, 1f, 1f);
     }
 
+    /**
+     * The overrideable function that provides this GUIButton with functionality.
+     * This is called anytime that a Left Click Click is detected for the button.
+     */
     abstract void onButtonClick();
 
     @Override

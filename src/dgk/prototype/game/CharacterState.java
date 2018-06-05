@@ -5,5 +5,7 @@ public enum CharacterState {
     IDLE,
     WALKING,
     WORKING,
-    FIGHITNG
+    FIGHITNG,
+    TRADING,
+    CONVERSING;
 }

@@ -48,7 +48,7 @@ public class Projectile extends GameObject {
     }
 
     public void onImpact(IEntity entity) {
-        // I need to fix this ambiguity
+        // I need to fix this ambiguity for the Entity
 
         if(entity instanceof Person) {
             Person target = (Person) entity;

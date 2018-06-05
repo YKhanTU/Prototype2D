@@ -26,6 +26,7 @@ public class GUI {
     private ArrayList<GUIMenu> guiMenus;
     private ArrayList<GUINotification> guiNotifications;
 
+    private int textureId;
 
     public GUI(int width, int height) {
         this.camera = new Camera(0, 0, width, height);
@@ -35,14 +36,14 @@ public class GUI {
     }
 
     public void init() {
-        GUIMenu inGameMenu = new GUIMenu(this, "In-Game UI", 645, 5, 150, 200, true);
+        GUIMenu inGameMenu = new GUIMenu(this, "In-Game UI", 645, 5, 150, 200, true, true);
 
         /**
          * TODO: Add function for GUIMenu that adds an exit button to the UI automatically.
          * TODO for later: Add functions that add minimize, maximize, and pin buttons.
          * TODO as well: Also add texturing to the GUI Elements (Slider, Button, etc)
          */
-        inGameMenu.addElement(new GUIButton(this, "Close", 775, 15, 15, 15) {
+        inGameMenu.addElement(new GUIButton(this, "Close", 770, 15, 15, 15) {
             @Override
             void onButtonClick() {
                 inGameMenu.close();
@@ -81,6 +82,43 @@ public class GUI {
         GL11.glEnd();
     }
 
+    public void drawRect(double x, double y, double width, double height) {
+        GL11.glTranslated(x, y, 0);
+
+        GL11.glBegin(GL11.GL_QUADS);
+        {
+            GL11.glVertex2d(0, 0);
+            GL11.glVertex2d(width, 0);
+            GL11.glVertex2d(width, height);
+            GL11.glVertex2d(0, height);
+        }
+        GL11.glEnd();
+    }
+
+    public void drawBorder(double x, double y, double width, double height, float borderWidth) {
+        GL11.glTranslated(x, y, 0);
+
+        GL11.glLineWidth(borderWidth);
+
+        GL11.glBegin(GL11.GL_LINES);
+        {
+            GL11.glVertex2d(0, 0);
+            GL11.glVertex2d(width, 0);
+            GL11.glVertex2d(width, 0);
+            GL11.glVertex2d(width, height);
+            GL11.glVertex2d(0, height);
+            GL11.glVertex2d(width, height);
+            GL11.glVertex2d(0, 0);
+            GL11.glVertex2d(0, height);
+        }
+        GL11.glEnd();
+    }
+
+    public void drawBorderedRect(double x, double y, double width, double height, float borderWidth) {
+        drawRect(x, y, width, height);
+        drawBorder(x, y, width, height, borderWidth);
+    }
+
     public Vec2D getMousePosition() {
         DoubleBuffer xBuffer = BufferUtils.createDoubleBuffer(1);
         DoubleBuffer yBuffer = BufferUtils.createDoubleBuffer(1);
@@ -99,7 +137,7 @@ public class GUI {
         }
     }
 
-    public void onUpdate() {
+    public void update() {
         Iterator<GUIMenu> menuIterator = guiMenus.iterator();
 
         while(menuIterator.hasNext()) {

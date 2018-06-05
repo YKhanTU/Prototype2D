@@ -27,7 +27,7 @@ public class GUIMenu implements GUIElement {
 
     private boolean shouldRemove;
 
-    public GUIMenu(GUI gui, String name, double x, double y, double width, double height, boolean alwaysOnTop) {
+    public GUIMenu(GUI gui, String name, double x, double y, double width, double height, boolean alwaysOnTop, boolean isDraggable) {
         this.gui = gui;
         this.name = name;
         this.x = x;

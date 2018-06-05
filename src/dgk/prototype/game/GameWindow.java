@@ -1,6 +1,7 @@
 package dgk.prototype.game;
 
 import dgk.prototype.gui.GUI;
+import dgk.prototype.input.InputManager;
 import dgk.prototype.util.SpriteSheet;
 import org.lwjgl.*;
 import org.lwjgl.glfw.*;
@@ -42,7 +43,7 @@ public class GameWindow {
     private long handle;
     private boolean isHidden;
 
-    public GameWindow() {
+    public GameWindow(InputManager inputManager) {
         INSTANCE = this;
 
         this.world = new World();
@@ -189,7 +190,7 @@ public class GameWindow {
 
             worldCamera.onUpdate(this);
             world.onUpdate();
-            gui.onUpdate();
+            gui.update();
 
             world.render();
             gui.render();

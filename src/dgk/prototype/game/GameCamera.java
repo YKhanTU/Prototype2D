@@ -40,6 +40,13 @@ public class GameCamera extends Camera {
 
             getPosition().add(vec);
 
+            if(getPosition().getX() < 0) {
+                getPosition().setX(0);
+            }
+            if(getPosition().getY() < 0) {
+                getPosition().setY(0);
+            }
+
             return;
         }
 

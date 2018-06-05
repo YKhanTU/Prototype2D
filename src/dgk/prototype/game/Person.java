@@ -8,6 +8,7 @@ public abstract class Person extends Entity {
     private Person spouse;
     private Direction direction;
     private Inventory inventory;
+    private CharacterState state;
     private int healthPoints;
     private int armorPoints;
     private IEntity target;
@@ -23,6 +24,8 @@ public abstract class Person extends Entity {
         this.direction = Direction.SOUTH;
 
         this.inventory = new Inventory(24, false);
+
+        this.state = CharacterState.IDLE;
 
         this.healthPoints = 100;
         this.armorPoints = 0;
