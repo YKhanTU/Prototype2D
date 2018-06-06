@@ -40,11 +40,21 @@ public class World {
 
         for(int i = 0; i < 32; i++) {
             for(int j = 0; j < 32; j++) {
-                addTile(new Tile(SpriteSheet.GRASS, World.LOWER_LAYER, i *64, j * 64), i, j);
+                addTile(new Tile(SpriteSheet.GRASS, World.LOWER_LAYER, i *64, j * 64, 64), i, j);
             }
         }
 
-        addGameObject(new Tile(SpriteSheet.SHRUB, World.MID_LAYER, 200, 200));
+        addGameObject(new Tile(SpriteSheet.SHRUB, World.MID_LAYER, 200, 200, 48));
+
+        int y = 7;
+
+        for(int i = 0; i < 5; i++) {
+            int p = i + 3;
+
+            addGameObject(new Tile(SpriteSheet.WOOD_WALL_NORTH_1B, World.UPPER_LAYER, p * 48, (y - 1) * 48, 48));
+            addGameObject(new Tile(SpriteSheet.WOOD_WALL_NORTH_1A, World.UPPER_LAYER, p * 48, y * 48, 48));
+            addGameObject(new Tile(SpriteSheet.WOOD_WALL_NORTH_1C, World.UPPER_LAYER, p * 48, (y + 1) * 48, 48));
+        }
 
         entities.add(ruler);
         entities.add(new Peasant(96, 64));

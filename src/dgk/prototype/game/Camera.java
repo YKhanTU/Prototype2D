@@ -77,4 +77,9 @@ public class Camera {
     public void setHeight(double height) {
         this.height = height;
     }
+
+    public void onWindowResize(int width, int height) {
+        this.width = width;
+        this.height = height;
+    }
 }

@@ -57,6 +57,13 @@ public class GUI {
             }
         });
 
+        inGameMenu.addElement(new GUIVerticalSlider(this, 670, 100, 100, 20) {
+            @Override
+            public void onSliderValueChange() {
+                System.out.println(getSliderValue());
+            }
+        });
+
         addMenu(inGameMenu);
     }
 

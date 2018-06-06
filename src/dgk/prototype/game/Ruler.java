@@ -87,6 +87,26 @@ public class Ruler extends Person {
             GL11.glVertex2f(0, 64);
         GL11.glEnd();
 
+//        int highlightAnimation = currentAnim + 29;
+//
+//        GL11.glTranslated(-4, -2, 0);
+//
+//        GameWindow.getInstance().rulerHighlights.bindTexture(highlightAnimation);
+//
+//        GL11.glBegin(GL11.GL_QUADS);
+//        GL11.glTexCoord2f(0, 0);
+//        GL11.glVertex2f(0, 0);
+//
+//        GL11.glTexCoord2f(1, 0);
+//        GL11.glVertex2f(64, 0);
+//
+//        GL11.glTexCoord2f(1, 1);
+//        GL11.glVertex2f(64, 64);
+//
+//        GL11.glTexCoord2f(0, 1);
+//        GL11.glVertex2f(0, 64);
+//        GL11.glEnd();
+
         GL11.glPopMatrix();
 
         glDisable(GL_TEXTURE_2D);

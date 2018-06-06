@@ -36,6 +36,7 @@ public class GameWindow {
     public SpriteSheet charSheet;
     public SpriteSheet rulerAnimations;
     public SpriteSheet peasantAnimations;
+    public SpriteSheet rulerHighlights;
 
     public World world;
     private GameCamera worldCamera;
@@ -77,7 +78,7 @@ public class GameWindow {
         this.keyMap = new HashMap<Integer, Boolean>();
 
         GLFW.glfwWindowHint(GLFW.GLFW_VISIBLE, GLFW.GLFW_TRUE);
-        GLFW.glfwWindowHint(GLFW.GLFW_RESIZABLE, GLFW.GLFW_FALSE);
+        GLFW.glfwWindowHint(GLFW.GLFW_RESIZABLE, GLFW.GLFW_TRUE);
         GLFW.glfwWindowHint(GLFW.GLFW_SAMPLES, 4);
 
         // NULL is the equivalent of a long with the value of 0
@@ -133,6 +134,14 @@ public class GameWindow {
             }
         });
 
+        GLFW.glfwSetWindowSizeCallback(handle, (window, width, height) -> {
+
+            System.out.println("GameWindow Resize Request -> (" + width + ", " + height + ")");
+
+            glViewport(0, 0, width, height);
+            getWorldCamera().onWindowResize(width, height);
+        });
+
         GLFW.glfwShowWindow(handle);
 
         return true;
@@ -149,6 +158,7 @@ public class GameWindow {
         // Binds GLFW with OpenGL
         GL.createCapabilities();
 
+        glViewport(0, 0, 800, 600);
         glOrtho(0f, 800, 600, 0f, 1f, -1f);
 
         glClearColor(1.0f, 1f, 1f, 1f);
@@ -158,23 +168,25 @@ public class GameWindow {
 
         glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
 
-        spriteSheet = new SpriteSheet("SpriteSheet");
-        spriteSheet.loadTexture(0, 0, 39, 39);
-        spriteSheet.loadTexture(1, 0, 39, 39);
-        spriteSheet.loadTexture(0, 2, 39, 39);
+        // TODO: ResourceManager that loads the textures and all IDs are stored adequately
+
+        spriteSheet = new SpriteSheet("sprites/test/A1");
+        spriteSheet.loadTexture(1, 2, 48, 48);
+        spriteSheet.loadTexture(1, 0, 48, 48);
+        spriteSheet.loadTexture(0, 2, 48, 48);
         charSheet = new SpriteSheet("CharSpriteSheet");
         charSheet.loadTexture(0, 0, 48, 48);
         charSheet.loadTexture(1, 0, 48, 48);
-        spriteSheet.loadTexture(234, 0, 78);
-        rulerAnimations = new SpriteSheet("RulerAnimations");
+        spriteSheet.loadTexture(234, 0, 96);
+        rulerAnimations = new SpriteSheet("sprites/test/sprites");
 
         for(int col = 0; col < 4; col++) {
             for(int row = 0; row < 3; row++) {
-                rulerAnimations.loadTexture(row, col, 48, 48);
+                rulerAnimations.loadTexture(row, col, 50, 50);
             }
         }
 
-        peasantAnimations = new SpriteSheet("PeasantAnimations");
+        peasantAnimations = new SpriteSheet("sprites/sprites2");
 
         for(int col = 0; col < 4; col++) {
             for(int row = 0; row < 3; row++) {
@@ -182,9 +194,22 @@ public class GameWindow {
             }
         }
 
-        spriteSheet.loadTexture(6, 2, 39, 39);
+        spriteSheet.loadTexture(6, 2, 48, 48);
         //spriteSheet.loadTexture(7, 2, 39, 39);
-        spriteSheet.loadTexture(234, 0, 78);
+        spriteSheet.loadTexture(234, 0, 96);
+
+        //improvedTileSheet = new SpriteSheet("SpriteSheetVersion2");
+        spriteSheet.loadTexture(11, 1, 48, 48);
+        spriteSheet.loadTexture(11, 0, 48, 48);
+        spriteSheet.loadTexture(11, 2, 48, 48);
+
+        rulerHighlights = new SpriteSheet("sprites/test/sprites_glow");
+
+        for(int col = 0; col < 4; col++) {
+            for(int row = 0; row < 3; row++) {
+                rulerHighlights.loadTexture(row, col, 50, 50);
+            }
+        }
 
         gui.init();
         world.load();

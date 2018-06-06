@@ -15,7 +15,7 @@ public abstract class GUISlider implements GUIElement {
     public static final int SLIDER_WIDTH = 10;
     public static final int SLIDER_HEIGHT = 15;
 
-    private GUI gui;
+    public GUI gui;
 
     private double x;
     private double y;
@@ -86,20 +86,11 @@ public abstract class GUISlider implements GUIElement {
     @Override
     public void onUpdate() {
         if(isPressing) {
-            DoubleBuffer xBuffer = BufferUtils.createDoubleBuffer(1);
-            DoubleBuffer yBuffer = BufferUtils.createDoubleBuffer(1);
+            Vec2D pos = gui.getMousePosition();
 
-            glfwGetCursorPos(GameWindow.getInstance().getHandle(), xBuffer, yBuffer);
+            sliderValue = ((float) pos.getX() - (float) x) / (float) length;
 
-            double mX = xBuffer.get(0);
-
-            sliderValue = ((float) mX - (float) x) / (float) length;
-
-            if(sliderValue > 1.0f) {
-                sliderValue = 1.0f;
-            }else if(sliderValue < 0.0f){
-                sliderValue = 0.0f;
-            }
+            updateSliderValue();
 
             onSliderValueChange();
 
@@ -107,7 +98,47 @@ public abstract class GUISlider implements GUIElement {
         }
     }
 
+    protected void updateSliderValue() {
+        if(sliderValue > 1.0f) {
+            sliderValue = 1.0f;
+        }else if(sliderValue < 0.0f){
+            sliderValue = 0.0f;
+        }
+    }
+
+    protected void setSliderValue(float sliderValue) {
+        this.sliderValue = sliderValue;
+    }
+
+    protected float getSliderValue(float sliderValue) {
+        return this.sliderValue;
+    }
+
     public abstract void onSliderValueChange();
+
+    public boolean isPressing() {
+        return this.isPressing;
+    }
+
+    public double getX() {
+        return this.x;
+    }
+
+    public void setX(double x) {
+        this.x = x;
+    }
+
+    public double getY() {
+        return this.y;
+    }
+
+    public void setY(double y) {
+        this.y = y;
+    }
+
+    public double getLength() {
+        return length;
+    }
 
     @Override
     public void onMouseInput(double x, double y, boolean press) {
@@ -120,7 +151,7 @@ public abstract class GUISlider implements GUIElement {
         }
     }
 
-    public boolean isMouseInside(double mouseX, double mouseY) {
+    protected boolean isMouseInside(double mouseX, double mouseY) {
         return (mouseX >= (sliderX - (SLIDER_WIDTH / 2)) && mouseX <= ((sliderX - (SLIDER_WIDTH / 2)) + SLIDER_WIDTH)) && (mouseY >= (y - (SLIDER_HEIGHT / 2)) && mouseY <= ((y - (SLIDER_HEIGHT / 2)) + SLIDER_HEIGHT));
     }
 

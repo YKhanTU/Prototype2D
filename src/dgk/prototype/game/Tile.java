@@ -8,12 +8,16 @@ public class Tile extends BuildingComponent {
 
     private transient Camera worldCamera;
 
+    private int size;
+
     private byte renderLayer;
 
     private boolean isPassable;
 
-    public Tile(int textureId, byte renderLayer, int x, int y) {
-        super(textureId, x, y, World.GRID_SIZE, World.GRID_SIZE);
+    public Tile(int textureId, byte renderLayer, int x, int y, int size) {
+        super(textureId, x, y, size, size);
+
+        this.size = size;
 
         this.isPassable = true;
 
@@ -43,13 +47,13 @@ public class Tile extends BuildingComponent {
             GL11.glVertex2f(0, 0);
 
             GL11.glTexCoord2f(1, 0);
-            GL11.glVertex2f(World.GRID_SIZE, 0);
+            GL11.glVertex2f(size, 0);
 
             GL11.glTexCoord2f(1, 1);
-            GL11.glVertex2f(World.GRID_SIZE, World.GRID_SIZE);
+            GL11.glVertex2f(size, size);
 
             GL11.glTexCoord2f(0, 1);
-            GL11.glVertex2f(0, World.GRID_SIZE);
+            GL11.glVertex2f(0, size);
         GL11.glEnd();
 
         GL11.glPopMatrix();

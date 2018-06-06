@@ -24,6 +24,12 @@ public class SpriteSheet {
     public static final int PEASANT = 5;
     public static final int SHRUB = 31;
     public static final int TREE = 32;
+    // 11, 1
+    public static final int WOOD_WALL_NORTH_1A = 33;
+    // 11, 0
+    public static final int WOOD_WALL_NORTH_1B = 34;
+    // 11, 2
+    public static final int WOOD_WALL_NORTH_1C = 35;
 
     private String sheetName;
 
@@ -36,6 +42,7 @@ public class SpriteSheet {
 
         try {
             this.spriteSheet = ImageIO.read(new File("res/" + sheetName + ".png"));
+            System.out.println("Sprite Sheet .PNG Height and Width: " + spriteSheet.getWidth() + ", " + spriteSheet.getHeight());
         } catch (IOException e) {
             e.printStackTrace();
         }
