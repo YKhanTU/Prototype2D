@@ -4,7 +4,7 @@ import org.lwjgl.opengl.GL11;
 
 import static org.lwjgl.opengl.GL11.*;
 
-public class Block extends BuildingComponent {
+public class Tile extends BuildingComponent {
 
     private transient Camera worldCamera;
 
@@ -12,7 +12,7 @@ public class Block extends BuildingComponent {
 
     private boolean isPassable;
 
-    public Block(int textureId, byte renderLayer, int x, int y) {
+    public Tile(int textureId, byte renderLayer, int x, int y) {
         super(textureId, x, y, World.GRID_SIZE, World.GRID_SIZE);
 
         this.isPassable = true;

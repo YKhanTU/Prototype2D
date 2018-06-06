@@ -2,10 +2,8 @@ package dgk.prototype.game;
 
 import dgk.prototype.util.SpriteSheet;
 import dgk.prototype.util.Vec2D;
-import javafx.util.Pair;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 
 public class World {
 
@@ -30,6 +28,10 @@ public class World {
     /**
      * Eventually this function will load data stored on the computer of all
      * of the Entities -> GameObjects, Persons, Item data, and so on.
+     *
+     * TODO: Block Types
+     *  TODO:   AnimatableTile (Buildings, etc.) Walls, StaticTile (Scenery), DynamicTile (Animatable + Physics Oriented Tile), DestructibleTile (Animatable + Destruction Functionality)
+     *
      */
     public void load() {
         ruler = new Ruler(32, 64);
@@ -38,25 +40,25 @@ public class World {
 
         for(int i = 0; i < 32; i++) {
             for(int j = 0; j < 32; j++) {
-                addTile(new Block(SpriteSheet.GRASS, World.LOWER_LAYER, i *64, j * 64), i, j);
+                addTile(new Tile(SpriteSheet.GRASS, World.LOWER_LAYER, i *64, j * 64), i, j);
             }
         }
 
-        addGameObject(new Block(SpriteSheet.SHRUB, World.MID_LAYER, 10, 10));
+        addGameObject(new Tile(SpriteSheet.SHRUB, World.MID_LAYER, 200, 200));
 
         entities.add(ruler);
         entities.add(new Peasant(96, 64));
     }
 
-    private void addTile(Block block, int x, int y) {
-        this.tileMap.addTile(block, x, y);
+    private void addTile(Tile tile, int x, int y) {
+        this.tileMap.addTile(tile, x, y);
     }
 
     private void addGameObject(GameObject gameObject) {
         this.tileMap.addGameObject(gameObject);
     }
 
-//    public Block getTile(int x, int y) {
+//    public Tile getTile(int x, int y) {
 //        int gridX = 64 * x;
 //        int gridY = 64 * y;
 //
@@ -65,8 +67,8 @@ public class World {
 //        }
 //
 //        for(GameObject gameObject : tileMap) {
-//            if(gameObject instanceof Block) {
-//                Block b = (Block) gameObject;
+//            if(gameObject instanceof Tile) {
+//                Tile b = (Tile) gameObject;
 //
 //                if(b.getGridX() == gridX && b.getGridY() == gridY) {
 //                    return b;
@@ -83,8 +85,8 @@ public class World {
 //        while(it.hasNext()) {
 //            GameObject gameObject = it.next();
 //
-//            if(gameObject instanceof Block) {
-//                Block block = (Block) gameObject;
+//            if(gameObject instanceof Tile) {
+//                Tile block = (Tile) gameObject;
 //
 //                if(x == block.getGridX() && y == block.getGridY()) {
 //                    it.remove();

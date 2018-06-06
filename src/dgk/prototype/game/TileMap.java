@@ -23,16 +23,16 @@ public class TileMap implements Serializable {
     public static final transient boolean DEBUG_MODE = true;
 
     // TODO: Make the TileMap compatible for multiple layers per 64x64
-    private Block[][] tileMap;
+    private Tile[][] tileMap;
 
     private ArrayList<GameObject> gameObjects;
 
     public TileMap() {
-        this.tileMap = new Block[MAP_SIZE][MAP_SIZE];
+        this.tileMap = new Tile[MAP_SIZE][MAP_SIZE];
         this.gameObjects = new ArrayList<GameObject>();
     }
 
-    public boolean addTile(Block block, int gridX, int gridY) {
+    public boolean addTile(Tile tile, int gridX, int gridY) {
         if((gridX < 0 || gridY < 0) || (gridX > 127 || gridY > 127)) {
             throw new IndexOutOfBoundsException("You are attempting to place an object out of Tile Map bounds! (" + gridX + ", " + gridY + ")");
         }
@@ -41,7 +41,7 @@ public class TileMap implements Serializable {
             return false;
         }
 
-        tileMap[gridX][gridY] = block;
+        tileMap[gridX][gridY] = tile;
 
         return true;
     }
@@ -69,7 +69,6 @@ public class TileMap implements Serializable {
 
             if(((pos.getX() >= camera.getPosition().getX()) && (pos.getX() <= camera.getPosition().getX() + camera.getWidth())) &&
                     (pos.getY() >= camera.getPosition().getY() && pos.getY() <= camera.getPosition().getY() + camera.getHeight())) {
-                System.out.println("poop");
                 go.render();
             }
         }
