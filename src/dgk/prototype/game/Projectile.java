@@ -79,6 +79,17 @@ public class Projectile extends GameObject {
         return 1;
     }
 
+    /**
+     * The "Impulse" velocity, or the reverse direction of the velocity vector.
+     * This may be used for when an Entity is hit on impact by an explosion, and this is
+     * used to create a "punch effect" on the Entity.
+     *
+     * @return The "Impulse" velocity, or the reverse direction of the velocity vector.
+     */
+    public Vec2D getImpulseVelocity() {
+        return new Vec2D(-velocity.getX(), -velocity.getY());
+    }
+
     @Override
     public void render() {
         glEnable(GL_TEXTURE_2D);

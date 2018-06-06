@@ -12,7 +12,7 @@ public class Block extends BuildingComponent {
 
     private boolean isPassable;
 
-    public Block(int textureId, byte renderLayer, double x, double y) {
+    public Block(int textureId, byte renderLayer, int x, int y) {
         super(textureId, x, y, World.GRID_SIZE, World.GRID_SIZE);
 
         this.isPassable = true;

@@ -16,13 +16,15 @@ public class World {
     public static final byte UPPER_LAYER = 2;
 
     private ArrayList<Entity> entities;
-    private ArrayList<GameObject> tileMap;
+    //private ArrayList<GameObject> tileMap;
+
+    private TileMap tileMap;
 
     public Ruler ruler;
 
     public World() {
         this.entities = new ArrayList<Entity>();
-        this.tileMap = new ArrayList<GameObject>();
+        this.tileMap = new TileMap();
     }
 
     /**
@@ -30,64 +32,67 @@ public class World {
      * of the Entities -> GameObjects, Persons, Item data, and so on.
      */
     public void load() {
-        for(int i = 0; i < 16; i++) {
-            for(int j = 0; j < 16; j++) {
-                int wX = i;
-                int wY = j;
-
-                addTile(SpriteSheet.GRASS, wX, wY);
-            }
-        }
-
         ruler = new Ruler(32, 64);
 
         GameWindow.getInstance().getWorldCamera().setTarget(ruler);
+
+        for(int i = 0; i < 32; i++) {
+            for(int j = 0; j < 32; j++) {
+                addTile(new Block(SpriteSheet.GRASS, World.LOWER_LAYER, i *64, j * 64), i, j);
+            }
+        }
+
+        addGameObject(new Block(SpriteSheet.SHRUB, World.MID_LAYER, 10, 10));
 
         entities.add(ruler);
         entities.add(new Peasant(96, 64));
     }
 
-    private void addTile(int id, int x, int y) {
-        this.tileMap.add(new Block(id, LOWER_LAYER, x * GRID_SIZE, y * GRID_SIZE));
+    private void addTile(Block block, int x, int y) {
+        this.tileMap.addTile(block, x, y);
     }
 
-    public Block getTile(int x, int y) {
-        int gridX = 64 * x;
-        int gridY = 64 * y;
-
-        if(x < 0 || y < 0) {
-            return null;
-        }
-
-        for(GameObject gameObject : tileMap) {
-            if(gameObject instanceof Block) {
-                Block b = (Block) gameObject;
-
-                if(b.getGridX() == gridX && b.getGridY() == gridY) {
-                    return b;
-                }
-            }
-        }
-
-        return null;
+    private void addGameObject(GameObject gameObject) {
+        this.tileMap.addGameObject(gameObject);
     }
 
-    private void removeTile(int x, int y) {
-        Iterator<GameObject> it = tileMap.iterator();
+//    public Block getTile(int x, int y) {
+//        int gridX = 64 * x;
+//        int gridY = 64 * y;
+//
+//        if(x < 0 || y < 0) {
+//            return null;
+//        }
+//
+//        for(GameObject gameObject : tileMap) {
+//            if(gameObject instanceof Block) {
+//                Block b = (Block) gameObject;
+//
+//                if(b.getGridX() == gridX && b.getGridY() == gridY) {
+//                    return b;
+//                }
+//            }
+//        }
+//
+//        return null;
+//    }
 
-        while(it.hasNext()) {
-            GameObject gameObject = it.next();
-
-            if(gameObject instanceof Block) {
-                Block block = (Block) gameObject;
-
-                if(x == block.getGridX() && y == block.getGridY()) {
-                    it.remove();
-                    return;
-                }
-            }
-        }
-    }
+//    private void removeTile(int x, int y) {
+//        Iterator<GameObject> it = tileMap.iterator();
+//
+//        while(it.hasNext()) {
+//            GameObject gameObject = it.next();
+//
+//            if(gameObject instanceof Block) {
+//                Block block = (Block) gameObject;
+//
+//                if(x == block.getGridX() && y == block.getGridY()) {
+//                    it.remove();
+//                    return;
+//                }
+//            }
+//        }
+//    }
     /**
      * This will save all of the data to a .world file that contains the data for
      * all of the Entities, GameObjects, Persons, Item data, and so on.
@@ -97,19 +102,13 @@ public class World {
     }
 
     public void onUpdate() {
-        for(GameObject go : tileMap) {
-            go.onUpdate();
-        }
-
         for(IEntity entity : entities) {
             entity.onUpdate();
         }
     }
 
     public void render() {
-        for(GameObject go : tileMap) {
-            go.render();
-        }
+        tileMap.render();
 
         for(IEntity entity : entities) {
             entity.render();

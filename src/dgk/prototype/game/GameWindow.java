@@ -182,6 +182,10 @@ public class GameWindow {
             }
         }
 
+        spriteSheet.loadTexture(6, 2, 39, 39);
+        //spriteSheet.loadTexture(7, 2, 39, 39);
+        spriteSheet.loadTexture(234, 0, 78);
+
         gui.init();
         world.load();
 

@@ -22,7 +22,8 @@ public class SpriteSheet {
     public static final int WATER = 3;
     public static final int RULER = 4;
     public static final int PEASANT = 5;
-    public static final int SHRUB = 6;
+    public static final int SHRUB = 31;
+    public static final int TREE = 32;
 
     private String sheetName;
 
