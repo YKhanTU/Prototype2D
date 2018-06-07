@@ -30,6 +30,7 @@ Some features that I have thought about this game were:
 - Real-time economy simulation - this idea stems off the idea of the Stock Market and how stocks are essentially rising and falling.
     The impact that the rise and fall that these Stocks can impose on an economy can produce interesting effects, such as inflation/deflation,
     mass poverty and starvation, or simply making your own Nation rich. The amount of output your Nation is producing affects this very well.
+- GameObject and Entity interactivity - inspired by Zelda Breath of the Wild - objects and entities will have the ability to interact with each other, and affect the environment in certain ways. I will try to come up with ways that don't 'steal' directly from BoTW, because I want to be creative with this approach.
 - Destructible terrain and buildings, influenced by the decisions that you, your enemies, or that Nature brings.
 - Evolutionary technology - Just like the history of our own real-world, technology is influenced and expanded over time and knowledge,
     which makes the very civilization that you own vulnerable to new change in terms of trade, war, and sustainment.
