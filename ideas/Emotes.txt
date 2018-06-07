@@ -1,0 +1,11 @@
+Heart
+-------------
+    Heart particles that emit from an Entity to show affection.
+
+Approve & Disapprove
+-------------
+    Thumbs up and thumbs up to show approval / disapproval.
+
+Injured
+-------------
+    An injured icon that portrays that an Entity has recently been injured

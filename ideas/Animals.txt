@@ -1,0 +1,15 @@
+Simba
+-------------
+    A helper companion that gives the player tips and occasional rewards for fulfilling goals and rewards.
+    This companion also behaves like a cat, so obviously it wants treats and attention.
+    It is a static cat with simple animations. Possibly 32*48 (horizontal) and scaled down.
+
+Rat
+-------------
+    A putrid, but cute creature that scurries around the city looking for some tasty snacks.
+    With a better city infrastructure, this animal may become a lost cause.
+
+Stray cat
+-------------
+    Self-explanatory
+

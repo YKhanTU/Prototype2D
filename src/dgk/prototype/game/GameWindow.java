@@ -32,6 +32,8 @@ public class GameWindow {
 
     private GUI gui;
 
+    public InputManager inputManager;
+
     public SpriteSheet spriteSheet;
     public SpriteSheet charSheet;
     public SpriteSheet rulerAnimations;
@@ -51,6 +53,8 @@ public class GameWindow {
         this.worldCamera = new GameCamera(0,0, width, height);
 
         this.gui = new GUI(800, 600);
+
+        this.inputManager = inputManager;
 
         isHidden = false;
     }
@@ -103,17 +107,14 @@ public class GameWindow {
         // OpenGL context current
         GLFW.glfwMakeContextCurrent(handle);
 
-        GLFW.glfwSetWindowSizeCallback(handle, (window, width, height) -> {
-            //this.width = width;
-            //this.height = height;
-        });
-
         GLFW.glfwSetKeyCallback(handle, (window, key, scancode, action, mods) -> {
-            if(action == GLFW_PRESS) {
-                keyMap.put(key, true);
-            }else if(action == GLFW_RELEASE) {
-                keyMap.replace(key, false);
-            }
+            inputManager.onKeyCallback(key, scancode, action, mods);
+
+//            if(action == GLFW_PRESS) {
+//                keyMap.put(key, true);
+//            }else if(action == GLFW_RELEASE) {
+//                keyMap.replace(key, false);
+//            }
         });
 
         GLFW.glfwSetMouseButtonCallback(handle, (window, button, action, mods) -> {
@@ -240,11 +241,7 @@ public class GameWindow {
     }
 
     public boolean isKeyPressed(int keyCode) {
-        if(keyMap.containsKey(keyCode)) {
-            return keyMap.get(keyCode);
-        }
-
-        return false;
+        return inputManager.isKeyPressed(keyCode);
     }
 
     private void destroy() {

@@ -1,5 +1,6 @@
 package dgk.prototype.game;
 
+import dgk.prototype.input.InputManager;
 import dgk.prototype.util.SpriteSheet;
 import dgk.prototype.util.Vec2D;
 import org.lwjgl.glfw.GLFW;
@@ -74,6 +75,7 @@ public class Ruler extends Person {
         GameWindow.getInstance().rulerAnimations.bindTexture(currentAnim);
 
         GL11.glBegin(GL11.GL_QUADS);
+        {
             GL11.glTexCoord2f(0, 0);
             GL11.glVertex2f(0, 0);
 
@@ -85,27 +87,40 @@ public class Ruler extends Person {
 
             GL11.glTexCoord2f(0, 1);
             GL11.glVertex2f(0, 64);
+        }
         GL11.glEnd();
 
-//        int highlightAnimation = currentAnim + 29;
-//
-//        GL11.glTranslated(-4, -2, 0);
-//
-//        GameWindow.getInstance().rulerHighlights.bindTexture(highlightAnimation);
-//
-//        GL11.glBegin(GL11.GL_QUADS);
-//        GL11.glTexCoord2f(0, 0);
-//        GL11.glVertex2f(0, 0);
-//
-//        GL11.glTexCoord2f(1, 0);
-//        GL11.glVertex2f(64, 0);
-//
-//        GL11.glTexCoord2f(1, 1);
-//        GL11.glVertex2f(64, 64);
-//
-//        GL11.glTexCoord2f(0, 1);
-//        GL11.glVertex2f(0, 64);
-//        GL11.glEnd();
+        GL11.glPopMatrix();
+
+        if(isSelected)
+            drawOutline();
+    }
+
+    private void drawOutline() {
+        final int highlightAnimation = currentAnim + 29;
+
+        GL11.glMatrixMode(GL_MODELVIEW_MATRIX);
+        GL11.glPushMatrix();
+
+        GL11.glTranslated((getPosition().x - worldCamera.getPosition().getX()), (getPosition().y - worldCamera.getPosition().getY()), 0);
+
+        GameWindow.getInstance().rulerHighlights.bindTexture(highlightAnimation);
+
+        GL11.glBegin(GL11.GL_QUADS);
+        {
+            GL11.glTexCoord2f(0, 0);
+            GL11.glVertex2f(0, 0);
+
+            GL11.glTexCoord2f(1, 0);
+            GL11.glVertex2f(64, 0);
+
+            GL11.glTexCoord2f(1, 1);
+            GL11.glVertex2f(64, 64);
+
+            GL11.glTexCoord2f(0, 1);
+            GL11.glVertex2f(0, 64);
+        }
+        GL11.glEnd();
 
         GL11.glPopMatrix();
 
@@ -199,6 +214,18 @@ public class Ruler extends Person {
                     currentAnim = walkingAnimations[3][0];
                 }
                 break;
+        }
+
+        InputManager manager = GameWindow.getInstance().inputManager;
+
+        Vec2D mousePos = manager.getMousePosition();
+        int mX = (int) mousePos.getX() + (int) worldCamera.getPosition().getX();
+        int mY = (int) mousePos.getY() + (int) worldCamera.getPosition().getY();
+
+        if((mX >= getPosition().getX() && mX <= (getPosition().getX() + 64)) && (mY >= getPosition().getY() && mY <= (getPosition().getY() + 64))) {
+            isSelected = true;
+        }else{
+            isSelected = false;
         }
     }
 }

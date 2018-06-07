@@ -11,9 +11,15 @@ public abstract class Entity implements IEntity {
 
     private Vec2D position;
 
+    /**
+     * Represents if this Entity has been selected or not by the user.
+     */
+    protected boolean isSelected;
+
     public Entity(int textureId, double x, double y) {
         this.textureId = textureId;
         this.position = new Vec2D(x, y);
+        this.isSelected = false;
     }
 
     public Vec2D getPosition() {
@@ -22,5 +28,9 @@ public abstract class Entity implements IEntity {
 
     public int getTextureId() {
         return this.textureId;
+    }
+
+    public boolean isSelected() {
+        return isSelected;
     }
 }
