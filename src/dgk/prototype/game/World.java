@@ -7,8 +7,6 @@ import java.util.ArrayList;
 
 public class World {
 
-    public static final int GRID_SIZE = 64;
-
     public static final byte LOWER_LAYER = 0;
     public static final byte MID_LAYER = 1;
     public static final byte UPPER_LAYER = 2;
@@ -40,7 +38,7 @@ public class World {
 
         for(int i = 0; i < 32; i++) {
             for(int j = 0; j < 32; j++) {
-                addTile(new Tile(SpriteSheet.GRASS, World.LOWER_LAYER, i *64, j * 64, 64), i, j);
+                addTile(new Tile(SpriteSheet.GRASS, World.LOWER_LAYER, i * 48, j * 48, 48), i, j);
             }
         }
 
@@ -130,8 +128,8 @@ public class World {
     public Vec2D getGridCoordinates(Entity entity) {
         Vec2D position = entity.getPosition();
 
-        int gridX = (int) Math.ceil(position.getX() / GRID_SIZE);
-        int gridY = (int) Math.ceil(position.getY() / GRID_SIZE);
+        int gridX = (int) Math.ceil(position.getX() / TileMap.TILE_SIZE);
+        int gridY = (int) Math.ceil(position.getY() / TileMap.TILE_SIZE);
 
         return new Vec2D(gridX, gridY);
     }

@@ -135,4 +135,12 @@ public class Particle implements IEntity {
     public void setAngle(float angle) {
         this.angle = angle;
     }
+
+    public AABB getAABB() {
+        return null;
+    }
+
+    public void onCollision(IEntity other) {
+
+    }
 }

@@ -1,8 +1,17 @@
 package dgk.prototype.game;
 
+import dgk.prototype.util.AABB;
+import dgk.prototype.util.Vec2D;
+import org.lwjgl.opengl.GL11;
+
+import static org.lwjgl.opengl.GL11.GL_MODELVIEW_MATRIX;
+import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
+import static org.lwjgl.opengl.GL11.glEnable;
+
 public abstract class Person extends Entity {
 
-    public static final int SIZE = 32;
+    public static final int WIDTH = 32;
+    public static final int HEIGHT = 48;
 
     private String name;
     private Person spouse;
@@ -124,5 +133,46 @@ public abstract class Person extends Entity {
 
     public boolean hasArmor() {
         return this.getArmorPoints() > 0;
+    }
+
+    @Override
+    public AABB getAABB() {
+        return new AABB(getPosition(), new Vec2D(getPosition().getX() + WIDTH, getPosition().getY() + HEIGHT));
+    }
+
+    @Override
+    public void onCollision(IEntity other) {
+        System.out.println("Collision detected.");
+    }
+
+    protected void drawShadow(Camera worldCamera) {
+        glEnable(GL_TEXTURE_2D);
+
+        GL11.glMatrixMode(GL_MODELVIEW_MATRIX);
+        GL11.glPushMatrix();
+
+        GL11.glScalef(worldCamera.getZoom(), worldCamera.getZoom(), 0);
+        GL11.glTranslated(getPosition().getX() - worldCamera.getPosition().getX() + 16, getPosition().getY() - worldCamera.getPosition().getY() + 48, 0);
+
+        GameWindow.getInstance().shadow.bindTexture(51);
+
+        GL11.glBegin(GL11.GL_QUADS);
+        {
+            GL11.glTexCoord2f(0, 0);
+            GL11.glVertex2f(0, 0);
+
+            GL11.glTexCoord2f(1, 0);
+            GL11.glVertex2f(32, 0);
+
+            GL11.glTexCoord2f(1, 1);
+            GL11.glVertex2f(32, 32);
+
+            GL11.glTexCoord2f(0, 1);
+            GL11.glVertex2f(0, 32);
+        }
+        GL11.glEnd();
+
+        GL11.glPopMatrix();
+        GL11.glDisable(GL_TEXTURE_2D);
     }
 }

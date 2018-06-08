@@ -1,5 +1,6 @@
 package dgk.prototype.game;
 
+import dgk.prototype.util.AABB;
 import dgk.prototype.util.Vec2D;
 
 /**
@@ -19,4 +20,8 @@ public interface IEntity {
      * Called every time a frame is set to be updated.
      */
     void onUpdate();
+
+    AABB getAABB();
+
+    void onCollision(IEntity other);
 }

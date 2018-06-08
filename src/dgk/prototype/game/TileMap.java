@@ -13,9 +13,15 @@ public class TileMap implements Serializable {
     public static final transient int MAP_SIZE = 128;
 
     /**
+     * The size of each Tile represented in the game. Some may be larger than 48, but this is
+     * the default grid size for the TileMap.
+     */
+    public static final transient int TILE_SIZE = 48;
+
+    /**
      * The limit of GameObjects that are allowed in the game.
      */
-    public static final transient int GAMEOBJECT_LIMIT = 200;
+    public static final transient int OBJECT_LIMIT = 200;
 
     /**
      * Debug mode for testing purposes, including grids and highlights for development.
@@ -26,6 +32,8 @@ public class TileMap implements Serializable {
     private Tile[][] tileMap;
 
     private ArrayList<GameObject> gameObjects;
+
+    private int tileRenderCount = 0;
 
     public TileMap() {
         this.tileMap = new Tile[MAP_SIZE][MAP_SIZE];
@@ -47,19 +55,25 @@ public class TileMap implements Serializable {
     }
 
     public void addGameObject(GameObject gameObject) {
+        if(this.gameObjects.size() >= OBJECT_LIMIT)
+            throw new IllegalStateException("You are attempting to add too many Game Objects to the world!");
+
         this.gameObjects.add(gameObject);
     }
 
     public void render() {
         GameCamera camera = GameWindow.getInstance().getWorldCamera();
 
-        int sX = (int) Math.ceil(camera.getPosition().getX() / World.GRID_SIZE);
-        int sY = (int) Math.ceil(camera.getPosition().getY() / World.GRID_SIZE);
+        int sX = (int) Math.ceil(camera.getPosition().getX() / TileMap.TILE_SIZE);
+        int sY = (int) Math.ceil(camera.getPosition().getY() / TileMap.TILE_SIZE);
 
-        for(int i = sX; i < (800 / World.GRID_SIZE); i++) {
-            for(int j = sY; j < (600 / World.GRID_SIZE); j++) {
+        tileRenderCount = 0;
+
+        for(int i = sX; i < ((800) / TileMap.TILE_SIZE) + sX; i++) {
+            for(int j = sY; j < (600 / TileMap.TILE_SIZE) + sY; j++) {
                 if(tileMap[i][j] != null) {
                     tileMap[i][j].render();
+                    tileRenderCount++;
                 }
             }
         }

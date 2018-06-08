@@ -39,6 +39,8 @@ public class GameWindow {
     public SpriteSheet rulerAnimations;
     public SpriteSheet peasantAnimations;
     public SpriteSheet rulerHighlights;
+    public SpriteSheet uiElements;
+    public SpriteSheet shadow;
 
     public World world;
     private GameCamera worldCamera;
@@ -172,7 +174,7 @@ public class GameWindow {
         // TODO: ResourceManager that loads the textures and all IDs are stored adequately
 
         spriteSheet = new SpriteSheet("sprites/test/A1");
-        spriteSheet.loadTexture(1, 2, 48, 48);
+        spriteSheet.loadTexture(1, 3, 48, 48);
         spriteSheet.loadTexture(1, 0, 48, 48);
         spriteSheet.loadTexture(0, 2, 48, 48);
         charSheet = new SpriteSheet("CharSpriteSheet");
@@ -211,6 +213,14 @@ public class GameWindow {
                 rulerHighlights.loadTexture(row, col, 50, 50);
             }
         }
+
+        uiElements = new SpriteSheet("InterfaceSheetTrans");
+        uiElements.loadTexture(0, 0, 32, 32);
+        uiElements.loadTexture(1, 0, 32, 32);
+        uiElements.loadTexture(2, 0, 32, 32);
+
+        shadow = new SpriteSheet("Shadow");
+        shadow.loadTexture(0, 0, 32, 32);
 
         gui.init();
         world.load();

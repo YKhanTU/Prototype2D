@@ -21,11 +21,11 @@ public abstract class BuildingComponent extends GameObject {
     }
 
     public int getGridX() {
-        return ((int) Math.ceil(this.getPosition().getX() / World.GRID_SIZE));
+        return ((int) Math.ceil(this.getPosition().getX() / TileMap.TILE_SIZE));
     }
 
     public int getGridY() {
-        return ((int) Math.ceil(this.getPosition().getY() / World.GRID_SIZE));
+        return ((int) Math.ceil(this.getPosition().getY() / TileMap.TILE_SIZE));
     }
 
     public boolean isConnected() {

@@ -63,6 +63,8 @@ public class Ruler extends Person {
 
     @Override
     public void render() {
+        drawShadow(worldCamera);
+
         glEnable(GL_TEXTURE_2D);
 
         GL11.glMatrixMode(GL_MODELVIEW_MATRIX);

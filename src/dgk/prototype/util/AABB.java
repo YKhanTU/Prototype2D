@@ -1,5 +1,7 @@
 package dgk.prototype.util;
 
+import dgk.prototype.game.IEntity;
+
 public class AABB {
 
     public Vec2D min;
@@ -18,8 +20,14 @@ public class AABB {
         return min;
     }
 
-    public boolean isIntersecting(AABB other) {
+    /**
+     * Updates the AABB to the current object's position.
+     */
+    public void update(IEntity entity) {
 
+    }
+
+    public boolean isIntersecting(AABB other) {
         if(max.getX() < other.getMin().getX() ||
                 min.getX() > other.getMax().getX()) {
             return false;

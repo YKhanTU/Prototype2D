@@ -1,5 +1,6 @@
 package dgk.prototype.game;
 
+import dgk.prototype.util.AABB;
 import dgk.prototype.util.Texture;
 import dgk.prototype.util.TextureLoader;
 import dgk.prototype.util.Vec2D;
@@ -8,7 +9,6 @@ import org.lwjgl.opengl.GL11;
 public abstract class Entity implements IEntity {
 
     private int textureId;
-
     private Vec2D position;
 
     /**
@@ -33,4 +33,5 @@ public abstract class Entity implements IEntity {
     public boolean isSelected() {
         return isSelected;
     }
+
 }

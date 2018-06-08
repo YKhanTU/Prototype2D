@@ -43,7 +43,7 @@ public class GUI {
          * TODO for later: Add functions that add minimize, maximize, and pin buttons.
          * TODO as well: Also add texturing to the GUI Elements (Slider, Button, etc)
          */
-        inGameMenu.addElement(new GUIButton(this, "Close", 770, 15, 15, 15) {
+        inGameMenu.addElement(new GUIButton(this, 48, "Close", 770, 15, 15, 15) {
             @Override
             void onButtonClick() {
                 inGameMenu.close();

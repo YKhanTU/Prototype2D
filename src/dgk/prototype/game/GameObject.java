@@ -1,5 +1,6 @@
 package dgk.prototype.game;
 
+import dgk.prototype.util.AABB;
 import dgk.prototype.util.Texture;
 import dgk.prototype.util.TextureLoader;
 import dgk.prototype.util.Vec2D;
@@ -21,4 +22,6 @@ public abstract class GameObject implements IEntity {
     public int getTextureId() {
         return this.textureId;
     }
+
+
 }

@@ -16,7 +16,7 @@ import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
  * TODO: And also scale the model based on the ratio of how high it is in the air.
  *
  */
-public class Projectile extends GameObject {
+public abstract class Projectile extends GameObject {
 
     private GameCamera worldCamera;
 
