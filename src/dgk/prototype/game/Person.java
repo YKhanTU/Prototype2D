@@ -15,12 +15,16 @@ public abstract class Person extends Entity {
 
     private String name;
     private Person spouse;
+
     private Direction direction;
-    private Inventory inventory;
     private CharacterState state;
+
+    private Inventory inventory;
+
     private int healthPoints;
     private int armorPoints;
-    private IEntity target;
+
+    private transient IEntity target;
 
     public boolean isMoving = false;
 
@@ -38,6 +42,7 @@ public abstract class Person extends Entity {
 
         this.healthPoints = 100;
         this.armorPoints = 0;
+
         this.target = null;
     }
 
@@ -145,6 +150,12 @@ public abstract class Person extends Entity {
         System.out.println("Collision detected.");
     }
 
+    /**
+     * Draws the shadow of the Person. For now, it just draws a simple low opacity eclipse that
+     * goes under the player's name. This simplifies the implementation for 'ray tracing' or any
+     * kind of advance lighting techniques (at least for now)
+     * @param worldCamera
+     */
     protected void drawShadow(Camera worldCamera) {
         glEnable(GL_TEXTURE_2D);
 
@@ -152,7 +163,7 @@ public abstract class Person extends Entity {
         GL11.glPushMatrix();
 
         GL11.glScalef(worldCamera.getZoom(), worldCamera.getZoom(), 0);
-        GL11.glTranslated(getPosition().getX() - worldCamera.getPosition().getX() + 16, getPosition().getY() - worldCamera.getPosition().getY() + 48, 0);
+        GL11.glTranslated(getPosition().getX() - worldCamera.getPosition().getX() + 16, getPosition().getY() - worldCamera.getPosition().getY() + 46, 0);
 
         GameWindow.getInstance().shadow.bindTexture(51);
 

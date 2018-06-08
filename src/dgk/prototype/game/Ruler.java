@@ -30,7 +30,7 @@ public class Ruler extends Person {
     private int animationFrame = 1;
 
     private long startTime = -1L;
-    private long animTime = 150;
+    private long animTime = 125;
 
     // Animations are 48x48
 
@@ -96,6 +96,8 @@ public class Ruler extends Person {
 
         if(isSelected)
             drawOutline();
+
+        GL11.glColor4f(1, 1, 1, 1);
     }
 
     private void drawOutline() {

@@ -84,8 +84,8 @@ public class GameCamera extends Camera {
         if(gameWindow.isKeyPressed(GLFW_KEY_PAGE_DOWN)) {
             setZoom(getZoom() - 0.01f);
 
-            if(getZoom() < 1.0f) {
-                setZoom(1.0f);
+            if(getZoom() < .5f) {
+                setZoom(.5f);
             }
 
             System.out.println(this);

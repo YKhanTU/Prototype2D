@@ -59,6 +59,8 @@ public class GUIMenu implements GUIElement {
     }
 
     public void drawMenu() {
+        GL11.glDisable(GL11.GL_TEXTURE_2D);
+
         Camera viewport = gui.getCamera();
 
         GL11.glMatrixMode(GL11.GL_MODELVIEW_MATRIX);

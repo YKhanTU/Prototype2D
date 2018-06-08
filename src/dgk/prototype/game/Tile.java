@@ -8,12 +8,33 @@ import static org.lwjgl.opengl.GL11.*;
 
 public class Tile extends GameObject {
 
+    //
+    // TODO: If a Tile has an AABB, we are going to make the AABB split into 'half'
+    // TODO: in order to determine z ordering for rendering.
+    //
+    //
+
+    /**
+     * A private copy of the World Camera to be used for rendering the
+     * actual Tile object based on the perspective of the latter.
+     */
     private transient Camera worldCamera;
 
+    /**
+     * The tile size of the Tile. Normally would be TileMap.TILE_SIZE.
+     */
     private int size;
 
+    /**
+     * The 'z' layer of the Object. The higher it is, the last likely it will be rendered
+     * onto the canvas. Other objects will be sorted based on how high their y value is as well.
+     */
     private byte renderLayer;
 
+    /**
+     * The boolean that represents if this Tile is collidable or not. If it is passable,
+     * then the tile has no AABB or onCollision functionality.
+     */
     private boolean isPassable;
 
     public Tile(int textureId, byte renderLayer, int x, int y, int size) {
@@ -30,6 +51,10 @@ public class Tile extends GameObject {
 
     public byte getRenderLayer() {
         return renderLayer;
+    }
+
+    public boolean isPassable() {
+        return isPassable;
     }
 
     @Override
@@ -60,13 +85,18 @@ public class Tile extends GameObject {
         }
         GL11.glEnd();
 
-        drawOutline();
+        if(TileMap.DEBUG_MODE) {
+            drawOutline();
+        }
 
         GL11.glPopMatrix();
 
         glDisable(GL_TEXTURE_2D);
     }
 
+    /**
+     * A debug outline drawn over the Tile.
+     */
     private void drawOutline() {
         GL11.glColor4f(0, 1f, 0, 1);
 

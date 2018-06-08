@@ -4,6 +4,8 @@ import dgk.prototype.util.Vec2D;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 public class TileMap implements Serializable {
 
@@ -69,13 +71,36 @@ public class TileMap implements Serializable {
 
         tileRenderCount = 0;
 
+        ArrayList<Tile> tileToArray = new ArrayList<Tile>();
+
         for(int i = sX; i < ((800) / TileMap.TILE_SIZE) + sX; i++) {
             for(int j = sY; j < (600 / TileMap.TILE_SIZE) + sY; j++) {
                 if(tileMap[i][j] != null) {
-                    tileMap[i][j].render();
-                    tileRenderCount++;
+
+                    tileToArray.add(tileMap[i][j]);
+
+                    //tileMap[i][j].render();
+                    //tileRenderCount++;
                 }
             }
+        }
+
+        Collections.sort(tileToArray, new Comparator<Tile>() {
+            @Override
+            public int compare(Tile o1, Tile o2) {
+                if(o1.getPosition().getY() > o2.getPosition().getY()) {
+                    return 1;
+                }else if(o1.getPosition().getY() < o2.getPosition().getY()) {
+                    return -1;
+                }
+
+                return 0;
+            }
+        });
+
+        for(Tile tile : tileToArray) {
+            tile.render();
+            tileRenderCount++;
         }
 
         for(GameObject go: gameObjects) {

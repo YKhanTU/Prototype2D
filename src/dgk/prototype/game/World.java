@@ -4,6 +4,8 @@ import dgk.prototype.util.SpriteSheet;
 import dgk.prototype.util.Vec2D;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 public class World {
 
@@ -12,8 +14,6 @@ public class World {
     public static final byte UPPER_LAYER = 2;
 
     private ArrayList<Entity> entities;
-    //private ArrayList<GameObject> tileMap;
-
     private TileMap tileMap;
 
     public Ruler ruler;
@@ -34,7 +34,7 @@ public class World {
     public void load() {
         ruler = new Ruler(32, 64);
 
-        GameWindow.getInstance().getWorldCamera().setTarget(ruler);
+        //GameWindow.getInstance().getWorldCamera().setTarget(ruler);
 
         for(int i = 0; i < 32; i++) {
             for(int j = 0; j < 32; j++) {
@@ -119,6 +119,20 @@ public class World {
 
     public void render() {
         tileMap.render();
+
+        Collections.sort(entities, new Comparator<Entity>() {
+
+            @Override
+            public int compare(Entity o1, Entity o2) {
+                if(o1.getPosition().getY() >= o2.getPosition().getY()) {
+                    return 1;
+                }else if(o1.getPosition().getY() < o2.getPosition().getY()) {
+                    return -1;
+                }
+
+                return 0;
+            }
+        });
 
         for(IEntity entity : entities) {
             entity.render();
