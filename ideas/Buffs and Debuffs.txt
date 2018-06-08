@@ -1,0 +1,18 @@
+Commander's Aura
+-------------
+    Within a certain radius of the Ruler, an Entity is given this buff with the
+    added affect increasing the player's Health, Damage Output, and Movement Speed.
+
+Homestead Euphoria
+-------------
+    Your Nation is enriched with bountiful food and water, liberated from disease and hardship. This realization
+    has spread to your mind and has made your citizens very happy. This increases their Health and Movement Speed.
+
+Bleeding
+-------------
+    Creates a bleeding particle effect off of the bleeding Entity once damaged.
+    Bleeding lasts for 3-5 seconds and is done by chance based off of opponent's weapon penetration factor.
+
+Starvation
+-------------
+    Makes the Entity slower than usual and slowly reduces their health over a long period of time.
