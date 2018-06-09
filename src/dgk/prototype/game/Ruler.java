@@ -151,21 +151,31 @@ public class Ruler extends Person {
 
         if(gw.isKeyPressed(GLFW.GLFW_KEY_S)) {
             setDirection(Direction.SOUTH);
-            getPosition().add(new Vec2D(0, 2));
+            this.velocity.setX(0);
+            this.velocity.setY(2);
+            //getPosition().add(new Vec2D(0, 2));
             isMoving = true;
         }else if(gw.isKeyPressed(GLFW.GLFW_KEY_W)) {
             setDirection(Direction.NORTH);
-            getPosition().add(new Vec2D(0, -2));
+            this.velocity.setX(0);
+            this.velocity.setY(-2);
+            //getPosition().add(new Vec2D(0, -2));
             isMoving = true;
         }else if(gw.isKeyPressed(GLFW.GLFW_KEY_A)) {
             setDirection(Direction.EAST);
-            getPosition().add(new Vec2D(-2, 0));
+            this.velocity.setX(-2);
+            this.velocity.setY(0);
+            //getPosition().add(new Vec2D(-2, 0));
             isMoving = true;
         }else if(gw.isKeyPressed(GLFW.GLFW_KEY_D)) {
             setDirection(Direction.WEST);
-            getPosition().add(new Vec2D(2, 0));
+            this.velocity.setX(2);
+            this.velocity.setY(0);
+           // getPosition().add(new Vec2D(2, 0));
             isMoving = true;
         }else{
+            this.velocity.setX(0);
+            this.velocity.setY(0);
             isMoving = false;
             startTime = -1L;
             animationFrame = 1;
@@ -219,6 +229,12 @@ public class Ruler extends Person {
                 }
                 break;
         }
+
+        this.lastPosition = new Vec2D(getPosition().getX(), getPosition().getY());
+
+        this.getPosition().add(getVelocity());
+
+        this.checkForCollision(GameWindow.getInstance().world);
 
         InputManager manager = GameWindow.getInstance().inputManager;
 

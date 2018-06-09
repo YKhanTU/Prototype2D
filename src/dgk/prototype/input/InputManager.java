@@ -50,6 +50,10 @@ public class InputManager implements IManager {
         }
     }
 
+    public void onKeyTyped(int key, int scancode, int action, int mods) {
+
+    }
+
     public boolean isKeyPressed(int keyCode) {
         if(keyMap.containsKey(keyCode)) {
             return keyMap.get(keyCode);
@@ -59,7 +63,7 @@ public class InputManager implements IManager {
     }
 
     /**
-     * Gets the OpenGL mouse position from GLFW
+     * Gets the OpenGL mouse position from the GLFW Window.
      *
      * TODO: Remove this method from GUI and implement it so that GUI calls this function instead from InputManager.
      *

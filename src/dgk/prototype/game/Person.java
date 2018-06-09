@@ -4,6 +4,8 @@ import dgk.prototype.util.AABB;
 import dgk.prototype.util.Vec2D;
 import org.lwjgl.opengl.GL11;
 
+import java.util.List;
+
 import static org.lwjgl.opengl.GL11.GL_MODELVIEW_MATRIX;
 import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
 import static org.lwjgl.opengl.GL11.glEnable;
@@ -28,6 +30,8 @@ public abstract class Person extends Entity {
 
     public boolean isMoving = false;
 
+    protected Vec2D lastPosition;
+
     public Person(int textureId, String name, double x, double y) {
         super(textureId, x, y);
 
@@ -44,6 +48,8 @@ public abstract class Person extends Entity {
         this.armorPoints = 0;
 
         this.target = null;
+
+        this.lastPosition = getPosition();
     }
 
     public String getName() {
@@ -142,12 +148,46 @@ public abstract class Person extends Entity {
 
     @Override
     public AABB getAABB() {
-        return new AABB(getPosition(), new Vec2D(getPosition().getX() + WIDTH, getPosition().getY() + HEIGHT));
+        Vec2D position = getPosition();
+        Vec2D AxisAlignedBBpos = new Vec2D(position.getX(), position.getY() + (HEIGHT / 2 + 16));
+
+        /**
+         * AABB
+         * [            0
+         *            --|--     ____
+         *             /\     [     ]
+         *                     ^^^^^
+         *                      64x16
+         */
+
+        return new AABB(AxisAlignedBBpos, new Vec2D(getPosition().getX() + WIDTH, getPosition().getY() + HEIGHT));
     }
 
     @Override
     public void onCollision(IEntity other) {
         System.out.println("Collision detected.");
+    }
+
+    /**
+     * Checks for collision between Entities, then checks for Collision between this Entity and Tiles.
+     * @param world
+     */
+    protected void checkForCollision(World world) {
+        List<Entity> entityList = world.getEntities();
+
+        for(Entity e : entityList) {
+            if(e.equals(this))
+                continue;
+
+            if(this.getPosition().getDistance(e.getPosition()) > (WIDTH + 5))
+                continue;
+
+            if(this.getAABB().isIntersecting(e.getAABB())) {
+                this.position = lastPosition;
+
+                return;
+            }
+        }
     }
 
     /**
@@ -186,4 +226,9 @@ public abstract class Person extends Entity {
         GL11.glPopMatrix();
         GL11.glDisable(GL_TEXTURE_2D);
     }
+
+    /**
+     * Draws information above the character when they are selected.
+     */
+    protected void drawSelectionInfo() {}
 }

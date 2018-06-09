@@ -37,14 +37,22 @@ public class Tile extends GameObject {
      */
     private boolean isPassable;
 
+    /**
+     * This boolean value is used to determine if this Tile moves or not. This is only used for
+     * a sub-class of Tile that actually will move around or be able to be moved.
+     */
+    private boolean isStatic;
+
     public Tile(int textureId, byte renderLayer, int x, int y, int size) {
         super(textureId, new Vec2D(x, y));
 
         this.size = size;
 
+        this.renderLayer = renderLayer;
+
         this.isPassable = true;
 
-        this.renderLayer = renderLayer;
+        this.isStatic = true;
 
         worldCamera = GameWindow.getInstance().getWorldCamera();
     }
