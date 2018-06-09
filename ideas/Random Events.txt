@@ -8,3 +8,10 @@ G-Man (Shout out to Garry's Mod)
 -------------
     An old, mysterious man carrying a briefcase that suddenly appears randomly in your view.
     He disappears once the player moves the screen, mouse, or after a short period of time.
+    
+Shade Glider
+-------------
+    This scary reaper comes during the night time to attack your city and plague them with mayhem.
+    His abilities include lifting up pieces of the ground and throwing it towards his enemies.
+    Anyone he touches or goes near his aura, they are given the 'Madmen Disease', that makes them
+    easily immune to insanity.
