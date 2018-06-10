@@ -2,3 +2,13 @@ Vampires of Gallor
 -------------
     This frightening clan of bloodsucking Vampires has made a name for their brutal campaign of
     murdering innocent Humans across the lands, and therefore anyone affiliated with these 'creatures' are looked down upon.
+
+Marauders of Rehen
+--------------
+    A sensitive and intense brotherhood of marauders and mercenaries that were previously Soldiers. They spend
+    most of their time committing crimes and arsony throughout the lands rather than living a traditional
+    life in the cities.
+
+Thieving Guild
+--------------
+    A more or less simple guild of thieves that pickpocket and steal from your fellow citizens.

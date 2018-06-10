@@ -68,7 +68,7 @@ public abstract class GUIButton implements GUIElement {
         GL11.glTranslated(x - viewport.getPosition().getX(), y - viewport.getPosition().getY(), 0);
 
         if(hasTexture()) {
-            GameWindow.getInstance().uiElements.bindTexture(textureId);
+            GameWindow.getInstance().resourceManager.getSpriteSheet("UISpriteSheet").bindTexture(textureId);
 
             GL11.glBegin(GL11.GL_QUADS);
             {
@@ -89,6 +89,7 @@ public abstract class GUIButton implements GUIElement {
             GL11.glPopMatrix();
 
             GL11.glColor4f(1, 1, 1,1);
+            GL11.glDisable(GL_TEXTURE_2D);
             return;
         }else {
             GL11.glBegin(GL11.GL_QUADS);
@@ -129,7 +130,7 @@ public abstract class GUIButton implements GUIElement {
 
         GL11.glPopMatrix();
 
-        GL11.glColor3f(1f, 1f, 1f);
+        GL11.glColor4f(1f, 1f, 1f, 1f);
     }
 
     /**

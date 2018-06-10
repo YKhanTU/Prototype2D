@@ -41,20 +41,20 @@ public class Ruler extends Person {
         // 3 rows for each of 3 animation states (L/R and IDLE
         this.walkingAnimations = new int[4][3];
 
-        walkingAnimations[0][0] = 8;
-        walkingAnimations[1][0] = 17;
-        walkingAnimations[2][0] = 14;
-        walkingAnimations[3][0] = 11;
+        walkingAnimations[0][0] = 8 + 19;
+        walkingAnimations[1][0] = 17 + 19;
+        walkingAnimations[2][0] = 14 + 19;
+        walkingAnimations[3][0] = 11 + 19;
 
-        walkingAnimations[0][1] = 7;
-        walkingAnimations[1][1] = 16;
-        walkingAnimations[2][1] = 13;
-        walkingAnimations[3][1] = 10;
+        walkingAnimations[0][1] = 7 + 19;
+        walkingAnimations[1][1] = 16 + 19;
+        walkingAnimations[2][1] = 13 + 19;
+        walkingAnimations[3][1] = 10 + 19;
 
-        walkingAnimations[0][2] = 9;
-        walkingAnimations[1][2] = 18;
-        walkingAnimations[2][2] = 15;
-        walkingAnimations[3][2] = 12;
+        walkingAnimations[0][2] = 9 + 19;
+        walkingAnimations[1][2] = 18 + 19;
+        walkingAnimations[2][2] = 15 + 19;
+        walkingAnimations[3][2] = 12 + 19;
 
         currentAnim = walkingAnimations[0][0];
 
@@ -74,7 +74,7 @@ public class Ruler extends Person {
         GL11.glTranslated((getPosition().x - worldCamera.getPosition().getX()), (getPosition().y - worldCamera.getPosition().getY()), 0);
         // http://www.idevgames.com/forums/thread-2389.html
 
-        GameWindow.getInstance().rulerAnimations.bindTexture(currentAnim);
+        GameWindow.getInstance().resourceManager.getSpriteSheet("RulerWalkAnimations").bindTexture(currentAnim);
 
         GL11.glBegin(GL11.GL_QUADS);
         {
@@ -101,14 +101,14 @@ public class Ruler extends Person {
     }
 
     private void drawOutline() {
-        final int highlightAnimation = currentAnim + 29;
+        final int highlightAnimation = currentAnim + 13;
 
         GL11.glMatrixMode(GL_MODELVIEW_MATRIX);
         GL11.glPushMatrix();
 
         GL11.glTranslated((getPosition().x - worldCamera.getPosition().getX()), (getPosition().y - worldCamera.getPosition().getY()), 0);
 
-        GameWindow.getInstance().rulerHighlights.bindTexture(highlightAnimation);
+        GameWindow.getInstance().resourceManager.getSpriteSheet("RulerGlow").bindTexture(highlightAnimation);
 
         GL11.glBegin(GL11.GL_QUADS);
         {

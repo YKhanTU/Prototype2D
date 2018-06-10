@@ -63,7 +63,7 @@ public class TileMap implements Serializable {
         this.gameObjects.add(gameObject);
     }
 
-    public void render() {
+    public void render(World world) {
         GameCamera camera = GameWindow.getInstance().getWorldCamera();
 
         int sX = (int) Math.ceil(camera.getPosition().getX() / TileMap.TILE_SIZE);
@@ -77,38 +77,38 @@ public class TileMap implements Serializable {
             for(int j = sY; j < (600 / TileMap.TILE_SIZE) + sY; j++) {
                 if(tileMap[i][j] != null) {
 
-                    tileToArray.add(tileMap[i][j]);
+                    //tileToArray.add(tileMap[i][j]);
 
-                    //tileMap[i][j].render();
-                    //tileRenderCount++;
+                    tileMap[i][j].render();
+                    tileRenderCount++;
                 }
             }
         }
 
-        Collections.sort(tileToArray, new Comparator<Tile>() {
-            @Override
-            public int compare(Tile o1, Tile o2) {
-                if(o1.getPosition().getY() > o2.getPosition().getY()) {
-                    return 1;
-                }else if(o1.getPosition().getY() < o2.getPosition().getY()) {
-                    return -1;
-                }
+//        Collections.sort(tileToArray, new Comparator<Tile>() {
+//            @Override
+//            public int compare(Tile o1, Tile o2) {
+//                if(o1.getPosition().getY() > o2.getPosition().getY()) {
+//                    return 1;
+//                }else if(o1.getPosition().getY() < o2.getPosition().getY()) {
+//                    return -1;
+//                }
+//
+//                return 0;
+//            }
+//        });
 
-                return 0;
-            }
-        });
-
-        for(Tile tile : tileToArray) {
-            tile.render();
-            tileRenderCount++;
-        }
+        //for(Tile tile : tileToArray) {
+        //    tile.render();
+        //    tileRenderCount++;
+        //}
 
         for(GameObject go: gameObjects) {
             Vec2D pos = go.getPosition();
 
             if(((pos.getX() >= camera.getPosition().getX()) && (pos.getX() <= camera.getPosition().getX() + camera.getWidth())) &&
                     (pos.getY() >= camera.getPosition().getY() && pos.getY() <= camera.getPosition().getY() + camera.getHeight())) {
-                go.render();
+                world.renderLayerList.add(go);
             }
         }
 

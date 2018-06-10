@@ -17,13 +17,22 @@ import static org.lwjgl.opengl.GL12.GL_CLAMP_TO_EDGE;
 
 public class SpriteSheet {
 
-    public static final int GRASS = 1;
-    public static final int DIRT = 2;
-    public static final int WATER = 3;
-    public static final int RULER = 4;
+    public static final int GRASS_1 = 1;
+    public static final int GRASS_2 = 2;
+    public static final int STONE = 3;
+    public static final int BRICK = 4;
+    public static final int DIRT = 5;
+    public static final int WATER = 6;
+    public static final int DIRT_PATH_HORIZONTAL = 7;
+    public static final int DIRT_PATH_VERTICAL = 8;
+
+    public static final int RULER = 21;
     public static final int PEASANT = 5;
-    public static final int SHRUB = 31;
-    public static final int TREE = 32;
+    public static final int WOOD_GATE = 21;
+
+    public static final int TREE = 19;
+    public static final int SHRUB = 20;
+
     // 11, 1
     public static final int WOOD_WALL_NORTH_1A = 33;
     // 11, 0

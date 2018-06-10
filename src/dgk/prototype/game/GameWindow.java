@@ -32,15 +32,16 @@ public class GameWindow {
 
     private GUI gui;
 
+    public ResourceManager resourceManager;
     public InputManager inputManager;
 
-    public SpriteSheet spriteSheet;
-    public SpriteSheet charSheet;
-    public SpriteSheet rulerAnimations;
-    public SpriteSheet peasantAnimations;
-    public SpriteSheet rulerHighlights;
-    public SpriteSheet uiElements;
-    public SpriteSheet shadow;
+//    public SpriteSheet spriteSheet;
+//    public SpriteSheet charSheet;
+//    public SpriteSheet rulerAnimations;
+//    public SpriteSheet peasantAnimations;
+//    public SpriteSheet rulerHighlights;
+//    public SpriteSheet uiElements;
+//    public SpriteSheet shadow;
 
     public World world;
     private GameCamera worldCamera;
@@ -57,6 +58,7 @@ public class GameWindow {
         this.gui = new GUI(800, 600);
 
         this.inputManager = inputManager;
+        this.resourceManager = new ResourceManager();
 
         isHidden = false;
     }
@@ -172,53 +174,8 @@ public class GameWindow {
         glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
 
         // TODO: ResourceManager that loads the textures and all IDs are stored adequately
-
-        spriteSheet = new SpriteSheet("sprites/test/A1");
-        spriteSheet.loadTexture(1, 3, 48, 48);
-        spriteSheet.loadTexture(1, 0, 48, 48);
-        spriteSheet.loadTexture(0, 2, 48, 48);
-        charSheet = new SpriteSheet("CharSpriteSheet");
-        charSheet.loadTexture(0, 0, 48, 48);
-        charSheet.loadTexture(1, 0, 48, 48);
-        spriteSheet.loadTexture(234, 0, 96);
-        rulerAnimations = new SpriteSheet("sprites/test/sprites");
-
-        for(int col = 0; col < 4; col++) {
-            for(int row = 0; row < 3; row++) {
-                rulerAnimations.loadTexture(row, col, 50, 50);
-            }
-        }
-
-        peasantAnimations = new SpriteSheet("sprites/sprites2");
-
-        for(int col = 0; col < 4; col++) {
-            for(int row = 0; row < 3; row++) {
-                peasantAnimations.loadTexture(row, col, 48, 48);
-            }
-        }
-
-        spriteSheet.loadTexture(6, 2, 48, 48);
-        spriteSheet.loadTexture(234, 0, 96);
-
-        spriteSheet.loadTexture(11, 1, 48, 48);
-        spriteSheet.loadTexture(11, 0, 48, 48);
-        spriteSheet.loadTexture(11, 2, 48, 48);
-
-        rulerHighlights = new SpriteSheet("sprites/test/sprites_glow");
-
-        for(int col = 0; col < 4; col++) {
-            for(int row = 0; row < 3; row++) {
-                rulerHighlights.loadTexture(row, col, 50, 50);
-            }
-        }
-
-        uiElements = new SpriteSheet("InterfaceSheetTrans");
-        uiElements.loadTexture(0, 0, 32, 32);
-        uiElements.loadTexture(1, 0, 32, 32);
-        uiElements.loadTexture(2, 0, 32, 32);
-
-        shadow = new SpriteSheet("Shadow");
-        shadow.loadTexture(0, 0, 32, 32);
+        resourceManager.start();
+        inputManager.start();
 
         gui.init();
         world.load();
@@ -257,8 +214,10 @@ public class GameWindow {
         GLFW.glfwTerminate();
         GLFW.glfwSetErrorCallback(null).free();
 
-        spriteSheet.destroyTextures();
-        charSheet.destroyTextures();
+        resourceManager.stop();
+
+        //spriteSheet.destroyTextures();
+        //charSheet.destroyTextures();
     }
 
     private boolean hasWindowRequestedClose() {

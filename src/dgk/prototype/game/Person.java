@@ -205,7 +205,7 @@ public abstract class Person extends Entity {
         GL11.glScalef(worldCamera.getZoom(), worldCamera.getZoom(), 0);
         GL11.glTranslated(getPosition().getX() - worldCamera.getPosition().getX() + 16, getPosition().getY() - worldCamera.getPosition().getY() + 46, 0);
 
-        GameWindow.getInstance().shadow.bindTexture(51);
+        GameWindow.getInstance().resourceManager.getSpriteSheet("Shadow").bindTexture(38);
 
         GL11.glBegin(GL11.GL_QUADS);
         {

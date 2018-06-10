@@ -24,20 +24,20 @@ public class Peasant extends Person {
 
         this.walkingAnimations = new int[4][3];
 
-        walkingAnimations[0][0] = 20;
-        walkingAnimations[1][0] = 29;
-        walkingAnimations[2][0] = 26;
-        walkingAnimations[3][0] = 23;
+        walkingAnimations[0][0] = 20 + 35;
+        walkingAnimations[1][0] = 29 + 35;
+        walkingAnimations[2][0] = 26 + 35;
+        walkingAnimations[3][0] = 23 + 35;
 
-        walkingAnimations[0][1] = 19;
-        walkingAnimations[1][1] = 28;
-        walkingAnimations[2][1] = 25;
-        walkingAnimations[3][1] = 22;
+        walkingAnimations[0][1] = 19 + 35;
+        walkingAnimations[1][1] = 28 + 35;
+        walkingAnimations[2][1] = 25 + 35;
+        walkingAnimations[3][1] = 22 + 35;
 
-        walkingAnimations[0][2] = 21;
-        walkingAnimations[1][2] = 30;
-        walkingAnimations[2][2] = 27;
-        walkingAnimations[3][2] = 24;
+        walkingAnimations[0][2] = 21 + 35;
+        walkingAnimations[1][2] = 30 + 35;
+        walkingAnimations[2][2] = 27 + 35;
+        walkingAnimations[3][2] = 24 + 35;
 
         currentAnim = walkingAnimations[0][0];
 
@@ -54,9 +54,9 @@ public class Peasant extends Person {
         GL11.glPushMatrix();
 
         GL11.glScalef(worldCamera.getZoom(), worldCamera.getZoom(), 0);
-        GL11.glTranslated(getPosition().x - worldCamera.getPosition().getX(), getPosition().y - worldCamera.getPosition().getY(), 0);
+        GL11.glTranslated(getPosition().x - worldCamera.getPosition().getX() - 4, getPosition().y - worldCamera.getPosition().getY(), 0);
 
-        GameWindow.getInstance().spriteSheet.bindTexture(currentAnim);
+        GameWindow.getInstance().resourceManager.getSpriteSheet("PeasantWalkAnimations").bindTexture(currentAnim);
 
         GL11.glBegin(GL11.GL_QUADS);
             GL11.glTexCoord2f(0, 0);
