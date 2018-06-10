@@ -30,8 +30,8 @@ public abstract class GUIVerticalSlider extends GUISlider {
      * @param length How long the slider is. For a vertical slider, this is the actual length of the clickable part unlike
      *               the horizontal slider, that uses the length value for the actual length of the whole slider.
      */
-    public GUIVerticalSlider(GUI gui, double x, double y, double length, int barHeight) {
-        super(gui, x, y, length, 1f);
+    public GUIVerticalSlider(GUI gui, GUIMenu guiMenu, double x, double y, double length, int barHeight) {
+        super(gui, guiMenu, x, y, length, 0f);
 
         this.sliderY = y;
         this.barHeight = barHeight;
@@ -106,6 +106,15 @@ public abstract class GUIVerticalSlider extends GUISlider {
 
             this.sliderY = ((getLength() - barHeight) * getSliderValue()) + getY();
         }
+    }
+
+    @Override
+    public void onDrag(GUIMenu guiMenu) {
+        this.x = guiMenu.x + refX;
+
+        this.y = guiMenu.y + refY;
+        System.out.println(getSliderValue());
+        this.sliderY = ((getLength() - barHeight) * getSliderValue()) + this.y;
     }
 
     protected boolean isMouseInside(double mouseX, double mouseY) {

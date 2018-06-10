@@ -15,6 +15,7 @@ import static org.lwjgl.opengl.GL11.glEnable;
 public abstract class GUIButton implements GUIElement {
 
     private GUI gui;
+    protected GUIMenu guiMenu;
 
     private int textureId;
 
@@ -23,19 +24,25 @@ public abstract class GUIButton implements GUIElement {
     private double x;
     private double y;
 
+    private double refX;
+    private double refY;
+
     private double width;
     private double height;
 
-    public GUIButton(GUI gui, String label, double x, double y, double width, double height) {
-        this(gui, 0, label, x, y, width, height);
+    public GUIButton(GUI gui, GUIMenu guiMenu, String label, double x, double y, double width, double height) {
+        this(gui, guiMenu,0, label, x, y, width, height);
     }
 
-    public GUIButton(GUI gui, int textureId, String label, double x, double y, double width, double height) {
+    public GUIButton(GUI gui, GUIMenu guiMenu, int textureId, String label, double x, double y, double width, double height) {
         this.gui = gui;
+        this.guiMenu = guiMenu;
         this.textureId = textureId;
         this.label = label;
         this.x = x;
         this.y = y;
+        this.refX = x - guiMenu.x;
+        this.refY = y - guiMenu.y;
         this.width = width;
         this.height = height;
     }
@@ -143,14 +150,23 @@ public abstract class GUIButton implements GUIElement {
     public void onUpdate() {}
 
     @Override
-    public void onMouseInput(double x, double y, boolean press) {
+    public boolean onMouseInput(double x, double y, boolean press) {
         if(isMouseInside(x, y) && press) {
             onButtonClick();
+            return true;
         }
+
+        return false;
     }
 
     public boolean isMouseInside(double mX, double mY) {
         return (mX >= x && mX <= (x + width)) && (mY >= y && mY <= (y + height));
+    }
+
+    @Override
+    public void onDrag(GUIMenu guiMenu) {
+        this.x = guiMenu.x + refX;
+        this.y = guiMenu.y + refY;
     }
 
     private boolean hasTexture() {

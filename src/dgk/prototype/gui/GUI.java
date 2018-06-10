@@ -21,6 +21,8 @@ public class GUI {
 
     public static final int FONT_HEIGHT = 24;
 
+    public static final int NOTIFICATION_LIMIT = 10;
+
     private Camera camera;
 
     private ArrayList<GUIMenu> guiMenus;
@@ -43,21 +45,21 @@ public class GUI {
          * TODO for later: Add functions that add minimize, maximize, and pin buttons.
          * TODO as well: Also add texturing to the GUI Elements (Slider, Button, etc)
          */
-        inGameMenu.addElement(new GUIButton(this, 22, "Close", 770, 15, 15, 15) {
+        inGameMenu.addElement(new GUIButton(this, inGameMenu,22, "Close", 770, 15, 15, 15) {
             @Override
             void onButtonClick() {
                 inGameMenu.close();
             }
         });
 
-        inGameMenu.addElement(new GUISlider(this, 670, 75, 100, .25f) {
+        inGameMenu.addElement(new GUISlider(this, inGameMenu,670, 75, 100, .25f) {
             @Override
             public void onSliderValueChange() {
                 GameWindow.getInstance().getWorldCamera().setChaseFactor(getSliderValue());
             }
         });
 
-        inGameMenu.addElement(new GUIVerticalSlider(this, 670, 100, 100, 20) {
+        inGameMenu.addElement(new GUIVerticalSlider(this, inGameMenu,670, 100, 100, 20) {
             @Override
             public void onSliderValueChange() {
                 System.out.println(getSliderValue());
@@ -79,6 +81,13 @@ public class GUI {
     //public void drawString(String text, int x, int y) {
     //    trueTypeFont.drawString(x, y, text);
     //}
+
+    public void addNotification(GUINotification notification) {
+        if(guiNotifications.size() == NOTIFICATION_LIMIT)
+            return;
+
+        guiNotifications.add(notification);
+    }
 
     public void drawLine(Vec2D start, Vec2D end, float width) {
         GL11.glMatrixMode(GL11.GL_MODELVIEW_MATRIX);
@@ -179,6 +188,16 @@ public class GUI {
         for(GUIMenu guiMenu : guiMenus) {
             guiMenu.render();
         }
+
+
+    }
+
+    /**
+     * This lets us know if we have any active notifications in the GUI at the moment.
+     * @return Returns the size of the GUINotifications ArrayList.
+     */
+    public boolean hasNotifications() {
+        return guiNotifications.size() > 0;
     }
 
     public Camera getCamera() {

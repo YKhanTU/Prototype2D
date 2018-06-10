@@ -64,7 +64,7 @@ public class SpriteSheet {
     }
 
     public void loadTexture(int x, int y, int size) {
-        int id = glGenTextures();
+        int id = glGenTextures(); // 1 ---> MAX INTEGER SIZE
 
         int[] pixels = new int[size * size];
         spriteSheet.getRGB(x, y, size, size, pixels, 0, size);

@@ -1,6 +1,7 @@
 package dgk.prototype.gui;
 
 import dgk.prototype.game.Camera;
+import dgk.prototype.util.Vec2D;
 import org.lwjgl.opengl.GL11;
 
 import java.util.ArrayList;
@@ -16,8 +17,8 @@ public class GUIMenu implements GUIElement {
 
     private String name;
 
-    private double x;
-    private double y;
+    protected double x;
+    protected double y;
     private double width;
     private double height;
 
@@ -26,6 +27,7 @@ public class GUIMenu implements GUIElement {
     private ArrayList<GUIElement> elements;
 
     private boolean isDraggable;
+    private boolean isBeingDragged;
 
     private boolean shouldRemove;
 
@@ -43,6 +45,7 @@ public class GUIMenu implements GUIElement {
         this.elements = new ArrayList<GUIElement>();
 
         this.isDraggable = isDraggable;
+        this.isBeingDragged = false;
 
         this.shouldRemove = false;
     }
@@ -95,15 +98,66 @@ public class GUIMenu implements GUIElement {
 
     @Override
     public void onUpdate() {
+        if(isDraggable && isBeingDragged) {
+            Vec2D pos = gui.getMousePosition();
+
+            double mX = pos.getX();
+            double mY = pos.getY();
+
+            this.x = mX - 50;
+            this.y = mY - 50;
+
+            this.onDrag(this);
+        }
+
         for(GUIElement elements : elements) {
             elements.onUpdate();
         }
     }
 
     @Override
-    public void onMouseInput(double x, double y, boolean press) {
+    public boolean onMouseInput(double x, double y, boolean press) {
+        // This variable is used to determine if any elements were clicked inside the menu.
+        if(!press && isBeingDragged) {
+            isBeingDragged = false;
+            System.out.println(isBeingDragged);
+            return false;
+        }
+
+        boolean elementClicked = false;
+
         for(GUIElement elements : elements) {
-            elements.onMouseInput(x, y, press);
+            if(elements.onMouseInput(x, y, press)) {
+
+                if(!elementClicked) {
+                    elementClicked = true;
+                }
+            }
+        }
+
+        if((x >= this.x && x <= (x + width)) && (y >= this.y && y <= (y + height)) && !elementClicked) {
+            if(press) {
+                if(isBeingDragged) {
+                    return false;
+                }
+
+                isBeingDragged = true;
+
+                return true;
+            }
+        }
+
+        if(elementClicked) {
+            return true;
+        }
+
+        return false;
+    }
+
+    @Override
+    public void onDrag(GUIMenu guiMenu) {
+        for(GUIElement element : elements) {
+            element.onDrag(this);
         }
     }
 

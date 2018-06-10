@@ -30,7 +30,10 @@ public class GUISelectionBubble implements GUIElement {
     }
 
     @Override
-    public void onMouseInput(double x, double y, boolean press) {
+    public void onDrag(GUIMenu guiMenu) {}
 
+    @Override
+    public boolean onMouseInput(double x, double y, boolean press) {
+        return false;
     }
 }

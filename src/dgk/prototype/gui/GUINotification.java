@@ -30,6 +30,10 @@ public class GUINotification implements GUIElement {
         this.hangTime = hangTime;
     }
 
+    public long getTimeLeft() {
+        return (System.currentTimeMillis() - startTime);
+    }
+
     public boolean shouldRemove() {
         return (System.currentTimeMillis() - startTime >= hangTime);
     }
@@ -58,7 +62,10 @@ public class GUINotification implements GUIElement {
     }
 
     @Override
-    public void onMouseInput(double x, double y, boolean press) {
+    public void onDrag(GUIMenu guiMenu) {}
 
+    @Override
+    public boolean onMouseInput(double x, double y, boolean press) {
+        return true;
     }
 }

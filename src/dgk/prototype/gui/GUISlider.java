@@ -16,9 +16,13 @@ public abstract class GUISlider implements GUIElement {
     public static final int SLIDER_HEIGHT = 15;
 
     public GUI gui;
+    protected GUIMenu guiMenu;
 
-    private double x;
-    private double y;
+    protected double x;
+    protected double y;
+
+    protected double refX;
+    protected double refY;
 
     private double sliderX;
 
@@ -28,11 +32,14 @@ public abstract class GUISlider implements GUIElement {
 
     private boolean isPressing = false;
 
-    public GUISlider(GUI gui, double x, double y, double length, float initValue) {
+    public GUISlider(GUI gui, GUIMenu guiMenu, double x, double y, double length, float initValue) {
         this.gui = gui;
+        this.guiMenu = guiMenu;
 
         this.x = x;
         this.y = y;
+        this.refX = x - guiMenu.x;
+        this.refY = y - guiMenu.y;
 
         this.sliderValue = initValue;
 
@@ -141,18 +148,30 @@ public abstract class GUISlider implements GUIElement {
     }
 
     @Override
-    public void onMouseInput(double x, double y, boolean press) {
+    public boolean onMouseInput(double x, double y, boolean press) {
         if(isMouseInside(x, y) && press) {
             isPressing = true;
+            return true;
         }
 
         if(isPressing && !press) {
             isPressing = false;
+            return true;
         }
+
+        return false;
     }
 
     protected boolean isMouseInside(double mouseX, double mouseY) {
         return (mouseX >= (sliderX - (SLIDER_WIDTH / 2)) && mouseX <= ((sliderX - (SLIDER_WIDTH / 2)) + SLIDER_WIDTH)) && (mouseY >= (y - (SLIDER_HEIGHT / 2)) && mouseY <= ((y - (SLIDER_HEIGHT / 2)) + SLIDER_HEIGHT));
+    }
+
+    @Override
+    public void onDrag(GUIMenu guiMenu) {
+        this.x = guiMenu.x + refX;
+        this.sliderX = (length * sliderValue) + x;
+
+        this.y = guiMenu.y + refY;
     }
 
     public void onSliderMove(double mouseX) {
