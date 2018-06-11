@@ -19,6 +19,10 @@ public class GUIMenu implements GUIElement {
 
     protected double x;
     protected double y;
+    
+    protected double refX;
+    protected double refY;
+
     private double width;
     private double height;
 
@@ -36,6 +40,8 @@ public class GUIMenu implements GUIElement {
         this.name = name;
         this.x = x;
         this.y = y;
+        this.refX = 0;
+        this.refY = 0;
         this.width = width;
         this.height = height;
 
@@ -99,14 +105,6 @@ public class GUIMenu implements GUIElement {
     @Override
     public void onUpdate() {
         if(isDraggable && isBeingDragged) {
-            Vec2D pos = gui.getMousePosition();
-
-            double mX = pos.getX();
-            double mY = pos.getY();
-
-            this.x = mX - 50;
-            this.y = mY - 50;
-
             this.onDrag(this);
         }
 
@@ -143,6 +141,9 @@ public class GUIMenu implements GUIElement {
 
                 isBeingDragged = true;
 
+                this.refX = x - this.x;
+                this.refY = y - this.y;
+
                 return true;
             }
         }
@@ -156,6 +157,14 @@ public class GUIMenu implements GUIElement {
 
     @Override
     public void onDrag(GUIMenu guiMenu) {
+        Vec2D pos = gui.getMousePosition();
+
+        double mX = pos.getX();
+        double mY = pos.getY();
+
+        this.x = mX - refX;
+        this.y = mY - refY;
+
         for(GUIElement element : elements) {
             element.onDrag(this);
         }

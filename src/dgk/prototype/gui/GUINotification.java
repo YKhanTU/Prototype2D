@@ -23,7 +23,7 @@ public class GUINotification implements GUIElement {
     private long hangTime;
 
     public GUINotification(GUI gui, String message) {
-        this(gui, message, 2500);
+        this(gui, message, 5000);
     }
 
     public GUINotification(GUI gui, String message, long hangTime) {

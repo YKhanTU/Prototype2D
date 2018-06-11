@@ -8,12 +8,6 @@ import static org.lwjgl.opengl.GL11.*;
 
 public class Tile extends GameObject {
 
-    //
-    // TODO: If a Tile has an AABB, we are going to make the AABB split into 'half'
-    // TODO: in order to determine z ordering for rendering.
-    //
-    //
-
     /**
      * A private copy of the World Camera to be used for rendering the
      * actual Tile object based on the perspective of the latter.
@@ -63,6 +57,18 @@ public class Tile extends GameObject {
 
     public boolean isPassable() {
         return isPassable;
+    }
+
+    public void setPassable(boolean isPassable) {
+        this.isPassable = isPassable;
+    }
+
+    public boolean isStatic() {
+        return isStatic;
+    }
+
+    public void setStatic(boolean isStatic) {
+        this.isStatic = isStatic;
     }
 
     @Override

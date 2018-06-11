@@ -77,31 +77,29 @@ public class TileMap implements Serializable {
             for(int j = sY; j < (600 / TileMap.TILE_SIZE) + sY; j++) {
                 if(tileMap[i][j] != null) {
 
-                    //tileToArray.add(tileMap[i][j]);
+                    tileToArray.add(tileMap[i][j]);
 
-                    tileMap[i][j].render();
-                    tileRenderCount++;
+                    //tileMap[i][j].render();
+                    //tileRenderCount++;
                 }
             }
         }
 
-//        Collections.sort(tileToArray, new Comparator<Tile>() {
-//            @Override
-//            public int compare(Tile o1, Tile o2) {
-//                if(o1.getPosition().getY() > o2.getPosition().getY()) {
-//                    return 1;
-//                }else if(o1.getPosition().getY() < o2.getPosition().getY()) {
-//                    return -1;
-//                }
-//
-//                return 0;
-//            }
-//        });
+        Collections.sort(tileToArray, new Comparator<Tile>() {
+            @Override
+            public int compare(Tile o1, Tile o2) {
+                if(o1.getRenderLayer() < o1.getRenderLayer()) {
+                    return 1;
+                }else{
+                    return -1;
+                }
+            }
+        });
 
-        //for(Tile tile : tileToArray) {
-        //    tile.render();
-        //    tileRenderCount++;
-        //}
+        for(Tile tile : tileToArray) {
+            tile.render();
+            tileRenderCount++;
+        }
 
         for(GameObject go: gameObjects) {
             Vec2D pos = go.getPosition();

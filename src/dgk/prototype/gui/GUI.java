@@ -23,7 +23,7 @@ public class GUI {
 
     public static final int FONT_HEIGHT = 24;
 
-    public static final int NOTIFICATION_LIMIT = 10;
+    public static final int NOTIFICATION_LIMIT = 5;
     public static final int NOTIFICATION_Y = 300;
 
     private Camera camera;
