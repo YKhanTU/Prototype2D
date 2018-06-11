@@ -122,6 +122,10 @@ public abstract class Person extends Entity {
         return isMoving;
     }
 
+    public boolean isIdle() {
+        return !isMoving;
+    }
+
     private boolean isInCombat() {
         return hasTarget();
     }

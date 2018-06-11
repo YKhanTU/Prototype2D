@@ -1,6 +1,7 @@
 package dgk.prototype.game;
 
 import dgk.prototype.input.InputManager;
+import dgk.prototype.util.Animation;
 import dgk.prototype.util.SpriteSheet;
 import dgk.prototype.util.Vec2D;
 import org.lwjgl.glfw.GLFW;
@@ -22,6 +23,8 @@ public class Ruler extends Person {
      *      EAST        13, 15      14
      *      WEST        10, 12      11
      */
+
+    private Animation breathingAnimation;
 
     private int[][] walkingAnimations;
 
@@ -57,6 +60,8 @@ public class Ruler extends Person {
         walkingAnimations[3][2] = 12 + 19;
 
         currentAnim = walkingAnimations[0][0];
+
+        this.breathingAnimation = new Animation(51, 3, 400L, true);
 
         worldCamera = GameWindow.getInstance().getWorldCamera();
     }
@@ -153,26 +158,30 @@ public class Ruler extends Person {
             setDirection(Direction.SOUTH);
             this.velocity.setX(0);
             this.velocity.setY(2);
-            //getPosition().add(new Vec2D(0, 2));
+
             isMoving = true;
+            //breathingAnimation.stop();
         }else if(gw.isKeyPressed(GLFW.GLFW_KEY_W)) {
             setDirection(Direction.NORTH);
             this.velocity.setX(0);
             this.velocity.setY(-2);
-            //getPosition().add(new Vec2D(0, -2));
+
             isMoving = true;
+            //breathingAnimation.stop();
         }else if(gw.isKeyPressed(GLFW.GLFW_KEY_A)) {
             setDirection(Direction.EAST);
             this.velocity.setX(-2);
             this.velocity.setY(0);
-            //getPosition().add(new Vec2D(-2, 0));
+
             isMoving = true;
+            //breathingAnimation.stop();
         }else if(gw.isKeyPressed(GLFW.GLFW_KEY_D)) {
             setDirection(Direction.WEST);
             this.velocity.setX(2);
             this.velocity.setY(0);
-           // getPosition().add(new Vec2D(2, 0));
+
             isMoving = true;
+            //breathingAnimation.stop();
         }else{
             this.velocity.setX(0);
             this.velocity.setY(0);
@@ -181,54 +190,63 @@ public class Ruler extends Person {
             animationFrame = 1;
         }
 
-        updateStartTime();
+        //if(!isIdle()) {
+            updateStartTime();
 
-        switch(getDirection()) {
-            case NORTH:
-                if(isMoving) {
-                    if(System.currentTimeMillis() - startTime >= animTime) {
-                        startTime = System.currentTimeMillis();
-                        switchAnimFrame();
+            switch (getDirection()) {
+                case NORTH:
+                    if (isMoving) {
+                        if (System.currentTimeMillis() - startTime >= animTime) {
+                            startTime = System.currentTimeMillis();
+                            switchAnimFrame();
+                        }
+                        currentAnim = walkingAnimations[1][animationFrame];
+                    } else {
+                        currentAnim = walkingAnimations[1][0];
                     }
-                    currentAnim = walkingAnimations[1][animationFrame];
-                }else{
-                    currentAnim = walkingAnimations[1][0];
-                }
-                break;
-            case SOUTH:
-                if(isMoving) {
-                    if(System.currentTimeMillis() - startTime >= animTime) {
-                        startTime = System.currentTimeMillis();
-                        switchAnimFrame();
+                    break;
+                case SOUTH:
+                    if (isMoving) {
+                        if (System.currentTimeMillis() - startTime >= animTime) {
+                            startTime = System.currentTimeMillis();
+                            switchAnimFrame();
+                        }
+                        currentAnim = walkingAnimations[0][animationFrame];
+                    } else {
+                        currentAnim = walkingAnimations[0][0];
                     }
-                    currentAnim = walkingAnimations[0][animationFrame];
-                }else{
-                    currentAnim = walkingAnimations[0][0];
-                }
-                break;
-            case WEST:
-                if(isMoving) {
-                    if(System.currentTimeMillis() - startTime >= animTime) {
-                        startTime = System.currentTimeMillis();
-                        switchAnimFrame();
+                    break;
+                case WEST:
+                    if (isMoving) {
+                        if (System.currentTimeMillis() - startTime >= animTime) {
+                            startTime = System.currentTimeMillis();
+                            switchAnimFrame();
+                        }
+                        currentAnim = walkingAnimations[2][animationFrame];
+                    } else {
+                        currentAnim = walkingAnimations[2][0];
                     }
-                    currentAnim = walkingAnimations[2][animationFrame];
-                }else{
-                    currentAnim = walkingAnimations[2][0];
-                }
-                break;
-            case EAST:
-                if(isMoving) {
-                    if(System.currentTimeMillis() - startTime >= animTime) {
-                        startTime = System.currentTimeMillis();
-                        switchAnimFrame();
+                    break;
+                case EAST:
+                    if (isMoving) {
+                        if (System.currentTimeMillis() - startTime >= animTime) {
+                            startTime = System.currentTimeMillis();
+                            switchAnimFrame();
+                        }
+                        currentAnim = walkingAnimations[3][animationFrame];
+                    } else {
+                        currentAnim = walkingAnimations[3][0];
                     }
-                    currentAnim = walkingAnimations[3][animationFrame];
-                }else{
-                    currentAnim = walkingAnimations[3][0];
-                }
-                break;
-        }
+                    break;
+            }
+        //}
+//        else{
+//            breathingAnimation.start();
+//
+//            breathingAnimation.onUpdate();
+//
+//            currentAnim = breathingAnimation.getCurrentFrameTextureId();
+//        }
 
         this.lastPosition = new Vec2D(getPosition().getX(), getPosition().getY());
 

@@ -2,10 +2,13 @@ package dgk.prototype.gui;
 
 public class GUINotification implements GUIElement {
 
-    private static final int WIDTH = 150;
-    private static final int HEIGHT = 75;
+    protected static final int WIDTH = 150;
+    protected static final int HEIGHT = 50;
 
     private GUI gui;
+
+    protected double x;
+    protected double y;
 
     /**
      * The message that our GUI notification will be sending out.
@@ -25,6 +28,7 @@ public class GUINotification implements GUIElement {
 
     public GUINotification(GUI gui, String message, long hangTime) {
         this.gui = gui;
+        this.x = 800 - GUINotification.WIDTH;
         this.message = message;
         this.startTime = System.currentTimeMillis();
         this.hangTime = hangTime;
@@ -40,7 +44,7 @@ public class GUINotification implements GUIElement {
 
     @Override
     public void render() {
-        gui.drawBorderedRect(0, 0, WIDTH, HEIGHT, 1f);
+        gui.drawBorderedRect(x, y, WIDTH, HEIGHT, 1f);
         // drawString(message, x + 5, y + 5);
 
         /**

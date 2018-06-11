@@ -7,6 +7,8 @@ import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 import java.nio.DoubleBuffer;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Iterator;
 
 import static org.lwjgl.glfw.GLFW.glfwGetCursorPos;
@@ -22,6 +24,7 @@ public class GUI {
     public static final int FONT_HEIGHT = 24;
 
     public static final int NOTIFICATION_LIMIT = 10;
+    public static final int NOTIFICATION_Y = 300;
 
     private Camera camera;
 
@@ -152,6 +155,32 @@ public class GUI {
         drawBorder(x, y, width, height, borderWidth);
     }
 
+    /**
+     * Draws all of the GUI Notifications.
+     */
+    private void drawGUINotifications() {
+        final int x = 800 - GUINotification.WIDTH;
+        int y = NOTIFICATION_Y;
+
+        Collections.sort(guiNotifications, new Comparator<GUINotification>() {
+
+            @Override
+            public int compare(GUINotification o1, GUINotification o2) {
+                if(o1.getTimeLeft() > o2.getTimeLeft()) {
+                    return 1;
+                }else{
+                    return -1;
+                }
+            }
+        });
+
+        for(GUINotification guiNotification : guiNotifications) {
+            guiNotification.y = y;
+            guiNotification.render();
+            y += GUINotification.HEIGHT;
+        }
+    }
+
     public Vec2D getMousePosition() {
         DoubleBuffer xBuffer = BufferUtils.createDoubleBuffer(1);
         DoubleBuffer yBuffer = BufferUtils.createDoubleBuffer(1);
@@ -165,8 +194,18 @@ public class GUI {
     }
 
     public void onMouseInput(double x, double y, boolean press) {
+        boolean guiMenuClicked = false;
+
         for(GUIMenu guiMenu : guiMenus) {
-            guiMenu.onMouseInput(x, y,  press);
+            if(guiMenu.onMouseInput(x, y,  press)) {
+                guiMenuClicked = true;
+            }
+        }
+
+        if(!guiMenuClicked) {
+            if(press) {
+                addNotification(new GUINotification(this, "You just lost 1000000 Gold!"));
+            }
         }
     }
 
@@ -182,6 +221,29 @@ public class GUI {
                 menu.onUpdate();
             }
         }
+
+        if(hasNotifications()) {
+            updateGUINotifications();
+        }
+    }
+
+    /**
+     * Goes through all of the current GUI Notifications and updates them.
+     * If a GUI Notification's hang time has exceeded the time past since it
+     * has been put on the screen, it is removed from the GUINotifications List.
+     */
+    private void updateGUINotifications() {
+        Iterator<GUINotification> notificationIterator = guiNotifications.iterator();
+
+        while(notificationIterator.hasNext()) {
+            GUINotification notification = notificationIterator.next();
+
+            if(notification.shouldRemove()) {
+                notificationIterator.remove();
+            }else{
+                notification.onUpdate();
+            }
+        }
     }
 
     public void render() {
@@ -189,7 +251,7 @@ public class GUI {
             guiMenu.render();
         }
 
-
+        drawGUINotifications();
     }
 
     /**

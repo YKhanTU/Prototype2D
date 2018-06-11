@@ -6,7 +6,6 @@ public class Animation {
      * The beginning Texture ID for the Animation.
      */
     private int beginningFrameId;
-    private int currentTextureId;
 
     private int currentFrame;
 
@@ -26,9 +25,10 @@ public class Animation {
     private long startTime = -1L;
     private long animationTime;
 
+    private boolean isStopped;
+
     public Animation(int beginningFrameId, int animationLength, long animationTime, boolean isRepeatable) {
         this.beginningFrameId = beginningFrameId;
-        this.currentTextureId = beginningFrameId;
 
         this.animationLength = animationLength;
         this.animationTime = animationTime;
@@ -40,25 +40,30 @@ public class Animation {
 
         int counter = 0;
 
-        for(int i = beginningFrameId; i <= (beginningFrameId + animationLength); i++) {
+        for(int i = beginningFrameId; i < (beginningFrameId + animationLength); i++) {
             animationArray[counter] = i;
             counter++;
         }
+
+        this.isStopped = false;
     }
 
     public void onUpdate() {
-        if(isOnLastFrame()) {
+        if(isStopped) {
+            return;
+        }
+
+        if(isAnimationComplete() && shouldChangeFrame()) {
             if(isRepeatable) {
                 currentFrame = 0;
+                startTime = System.currentTimeMillis();
             }else{
                 stop();
-                return;
             }
         }
 
         if(shouldChangeFrame()) {
             currentFrame++;
-            currentTextureId = getCurrentFrameTextureId();
             startTime = System.currentTimeMillis();
         }
     }
@@ -73,22 +78,30 @@ public class Animation {
 
     public void start() {
         // We will return if the Animation was already started.
-        if(startTime != -1L)
+        if(startTime != -1L || isStopped) {
             return;
+        }
+
+        System.out.println("start method called");
 
         startTime = System.currentTimeMillis();
     }
 
     public void stop() {
-        if(startTime == -1L)
-            return;
+        if(!isRepeatable) {
+            isStopped = true;
+        }
+    }
+
+    public boolean isStopped() {
+        return isStopped;
     }
 
     public int getCurrentFrame() {
         return currentFrame;
     }
 
-    private int getCurrentFrameTextureId() {
+    public int getCurrentFrameTextureId() {
         return animationArray[currentFrame];
     }
 
@@ -98,6 +111,6 @@ public class Animation {
      * @return
      */
     public boolean isAnimationComplete() {
-        return currentFrame == (beginningFrameId + animationLength - 1);
+        return getCurrentFrameTextureId() == (beginningFrameId + animationLength - 1);
     }
 }
