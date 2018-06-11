@@ -45,6 +45,11 @@ Some features that I have thought about this game were:
     other 'NPC' that is apart of your Nation to help lead the battlefield!
 - More ideas to come!
 
+Media:
+
+    Draggable GUIMenu Implementation:
+[![https://gyazo.com/1805ebfe8b3519551e522fe561768c64](https://i.gyazo.com/1805ebfe8b3519551e522fe561768c64.gif)](https://gyazo.com/1805ebfe8b3519551e522fe561768c64)
+
 Why Java?
 
     I have been programming in Java since my Freshman year in High School, so I feel like this was a very well-suited project to work on
