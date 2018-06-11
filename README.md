@@ -74,4 +74,4 @@ Why is the artwork not in this Open-Source Project?
     has no official release date or plans for publishing as of yet.
     
     
-* NOTICE: No license has been added to this project because this is already open-source. The only intended use of my code is for EDUCATIONAL PURPOSES. You may not use this code for commercial purposes or re-distribution, let alone claim it as your own.
+* NOTICE: No license has been added to this project because this is already open-source. The only intended use of my code is for EDUCATIONAL PURPOSES. You may not use this code for commercial purposes or re-distribution. Period.
