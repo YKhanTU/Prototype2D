@@ -1,5 +1,7 @@
 package dgk.prototype.util;
 
+import dgk.prototype.game.GameWindow;
+
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Queue;
@@ -13,13 +15,16 @@ public class ParticleSystem {
 
     private Vec2D origin;
 
+    private int xOffset;
+
     /**
      * FIFO, based on the assumption that the particles are gone lifeSpan wise.
      */
     private Queue<Particle> particles;
 
-    public ParticleSystem(Vec2D origin) {
+    public ParticleSystem(Vec2D origin, int xOffset) {
         this.origin = origin;
+        this.xOffset = xOffset;
 
         this.particles = new LinkedList<Particle>();
     }
@@ -29,7 +34,7 @@ public class ParticleSystem {
     }
 
     public void addParticle() {
-        //this.particles.add(new Particle(TextureLoader.getTexture("16xDevParticle").getId(), RANDOM.nextInt(16) + 32, RANDOM.nextInt(16) + 32, .9f, origin.getX() - RANDOM.nextInt(100), origin.getY(), 0, .35));
+        this.particles.add(new Particle(82, 3, 20, 1, new Vec2D(RANDOM.nextInt(xOffset), origin.getY()), new Vec2D(0, .05D)));
     }
 
     public void onUpdate() {

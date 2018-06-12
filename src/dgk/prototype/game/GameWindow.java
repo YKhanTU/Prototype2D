@@ -4,7 +4,9 @@ import dgk.prototype.gui.GUI;
 import dgk.prototype.gui.GUIInGameMenu;
 import dgk.prototype.gui.GUILoadingScreen;
 import dgk.prototype.input.InputManager;
+import dgk.prototype.util.ParticleSystem;
 import dgk.prototype.util.SpriteSheet;
+import dgk.prototype.util.Vec2D;
 import org.lwjgl.*;
 import org.lwjgl.glfw.*;
 import org.lwjgl.opengl.*;
@@ -29,8 +31,6 @@ public class GameWindow {
     public static GameWindow INSTANCE = null;
 
     public boolean isRunning = false;
-
-    private HashMap<Integer, Boolean> keyMap;
 
     private GUI gui;
 
@@ -75,9 +75,6 @@ public class GameWindow {
         if(!GLFW.glfwInit()) {
             return false;
         }
-
-        // Input
-        this.keyMap = new HashMap<Integer, Boolean>();
 
         GLFW.glfwWindowHint(GLFW.GLFW_VISIBLE, GLFW.GLFW_TRUE);
         GLFW.glfwWindowHint(GLFW.GLFW_RESIZABLE, GLFW.GLFW_TRUE);
@@ -180,7 +177,6 @@ public class GameWindow {
             worldCamera.onUpdate(this);
 
             world.onUpdate();
-
             gui.update();
 
             world.render();

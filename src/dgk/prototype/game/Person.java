@@ -231,6 +231,35 @@ public abstract class Person extends Entity {
         GL11.glDisable(GL_TEXTURE_2D);
     }
 
+    protected void drawHealthBar(Camera worldCamera) {
+        int currentHealth = getHealthPoints();
+
+        final int healthBarWidth = 60;
+        final int healthBarHeight = 10;
+
+        GL11.glDisable(GL_TEXTURE_2D);
+
+        GL11.glMatrixMode(GL_MODELVIEW_MATRIX);
+        GL11.glPushMatrix();
+
+        GL11.glColor4f(0f, 1f, 0f, 1f);
+
+        GL11.glScalef(worldCamera.getZoom(), worldCamera.getZoom(), 0);
+        GL11.glTranslated(getPosition().getX() - worldCamera.getPosition().getX() + 2, getPosition().getY() - worldCamera.getPosition().getY() - (healthBarHeight + 5), 0);
+
+        GL11.glBegin(GL11.GL_QUADS);
+        {
+            GL11.glVertex2f(0, 0);
+            GL11.glVertex2f(healthBarWidth  * (currentHealth / 100), 0);
+            GL11.glVertex2f(healthBarWidth * (currentHealth / 100), healthBarHeight);
+            GL11.glVertex2f(0, healthBarHeight);
+        }
+        GL11.glEnd();
+
+        GL11.glPopMatrix();
+        GL11.glEnable(GL_TEXTURE_2D);
+    }
+
     /**
      * Draws information above the character when they are selected.
      */

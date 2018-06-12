@@ -102,6 +102,8 @@ public class Ruler extends Person {
         if(isSelected)
             drawOutline();
 
+        drawHealthBar(worldCamera);
+
         GL11.glColor4f(1, 1, 1, 1);
     }
 

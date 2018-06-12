@@ -51,7 +51,7 @@ public class Particle implements IEntity {
 
     @Override
     public void render() {
-        glEnable(GL_TEXTURE_2D);
+        glDisable(GL_TEXTURE_2D);
 
         GL11.glMatrixMode(GL_MODELVIEW_MATRIX);
         GL11.glPushMatrix();
@@ -59,10 +59,10 @@ public class Particle implements IEntity {
         GL11.glScalef(scale, scale, 0);
 
         GL11.glTranslated(getPosition().x - worldCamera.getPosition().getX() + width / 2, getPosition().y - worldCamera.getPosition().getY() + height / 2, 0);
-        GL11.glRotatef(getAngle(), 0 ,0, 1);
+        //GL11.glRotatef(getAngle(), 0 ,0, 1);
         GL11.glTranslated(-width / 2, -height / 2, 0);
 
-        this.getTexture().bind();
+        //this.getTexture().bind();
 
         GL11.glBegin(GL11.GL_QUADS);
             GL11.glTexCoord2f(0, 0);

@@ -31,6 +31,7 @@ public class GUIMenu implements GUIElement {
 
     private ArrayList<GUIElement> elements;
 
+    private boolean isAlwaysOnTop;
     private boolean isDraggable;
     private boolean isBeingDragged;
     private boolean isPinned;
@@ -46,6 +47,8 @@ public class GUIMenu implements GUIElement {
         this.refY = 0;
         this.width = width;
         this.height = height;
+
+        this.isAlwaysOnTop = alwaysOnTop;
 
         if(alwaysOnTop)
             renderLayer = 99;
@@ -69,30 +72,35 @@ public class GUIMenu implements GUIElement {
      * This function adds the exit, minimize, maximize, and pin buttons to the UI.
      */
     private void addUtilButtons() {
-        addElement(new GUIButton(gui, this,26, "Close", (x + width) - 20, y + 5, 15, 15) {
-            @Override
-            void onButtonClick() {
-                close();
-            }
-        });
-        addElement(new GUIButton(gui, this, 28, "Pin", (x + width) - 40, y + 5, 15, 15) {
-            @Override
-            void onButtonClick() {
-                if(isPinned) {
-                    System.out.println("Menu Un-pinned!");
-                }else{
-                    System.out.println("Menu pinned.");
+        if(!isAlwaysOnTop) {
+            addElement(new GUIButton(gui, this, 26, "Close", (x + width) - 20, y + 5, 15, 15) {
+                @Override
+                void onButtonClick() {
+                    close();
                 }
+            });
+        }
 
-                isPinned = !isPinned;
-            }
-        });
-        addElement(new GUIButton(gui, this, 27, "Minimize", (x + width) - 60, y + 5, 15, 15) {
-            @Override
-            void onButtonClick() {
-                System.out.println("Minimize Button Clicked.");
-            }
-        });
+        if(isDraggable) {
+            addElement(new GUIButton(gui, this, 28, "Pin", (x + width) - 40, y + 5, 15, 15) {
+                @Override
+                void onButtonClick() {
+                    if (isPinned) {
+                        System.out.println("Menu Un-pinned!");
+                    } else {
+                        System.out.println("Menu pinned.");
+                    }
+
+                    isPinned = !isPinned;
+                }
+            });
+            addElement(new GUIButton(gui, this, 27, "Minimize", (x + width) - 60, y + 5, 15, 15) {
+                @Override
+                void onButtonClick() {
+                    System.out.println("Minimize Button Clicked.");
+                }
+            });
+        }
     }
 
     public void drawMenu() {
