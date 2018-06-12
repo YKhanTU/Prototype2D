@@ -1,5 +1,8 @@
 package dgk.prototype.gui;
 
+import dgk.prototype.util.Color;
+import org.lwjgl.opengl.GL11;
+
 public class GUINotification implements GUIElement {
 
     protected static final int WIDTH = 150;
@@ -44,7 +47,8 @@ public class GUINotification implements GUIElement {
 
     @Override
     public void render() {
-        gui.drawBorderedRect(x, y, WIDTH, HEIGHT, 1f);
+        gui.drawBorderedRect(x, y, WIDTH, HEIGHT, 2f, new Color(0.1f, 0.1f, 0.1f, .8f), new Color(0, 0, 0, 1f));
+
         // drawString(message, x + 5, y + 5);
 
         /**

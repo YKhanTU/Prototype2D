@@ -113,7 +113,7 @@ public abstract class GUIVerticalSlider extends GUISlider {
         this.x = guiMenu.x + refX;
 
         this.y = guiMenu.y + refY;
-        System.out.println(getSliderValue());
+
         this.sliderY = ((getLength() - barHeight) * getSliderValue()) + this.y;
     }
 

@@ -2,6 +2,7 @@ package dgk.prototype.gui;
 
 import dgk.prototype.game.Camera;
 import dgk.prototype.game.GameWindow;
+import dgk.prototype.util.Color;
 import dgk.prototype.util.Vec2D;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
@@ -48,12 +49,6 @@ public class GUI {
          * TODO for later: Add functions that add minimize, maximize, and pin buttons.
          * TODO as well: Also add texturing to the GUI Elements (Slider, Button, etc)
          */
-        inGameMenu.addElement(new GUIButton(this, inGameMenu,22, "Close", 770, 15, 15, 15) {
-            @Override
-            void onButtonClick() {
-                inGameMenu.close();
-            }
-        });
 
         inGameMenu.addElement(new GUISlider(this, inGameMenu,670, 75, 100, .25f) {
             @Override
@@ -108,11 +103,13 @@ public class GUI {
         GL11.glPopMatrix();
     }
 
-    public void drawRect(double x, double y, double width, double height) {
+    public void drawRect(double x, double y, double width, double height, Color color) {
         GL11.glMatrixMode(GL11.GL_MODELVIEW_MATRIX);
         GL11.glPushMatrix();
 
         GL11.glTranslated(x, y, 0);
+
+        GL11.glColor4f(color.getR(), color.getG(), color.getB(), color.getA());
 
         GL11.glBegin(GL11.GL_QUADS);
         {
@@ -124,15 +121,19 @@ public class GUI {
         GL11.glEnd();
 
         GL11.glPopMatrix();
+
+        GL11.glColor4f(1f, 1f, 1f, 1f);
     }
 
-    private void drawBorder(double x, double y, double width, double height, float borderWidth) {
+    private void drawBorder(double x, double y, double width, double height, float borderWidth, Color color) {
         GL11.glMatrixMode(GL11.GL_MODELVIEW_MATRIX);
         GL11.glPushMatrix();
 
         GL11.glTranslated(x, y, 0);
 
         GL11.glLineWidth(borderWidth);
+
+        GL11.glColor4f(color.getR(), color.getG(), color.getB(), color.getA());
 
         GL11.glBegin(GL11.GL_LINES);
         {
@@ -148,18 +149,20 @@ public class GUI {
         GL11.glEnd();
 
         GL11.glPopMatrix();
+
+        GL11.glColor4f(1f, 1f, 1f, 1f);
     }
 
-    public void drawBorderedRect(double x, double y, double width, double height, float borderWidth) {
-        drawRect(x, y, width, height);
-        drawBorder(x, y, width, height, borderWidth);
+    public void drawBorderedRect(double x, double y, double width, double height, float borderWidth, Color rectColor, Color borderColor) {
+        drawRect(x, y, width, height, rectColor);
+        drawBorder(x, y, width, height, borderWidth, borderColor);
     }
 
     /**
      * Draws all of the GUI Notifications.
      */
     private void drawGUINotifications() {
-        final int x = 800 - GUINotification.WIDTH;
+        //final int x = 800 - GUINotification.WIDTH;
         int y = NOTIFICATION_Y;
 
         Collections.sort(guiNotifications, new Comparator<GUINotification>() {

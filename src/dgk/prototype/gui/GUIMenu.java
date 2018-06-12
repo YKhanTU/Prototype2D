@@ -1,6 +1,7 @@
 package dgk.prototype.gui;
 
 import dgk.prototype.game.Camera;
+import dgk.prototype.util.Color;
 import dgk.prototype.util.Vec2D;
 import org.lwjgl.opengl.GL11;
 
@@ -32,6 +33,7 @@ public class GUIMenu implements GUIElement {
 
     private boolean isDraggable;
     private boolean isBeingDragged;
+    private boolean isPinned;
 
     private boolean shouldRemove;
 
@@ -52,8 +54,11 @@ public class GUIMenu implements GUIElement {
 
         this.isDraggable = isDraggable;
         this.isBeingDragged = false;
+        this.isPinned = false;
 
         this.shouldRemove = false;
+
+        addUtilButtons();
     }
 
     public void addElement(GUIElement element) {
@@ -64,7 +69,30 @@ public class GUIMenu implements GUIElement {
      * This function adds the exit, minimize, maximize, and pin buttons to the UI.
      */
     private void addUtilButtons() {
+        addElement(new GUIButton(gui, this,22, "Close", (x + width) - 20, y + 5, 15, 15) {
+            @Override
+            void onButtonClick() {
+                close();
+            }
+        });
+        addElement(new GUIButton(gui, this, 24, "Pin", (x + width) - 40, y + 5, 15, 15) {
+            @Override
+            void onButtonClick() {
+                if(isPinned) {
+                    System.out.println("Menu Un-pinned!");
+                }else{
+                    System.out.println("Menu pinned.");
+                }
 
+                isPinned = !isPinned;
+            }
+        });
+        addElement(new GUIButton(gui, this, 23, "Minimize", (x + width) - 60, y + 5, 15, 15) {
+            @Override
+            void onButtonClick() {
+                System.out.println("Minimize Button Clicked.");
+            }
+        });
     }
 
     public void drawMenu() {
@@ -72,25 +100,8 @@ public class GUIMenu implements GUIElement {
 
         Camera viewport = gui.getCamera();
 
-        GL11.glMatrixMode(GL11.GL_MODELVIEW_MATRIX);
-        GL11.glPushMatrix();
-
-        GL11.glTranslated(x - viewport.getPosition().getY(), y - viewport.getPosition().getX(), 0);
-
-        GL11.glColor4f(.7f, .7f, .7f, .85f);
-
-        GL11.glBegin(GL11.GL_QUADS);
-        {
-            GL11.glVertex2d(0, 0);
-            GL11.glVertex2d(width, 0);
-            GL11.glVertex2d(width, height);
-            GL11.glVertex2d(0, height);
-        }
-        GL11.glEnd();
-
-        GL11.glPopMatrix();
-
-        GL11.glColor3f(1f, 1f, 1f);
+        gui.drawBorderedRect(x - viewport.getPosition().getX(), y - viewport.getPosition().getY(), width, height,
+                2f, new Color(.7f, .7f, .7f, .85f), new Color(0f, 0f, 0f, 1f));
     }
 
     @Override
@@ -104,7 +115,7 @@ public class GUIMenu implements GUIElement {
 
     @Override
     public void onUpdate() {
-        if(isDraggable && isBeingDragged) {
+        if(isDraggable && isBeingDragged && !isPinned) {
             this.onDrag(this);
         }
 
@@ -118,7 +129,6 @@ public class GUIMenu implements GUIElement {
         // This variable is used to determine if any elements were clicked inside the menu.
         if(!press && isBeingDragged) {
             isBeingDragged = false;
-            System.out.println(isBeingDragged);
             return false;
         }
 

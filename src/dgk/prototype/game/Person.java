@@ -153,7 +153,7 @@ public abstract class Person extends Entity {
     @Override
     public AABB getAABB() {
         Vec2D position = getPosition();
-        Vec2D AxisAlignedBBpos = new Vec2D(position.getX(), position.getY() + (HEIGHT / 2 + 16));
+        Vec2D AxisAlignedBBpos = new Vec2D(position.getX(), position.getY() + (HEIGHT / 2 + 8));
 
         /**
          * AABB
