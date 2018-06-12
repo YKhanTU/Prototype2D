@@ -9,6 +9,10 @@ Sabertooth Tiger
     This predatory beast is fast, feracious, and will attack anything it deems tasty in sight.
     Abilities: Barrel Charge
 
-TBD
+Vampire
 -------------
-    TBD
+    A blood-sucking menace that has no desire for anything aside from the neck of a juicy Human.
+
+Zombie
+-------------
+    The... dead... can... walk? Is it sorcery... or am I dreaming? Where's Carl?!? I need to find Carl!
