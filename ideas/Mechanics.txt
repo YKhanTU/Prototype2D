@@ -1,0 +1,4 @@
+- Make it so that Items and Tiles have onActionPerformed function (in Builder Mode or Normal Mode)
+- Implement 'ownership' for Tiles (sub-classes in particular), Items, and GameObjects so that we know who owns what.
+    The player will have an 'ID' and this will be used to identify who is the owner of what. Or we can just use the instance
+     of that class.
