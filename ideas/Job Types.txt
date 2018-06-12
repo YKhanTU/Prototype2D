@@ -20,11 +20,3 @@ Bounty Hunter
 -------------
     Whether it be for the money, or sheer satisfaction of ending another Person's life, this person has the
     job of hunting down disliked foes throughout the lands.
-
-Vampire
--------------
-    A blood-sucking menace that has no desire for anything aside from the neck of a juicy Human.
-
-Zombie
--------------
-    The... dead... can... walk? Is it sorcery... or am I dreaming? Where's Carl?!? I need to find Carl!
