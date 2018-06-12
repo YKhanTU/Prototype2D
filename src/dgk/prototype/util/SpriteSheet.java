@@ -1,5 +1,6 @@
 package dgk.prototype.util;
 
+import dgk.prototype.game.ResourceManager;
 import org.lwjgl.BufferUtils;
 
 import javax.imageio.ImageIO;
@@ -40,13 +41,16 @@ public class SpriteSheet {
     // 11, 2
     public static final int WOOD_WALL_NORTH_1C = 35;
 
+    private ResourceManager resourceManager;
+
     private String sheetName;
 
     private BufferedImage spriteSheet;
 
     private ArrayList<Integer> textureMap;
 
-    public SpriteSheet(String sheetName) {
+    public SpriteSheet(ResourceManager resourceManager, String sheetName) {
+        this.resourceManager = resourceManager;
         this.sheetName = sheetName;
 
         try {
@@ -100,6 +104,8 @@ public class SpriteSheet {
         glBindTexture(GL_TEXTURE_2D, 0);
 
         textureMap.add(id);
+
+        resourceManager.onTextureLoad();
     }
 
     public void loadTexture(int column, int row, int w, int h) {
@@ -139,6 +145,8 @@ public class SpriteSheet {
         glBindTexture(GL_TEXTURE_2D, 0);
 
         textureMap.add(id);
+
+        resourceManager.onTextureLoad();
     }
 
     public void destroyTextures() {

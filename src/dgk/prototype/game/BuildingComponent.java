@@ -1,23 +1,44 @@
 package dgk.prototype.game;
 
-import dgk.prototype.util.Vec2D;
-
 import java.util.ArrayList;
 
-public abstract class BuildingComponent extends GameObject {
+public abstract class BuildingComponent extends AnimatableTile {
 
-    private double width;
-    private double height;
+    private ComponentType type;
+    private Direction direction;
 
     private boolean isConnected;
 
-    public BuildingComponent(int textureId, double x, double y, double width, double height) {
-        super(textureId, new Vec2D(x, y));
+    public BuildingComponent(int textureId, byte renderingLayer, int x, int y, int size) {
+        this(textureId, renderingLayer, x, y, size, Direction.NORTH);
+    }
 
-        this.width = width;
-        this.height = height;
+    public BuildingComponent(int textureId, byte renderingLayer, int x, int y, int size, Direction direction) {
+        super(textureId, renderingLayer, x, y, size);
 
+        this.direction = direction;
         isConnected = false;
+    }
+
+    public ComponentType getType() {
+        return this.type;
+    }
+
+    public void setType(ComponentType type) {
+        this.type = type;
+    }
+
+    public boolean hasType() {
+        return (this.type != null);
+    }
+
+    public Direction getDirection() {
+        return direction;
+    }
+
+    public void setDirection(Direction direction) {
+        this.direction = direction;
+        onDirectionChange();
     }
 
     public int getGridX() {
@@ -32,23 +53,5 @@ public abstract class BuildingComponent extends GameObject {
         return isConnected;
     }
 
-    public ArrayList<BuildingComponent> getNeighbors() {
-        return null;
-    }
-
-    public double getWidth() {
-        return width;
-    }
-
-    public void setWidth(double width) {
-        this.width = width;
-    }
-
-    public double getHeight() {
-        return height;
-    }
-
-    public void setHeight(double height) {
-        this.height = height;
-    }
+    abstract void onDirectionChange();
 }

@@ -103,7 +103,7 @@ public class Tile extends GameObject {
         }
         GL11.glEnd();
 
-        if(TileMap.DEBUG_MODE && isSelected) {
+        if(TileMap.DEBUG_MODE && isSelected && TileMap.BUILDING_MODE) {
             drawOutline();
         }
 
@@ -137,6 +137,18 @@ public class Tile extends GameObject {
         GL11.glEnd();
 
         GL11.glColor4f(1, 1, 1, 1f);
+    }
+
+    public int getSize() {
+        return size;
+    }
+
+    public int getGridX() {
+        return (int) Math.floor(getPosition().getX() / size);
+    }
+
+    public int getGridY() {
+        return (int) Math.floor(getPosition().getY() / size);
     }
 
     @Override

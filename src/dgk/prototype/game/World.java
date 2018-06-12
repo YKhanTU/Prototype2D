@@ -41,26 +41,19 @@ public class World {
     public void load() {
         ruler = new Ruler(32, 64);
 
+        // TODO Format this in a better way.
         GameWindow.getInstance().getWorldCamera().setTarget(ruler);
 
         for(int i = 0; i < 32; i++) {
             for(int j = 0; j < 32; j++) {
-                addTile(new Tile(SpriteSheet.GRASS_1, World.LOWER_LAYER, i * 48, j * 48, 48), i, j);
+                addTile(new Tile(SpriteSheet.GRASS_2, World.LOWER_LAYER, i * 48, j * 48, 48), i, j);
             }
         }
 
         addGameObject(new Tile(SpriteSheet.SHRUB, World.MID_LAYER, 200, 200, 48));
         addGameObject(new Tile(SpriteSheet.TREE, World.MID_LAYER, 300, 200, 96));
 
-        int y = 7;
-
-//        for(int i = 0; i < 5; i++) {
-//            int p = i + 3;
-//
-//            addGameObject(new Tile(SpriteSheet.WOOD_WALL_NORTH_1B, World.UPPER_LAYER, p * 48, (y - 1) * 48, 48));
-//            addGameObject(new Tile(SpriteSheet.WOOD_WALL_NORTH_1A, World.UPPER_LAYER, p * 48, y * 48, 48));
-//            addGameObject(new Tile(SpriteSheet.WOOD_WALL_NORTH_1C, World.UPPER_LAYER, p * 48, (y + 1) * 48, 48));
-//        }
+        //addGameObject(new WallComponent(ComponentType.WOOD, World.MID_LAYER, 4 * 48, 8 * 48, 48, Direction.NORTH));
 
         entities.add(ruler);
         entities.add(new Peasant(96, 64));
@@ -146,10 +139,20 @@ public class World {
             int gridX = (int) Math.floor((mX + GameWindow.getInstance().getWorldCamera().getPosition().getX()) / TileMap.TILE_SIZE);
             int gridY = (int) Math.floor((mY + GameWindow.getInstance().getWorldCamera().getPosition().getY()) / TileMap.TILE_SIZE);
 
+            BuildingComponent component = tileMap.getBuildingComponent(gridX, gridY);
+
+            if(component != null) {
+                System.out.println("Cannot build here!");
+            }else{
+                addGameObject(new WallComponent(ComponentType.WOOD, World.MID_LAYER, gridX * 48, gridY * 48, 48, Direction.NORTH));
+                return true;
+            }
+
             Tile tile = tileMap.getTile(gridX, gridY);
 
-            if(tile == null)
+            if(tile == null) {
                 return true;
+            }
 
             tileMap.onTileSelection(tile);
 

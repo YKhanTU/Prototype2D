@@ -2,24 +2,34 @@ package dgk.prototype.game;
 
 import dgk.prototype.util.IManager;
 import dgk.prototype.util.SpriteSheet;
+import org.lwjgl.opengl.GL;
+import org.lwjgl.opengl.GL11;
 
 import java.util.HashMap;
 
 public class ResourceManager implements IManager {
 
+    /**
+     * The total amount of textures that we need to load.
+     * Used to determine the 'progress' of the ResourceManager.
+     */
+    public static final int GOAL = 69;
+
+    protected int currentProgress;
+
+    private boolean isComplete;
+
     private HashMap<String, SpriteSheet> spriteSheetMap;
 
     public ResourceManager() {
+        this.currentProgress = 0;
+        this.isComplete = false;
         this.spriteSheetMap = new HashMap<String, SpriteSheet>();
     }
 
     @Override
     public void start() {
-        // Load Tiles
-        // Load Characters (Idle, Walking, and Glow)
-        // Load UI Elements
-
-        SpriteSheet tileSheet = new SpriteSheet("sprites/test/A2/A1updated");
+        SpriteSheet tileSheet = new SpriteSheet(this,"sprites/test/A2/A1updated");
 
         // GRASS
         tileSheet.loadTexture(1, 2, 48, 48);
@@ -67,18 +77,22 @@ public class ResourceManager implements IManager {
         // WALLS (WOOD)
         //      WOOD GATE
         tileSheet.loadTexture(528, 347, 96);
-        //      WOOD GATE
-        //tileSheet.loadTexture(528, 347, 96);
-        //      WOOD GATE
-        //tileSheet.loadTexture(528, 347, 96);
-        //      WOOD GATE
-        //tileSheet.loadTexture(528, 347, 96);
-        //      WOOD GATE
-        //tileSheet.loadTexture(528, 347, 96);
+        //      WOOD WALL NORTH PIECE 1A
+        tileSheet.loadTexture(8, 1, 48, 48);
+        //      WOOD WALL NORTH PIECE 1B
+        tileSheet.loadTexture(8, 2, 48, 48);
+        //      WOOD WALL NORTH PIECE 1C
+        tileSheet.loadTexture(11, 0, 48, 48);
+        //      WOOD WALL NORTH STAIR 1
+        tileSheet.loadTexture(8, 7, 48, 48);
+
+
+        //      WOOD WALL SOUTH PIECE 1A
+        //tileSheet.loadTexture(8, 1, 48, 48);
 
         spriteSheetMap.put("TileSpriteSheet", tileSheet);
 
-        SpriteSheet uiElements = new SpriteSheet("InterfaceSheetTrans");
+        SpriteSheet uiElements = new SpriteSheet(this, "InterfaceSheetTrans");
         uiElements.loadTexture(0, 0, 32, 32);
         uiElements.loadTexture(1, 0, 32, 32);
         uiElements.loadTexture(2, 0, 32, 32);
@@ -86,7 +100,7 @@ public class ResourceManager implements IManager {
 
         spriteSheetMap.put("UISpriteSheet", uiElements);
 
-        SpriteSheet rulerWalkingAnims = new SpriteSheet("sprites/test/sprites");
+        SpriteSheet rulerWalkingAnims = new SpriteSheet(this, "sprites/test/sprites");
         for(int col = 0; col < 4; col++) {
             for(int row = 0; row < 3; row++) {
                 rulerWalkingAnims.loadTexture(row, col, 50, 50);
@@ -95,11 +109,11 @@ public class ResourceManager implements IManager {
 
         spriteSheetMap.put("RulerWalkAnimations", rulerWalkingAnims);
 
-        SpriteSheet personShadow = new SpriteSheet("Shadow");
+        SpriteSheet personShadow = new SpriteSheet(this, "Shadow");
         personShadow.loadTexture(0, 0, 32, 32);
         spriteSheetMap.put("Shadow", personShadow);
 
-        SpriteSheet rulerWalkingHighlight = new SpriteSheet("sprites/test/sprites_glow");
+        SpriteSheet rulerWalkingHighlight = new SpriteSheet(this, "sprites/test/sprites_glow");
         for(int col = 0; col < 4; col++) {
             for(int row = 0; row < 3; row++) {
                 rulerWalkingHighlight.loadTexture(row, col, 50, 50);
@@ -108,14 +122,14 @@ public class ResourceManager implements IManager {
 
         spriteSheetMap.put("RulerGlow", rulerWalkingHighlight);
 
-        SpriteSheet rulerBreathingAnims = new SpriteSheet("sprites/test/A2/Ruler_breathing");
+        SpriteSheet rulerBreathingAnims = new SpriteSheet(this, "sprites/test/A2/Ruler_breathing");
         for(int row = 0; row < 3; row++) {
             rulerBreathingAnims.loadTexture(row, 0, 50, 50);
         }
 
         spriteSheetMap.put("RulerIdleAnimations", rulerBreathingAnims);
 
-        SpriteSheet peasantWalkingAnims = new SpriteSheet("sprites/test/sprites2");
+        SpriteSheet peasantWalkingAnims = new SpriteSheet(this, "sprites/test/sprites2");
 
         for(int col = 0; col < 4; col++) {
             for(int row = 0; row < 3; row++) {
@@ -124,6 +138,16 @@ public class ResourceManager implements IManager {
         }
 
         spriteSheetMap.put("PeasantWalkAnimations", peasantWalkingAnims);
+
+        SpriteSheet peasantWalkingHighlights = new SpriteSheet(this, "sprites/test/sprites2_glow");
+
+        for(int col = 0; col < 4; col++) {
+            for(int row = 0; row < 3; row++) {
+                peasantWalkingHighlights.loadTexture(row, col, 48, 48);
+            }
+        }
+
+        spriteSheetMap.put("PeasantGlow", peasantWalkingHighlights);
 
         // TODO - To finish.
 
@@ -184,6 +208,21 @@ public class ResourceManager implements IManager {
         return spriteSheetMap.get(name);
     }
 
+    public void onTextureLoad() {
+        currentProgress++;
+    }
+
+    public double getCurrentProgress() {
+        return currentProgress / GOAL;
+    }
+
+    public boolean isComplete() {
+        return this.isComplete;
+    }
+
+    public void setComplete(boolean isComplete) {
+        this.isComplete = isComplete;
+    }
 
     @Override
     public void onUpdate() {}

@@ -1,6 +1,8 @@
 package dgk.prototype.game;
 
+import dgk.prototype.input.InputManager;
 import dgk.prototype.util.SpriteSheet;
+import dgk.prototype.util.Vec2D;
 import org.lwjgl.opengl.GL11;
 
 import static org.lwjgl.opengl.GL11.*;
@@ -24,20 +26,20 @@ public class Peasant extends Person {
 
         this.walkingAnimations = new int[4][3];
 
-        walkingAnimations[0][0] = 20 + 35;
-        walkingAnimations[1][0] = 29 + 35;
-        walkingAnimations[2][0] = 26 + 35;
-        walkingAnimations[3][0] = 23 + 35;
+        walkingAnimations[0][0] = 20 + 39;
+        walkingAnimations[1][0] = 29 + 39;
+        walkingAnimations[2][0] = 26 + 39;
+        walkingAnimations[3][0] = 23 + 39;
 
-        walkingAnimations[0][1] = 19 + 35;
-        walkingAnimations[1][1] = 28 + 35;
-        walkingAnimations[2][1] = 25 + 35;
-        walkingAnimations[3][1] = 22 + 35;
+        walkingAnimations[0][1] = 19 + 39;
+        walkingAnimations[1][1] = 28 + 39;
+        walkingAnimations[2][1] = 25 + 39;
+        walkingAnimations[3][1] = 22 + 39;
 
-        walkingAnimations[0][2] = 21 + 35;
-        walkingAnimations[1][2] = 30 + 35;
-        walkingAnimations[2][2] = 27 + 35;
-        walkingAnimations[3][2] = 24 + 35;
+        walkingAnimations[0][2] = 21 + 39;
+        walkingAnimations[1][2] = 30 + 39;
+        walkingAnimations[2][2] = 27 + 39;
+        walkingAnimations[3][2] = 24 + 39;
 
         currentAnim = walkingAnimations[0][0];
 
@@ -74,6 +76,40 @@ public class Peasant extends Person {
 
         GL11.glPopMatrix();
 
+        if(isSelected)
+            drawOutline();
+
+        glDisable(GL_TEXTURE_2D);
+    }
+
+    private void drawOutline() {
+        final int highlightAnimation = currentAnim + 12;
+
+        GL11.glMatrixMode(GL_MODELVIEW_MATRIX);
+        GL11.glPushMatrix();
+
+        GL11.glTranslated((getPosition().x - worldCamera.getPosition().getX() - 5), (getPosition().y - worldCamera.getPosition().getY()), 0);
+
+        GameWindow.getInstance().resourceManager.getSpriteSheet("PeasantGlow").bindTexture(highlightAnimation);
+
+        GL11.glBegin(GL11.GL_QUADS);
+        {
+            GL11.glTexCoord2f(0, 0);
+            GL11.glVertex2f(0, 0);
+
+            GL11.glTexCoord2f(1, 0);
+            GL11.glVertex2f(64, 0);
+
+            GL11.glTexCoord2f(1, 1);
+            GL11.glVertex2f(64, 64);
+
+            GL11.glTexCoord2f(0, 1);
+            GL11.glVertex2f(0, 64);
+        }
+        GL11.glEnd();
+
+        GL11.glPopMatrix();
+
         glDisable(GL_TEXTURE_2D);
     }
 
@@ -93,6 +129,16 @@ public class Peasant extends Person {
 
     @Override
     public void onUpdate() {
+        InputManager manager = GameWindow.getInstance().inputManager;
 
+        Vec2D mousePos = manager.getMousePosition();
+        int mX = (int) mousePos.getX() + (int) worldCamera.getPosition().getX();
+        int mY = (int) mousePos.getY() + (int) worldCamera.getPosition().getY();
+
+        if((mX >= getPosition().getX() && mX <= (getPosition().getX() + 64)) && (mY >= getPosition().getY() && mY <= (getPosition().getY() + 64))) {
+            isSelected = true;
+        }else{
+            isSelected = false;
+        }
     }
 }

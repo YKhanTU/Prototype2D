@@ -22,4 +22,7 @@ public class AnimatableTile extends Tile {
         this.animation = animation;
     }
 
+    public boolean hasAnimation() {
+        return (animation != null);
+    }
 }

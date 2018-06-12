@@ -6,8 +6,8 @@ import java.io.Serializable;
 
 public abstract class GameObject implements IEntity, Serializable {
 
-    private int textureId;
-    private Vec2D position;
+    protected int textureId;
+    protected Vec2D position;
 
     public GameObject(int textureId, Vec2D initPosition) {
         this.textureId = textureId;

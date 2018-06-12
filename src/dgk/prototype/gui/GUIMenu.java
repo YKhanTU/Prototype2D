@@ -69,13 +69,13 @@ public class GUIMenu implements GUIElement {
      * This function adds the exit, minimize, maximize, and pin buttons to the UI.
      */
     private void addUtilButtons() {
-        addElement(new GUIButton(gui, this,22, "Close", (x + width) - 20, y + 5, 15, 15) {
+        addElement(new GUIButton(gui, this,26, "Close", (x + width) - 20, y + 5, 15, 15) {
             @Override
             void onButtonClick() {
                 close();
             }
         });
-        addElement(new GUIButton(gui, this, 24, "Pin", (x + width) - 40, y + 5, 15, 15) {
+        addElement(new GUIButton(gui, this, 28, "Pin", (x + width) - 40, y + 5, 15, 15) {
             @Override
             void onButtonClick() {
                 if(isPinned) {
@@ -87,7 +87,7 @@ public class GUIMenu implements GUIElement {
                 isPinned = !isPinned;
             }
         });
-        addElement(new GUIButton(gui, this, 23, "Minimize", (x + width) - 60, y + 5, 15, 15) {
+        addElement(new GUIButton(gui, this, 27, "Minimize", (x + width) - 60, y + 5, 15, 15) {
             @Override
             void onButtonClick() {
                 System.out.println("Minimize Button Clicked.");

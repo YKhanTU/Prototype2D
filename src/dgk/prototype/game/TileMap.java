@@ -30,6 +30,11 @@ public class TileMap implements Serializable {
      */
     public static final transient boolean DEBUG_MODE = true;
 
+    /**
+     * Debug purposes only.
+     */
+    public static final transient boolean BUILDING_MODE = true;
+
     // TODO: Make the TileMap compatible for multiple layers per 48x48
     private Tile[][] tileMap;
 
@@ -74,6 +79,45 @@ public class TileMap implements Serializable {
         return null;
     }
 
+    public BuildingComponent getBuildingComponent(int gridX, int gridY) {
+        for(GameObject go : gameObjects) {
+            if(go instanceof BuildingComponent) {
+                BuildingComponent component = (BuildingComponent) go;
+
+                if(gridX == component.getGridX() && gridY == component.getGridY()) {
+                    return component;
+                }
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * Returns an array of length 4 of all possible neighbors of a tile.
+     * DOES NOT INCLUDE DIAGONAL NEIGHBORS!
+     * @param tile
+     * @return Tile[] with a length of 4.
+     */
+    public Tile[] getNeighbors(Tile tile) {
+        // An array of 4, assuming it's a tile of size 48
+        Tile[] tiles = new Tile[4];
+
+        int tX = tile.getGridX();
+        int tY = tile.getGridY();
+
+        tiles[0] = getTile(tX + 1, tY);
+        tiles[1] = getTile(tX - 1, tY);
+        tiles[2] = getTile(tX, tY + 1);
+        tiles[3] = getTile(tX, tY - 1);
+
+        return tiles;
+    }
+
+    /**
+     * Called whenever a Tile is selected on the TileMap.
+     * @param tile
+     */
     public void onTileSelection(Tile tile) {
         if(tile.isSelected) {
             tile.isSelected = false;
@@ -101,15 +145,18 @@ public class TileMap implements Serializable {
     public void render(World world) {
         GameCamera camera = GameWindow.getInstance().getWorldCamera();
 
-        int sX = (int) Math.ceil(camera.getPosition().getX() / TileMap.TILE_SIZE);
-        int sY = (int) Math.ceil(camera.getPosition().getY() / TileMap.TILE_SIZE);
+        int sX = (int) Math.ceil(camera.getPosition().getX() / TileMap.TILE_SIZE) - 1;
+        int sY = (int) Math.ceil(camera.getPosition().getY() / TileMap.TILE_SIZE) - 1;
 
         tileRenderCount = 0;
 
         ArrayList<Tile> tileToArray = new ArrayList<Tile>();
 
-        for(int i = sX; i < ((800) / TileMap.TILE_SIZE) + sX; i++) {
-            for(int j = sY; j < (600 / TileMap.TILE_SIZE) + sY; j++) {
+        for(int i = sX; i < ((800) / TileMap.TILE_SIZE) + sX + 2; i++) {
+            for(int j = sY; j < (600 / TileMap.TILE_SIZE) + sY + 2; j++) {
+                if(i < 0 || j < 0)
+                    continue;
+
                 if(tileMap[i][j] != null) {
 
                     //tileToArray.add(tileMap[i][j]);
@@ -119,6 +166,8 @@ public class TileMap implements Serializable {
                 }
             }
         }
+
+        //System.out.println(tileRenderCount);
 
 //        Collections.sort(tileToArray, new Comparator<Tile>() {
 //            @Override

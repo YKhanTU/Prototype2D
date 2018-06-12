@@ -20,7 +20,7 @@ import static org.lwjgl.glfw.GLFW.glfwGetCursorPos;
  * The GUI will take the user's input and perform actions and commands based on the input received.
  * The GUI will also be responsive with camera movement, to perform fancy animations and whatnot.
  */
-public class GUI {
+public abstract class GUI {
 
     public static final int FONT_HEIGHT = 24;
 
@@ -41,25 +41,7 @@ public class GUI {
         this.guiNotifications = new ArrayList<GUINotification>();
     }
 
-    public void init() {
-        GUIMenu inGameMenu = new GUIMenu(this, "In-Game UI", 645, 5, 150, 200, true, true);
-
-        inGameMenu.addElement(new GUISlider(this, inGameMenu,670, 75, 100, .25f) {
-            @Override
-            public void onSliderValueChange() {
-                GameWindow.getInstance().getWorldCamera().setChaseFactor(getSliderValue());
-            }
-        });
-
-        inGameMenu.addElement(new GUIVerticalSlider(this, inGameMenu,670, 100, 100, 20) {
-            @Override
-            public void onSliderValueChange() {
-                System.out.println(getSliderValue());
-            }
-        });
-
-        addMenu(inGameMenu);
-    }
+    public abstract void init();
 
     public void onClose() {
         guiMenus.clear();

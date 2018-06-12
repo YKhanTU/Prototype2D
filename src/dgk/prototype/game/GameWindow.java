@@ -1,6 +1,8 @@
 package dgk.prototype.game;
 
 import dgk.prototype.gui.GUI;
+import dgk.prototype.gui.GUIInGameMenu;
+import dgk.prototype.gui.GUILoadingScreen;
 import dgk.prototype.input.InputManager;
 import dgk.prototype.util.SpriteSheet;
 import org.lwjgl.*;
@@ -35,14 +37,6 @@ public class GameWindow {
     public ResourceManager resourceManager;
     public InputManager inputManager;
 
-//    public SpriteSheet spriteSheet;
-//    public SpriteSheet charSheet;
-//    public SpriteSheet rulerAnimations;
-//    public SpriteSheet peasantAnimations;
-//    public SpriteSheet rulerHighlights;
-//    public SpriteSheet uiElements;
-//    public SpriteSheet shadow;
-
     public World world;
     private GameCamera worldCamera;
 
@@ -55,7 +49,7 @@ public class GameWindow {
         this.world = new World();
         this.worldCamera = new GameCamera(0,0, width, height);
 
-        this.gui = new GUI(800, 600);
+        this.gui = new GUIInGameMenu(800, 600);
 
         this.inputManager = inputManager;
         this.resourceManager = new ResourceManager();
@@ -184,7 +178,9 @@ public class GameWindow {
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
             worldCamera.onUpdate(this);
+
             world.onUpdate();
+
             gui.update();
 
             world.render();
