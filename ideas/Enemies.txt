@@ -1,0 +1,14 @@
+Mammoth
+-------------
+    This pre-historic behemoth will not be aggressive unless you poke it, or, well, try to kill it.
+    Its huge tusks can crush an enemy, regardless if they are wearing armor.
+    Abilities: Stampede
+
+Sabertooth Tiger
+-------------
+    This predatory beast is fast, feracious, and will attack anything it deems tasty in sight.
+    Abilities: Barrel Charge
+
+TBD
+-------------
+    TBD
