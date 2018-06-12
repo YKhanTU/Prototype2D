@@ -30,16 +30,21 @@ public class TileMap implements Serializable {
      */
     public static final transient boolean DEBUG_MODE = true;
 
-    // TODO: Make the TileMap compatible for multiple layers per 64x64
+    // TODO: Make the TileMap compatible for multiple layers per 48x48
     private Tile[][] tileMap;
 
+    // TODO: Render ordering
     private ArrayList<GameObject> gameObjects;
+
+    private ArrayList<Tile> selectedTiles;
 
     private int tileRenderCount = 0;
 
     public TileMap() {
         this.tileMap = new Tile[MAP_SIZE][MAP_SIZE];
         this.gameObjects = new ArrayList<GameObject>();
+
+        this.selectedTiles = new ArrayList<Tile>();
     }
 
     public boolean addTile(Tile tile, int gridX, int gridY) {
@@ -56,11 +61,41 @@ public class TileMap implements Serializable {
         return true;
     }
 
+    public Tile getTile(int gridX, int gridY) {
+        if((gridX < 0 || gridY < 0) || (gridX > 127 || gridY > 127)) {
+            throw new IndexOutOfBoundsException("You are attempting to place an object out of Tile Map bounds! (" + gridX + ", " + gridY + ")");
+        }
+
+        if(tileMap[gridX][gridY] != null) {
+            return tileMap[gridX][gridY];
+        }
+
+        System.out.println("You have grabbed a null tile from the TileMap.");
+        return null;
+    }
+
+    public void onTileSelection(Tile tile) {
+        if(tile.isSelected) {
+            tile.isSelected = false;
+            selectedTiles.remove(tile);
+            return;
+        }
+
+        tile.isSelected = true;
+        selectedTiles.add(tile);
+    }
+
     public void addGameObject(GameObject gameObject) {
         if(this.gameObjects.size() >= OBJECT_LIMIT)
             throw new IllegalStateException("You are attempting to add too many Game Objects to the world!");
 
         this.gameObjects.add(gameObject);
+    }
+
+    public void onUpdate(World world) {
+        for(GameObject go : gameObjects) {
+            go.onUpdate();
+        }
     }
 
     public void render(World world) {

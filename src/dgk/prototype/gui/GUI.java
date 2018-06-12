@@ -44,12 +44,6 @@ public class GUI {
     public void init() {
         GUIMenu inGameMenu = new GUIMenu(this, "In-Game UI", 645, 5, 150, 200, true, true);
 
-        /**
-         * TODO: Add function for GUIMenu that adds an exit button to the UI automatically.
-         * TODO for later: Add functions that add minimize, maximize, and pin buttons.
-         * TODO as well: Also add texturing to the GUI Elements (Slider, Button, etc)
-         */
-
         inGameMenu.addElement(new GUISlider(this, inGameMenu,670, 75, 100, .25f) {
             @Override
             public void onSliderValueChange() {
@@ -206,10 +200,18 @@ public class GUI {
         }
 
         if(!guiMenuClicked) {
-            if(press) {
-                addNotification(new GUINotification(this, "You just lost 1000000 Gold!"));
-            }
+            GameWindow.getInstance().world.onMouseInput(x, y, press);
         }
+
+        // DEBUG CODE --------------------------------------------------------------------------------
+
+//        if(!guiMenuClicked) {
+//            if(press) {
+//                addNotification(new GUINotification(this, "You just lost 1000000 Gold!"));
+//            }
+//        }
+
+        // DEBUG CODE --------------------------------------------------------------------------------
     }
 
     public void update() {

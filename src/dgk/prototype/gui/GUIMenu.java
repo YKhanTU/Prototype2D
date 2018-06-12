@@ -143,10 +143,12 @@ public class GUIMenu implements GUIElement {
             }
         }
 
-        if((x >= this.x && x <= (x + width)) && (y >= this.y && y <= (y + height)) && !elementClicked) {
+        if((x >= this.x && x <= (this.x + width)) && (y >= this.y && y <= (this.y + height)) && !elementClicked) {
             if(press) {
                 if(isBeingDragged) {
                     return false;
+                }else if(isPinned) {
+                    return true;
                 }
 
                 isBeingDragged = true;

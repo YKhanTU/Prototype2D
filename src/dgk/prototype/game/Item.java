@@ -27,6 +27,13 @@ public abstract class Item implements Serializable {
     private int stackSize;
     private int stackLimit;
 
+    /**
+     * Let's us know if this item is actually droppable or not. If it is, then it will
+     * fall on the ground where it has been dropped, or onEntityDeath(). Otherwise it is
+     * deleted from the World permanently.
+     */
+    private boolean isDroppable;
+
     public Item(String name, Rarity rarity, boolean isStackable) {
         this(name, rarity, isStackable, 1, 1);
     }
@@ -44,6 +51,8 @@ public abstract class Item implements Serializable {
             this.stackSize = 1;
             this.stackLimit = 1;
         }
+
+        this.isDroppable = true;
     }
 
 

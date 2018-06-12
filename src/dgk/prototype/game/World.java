@@ -91,6 +91,8 @@ public class World {
     }
 
     public void onUpdate() {
+        tileMap.onUpdate(this);
+
         for(IEntity entity : entities) {
             entity.onUpdate();
         }
@@ -138,11 +140,30 @@ public class World {
         renderLayerList.clear();
     }
 
+    // TODO THIS IS TEMPORARY AND SHOULD BE REMOVED IMMEDIATELY... SOON.
+    public boolean onMouseInput(double mX, double mY, boolean press) {
+        if(press) {
+            int gridX = (int) Math.floor((mX + GameWindow.getInstance().getWorldCamera().getPosition().getX()) / TileMap.TILE_SIZE);
+            int gridY = (int) Math.floor((mY + GameWindow.getInstance().getWorldCamera().getPosition().getY()) / TileMap.TILE_SIZE);
+
+            Tile tile = tileMap.getTile(gridX, gridY);
+
+            if(tile == null)
+                return true;
+
+            tileMap.onTileSelection(tile);
+
+            return true;
+        }
+
+        return false;
+    }
+
     public Vec2D getGridCoordinates(Entity entity) {
         Vec2D position = entity.getPosition();
 
-        int gridX = (int) Math.ceil(position.getX() / TileMap.TILE_SIZE);
-        int gridY = (int) Math.ceil(position.getY() / TileMap.TILE_SIZE);
+        int gridX = (int) Math.floor(position.getX() / TileMap.TILE_SIZE);
+        int gridY = (int) Math.floor(position.getY() / TileMap.TILE_SIZE);
 
         return new Vec2D(gridX, gridY);
     }

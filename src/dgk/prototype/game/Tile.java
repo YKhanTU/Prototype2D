@@ -37,6 +37,8 @@ public class Tile extends GameObject {
      */
     private boolean isStatic;
 
+    protected boolean isSelected;
+
     public Tile(int textureId, byte renderLayer, int x, int y, int size) {
         super(textureId, new Vec2D(x, y));
 
@@ -48,7 +50,9 @@ public class Tile extends GameObject {
 
         this.isStatic = true;
 
-        worldCamera = GameWindow.getInstance().getWorldCamera();
+        this.isSelected = false;
+
+        this.worldCamera = GameWindow.getInstance().getWorldCamera();
     }
 
     public byte getRenderLayer() {
@@ -99,7 +103,7 @@ public class Tile extends GameObject {
         }
         GL11.glEnd();
 
-        if(TileMap.DEBUG_MODE) {
+        if(TileMap.DEBUG_MODE && isSelected) {
             drawOutline();
         }
 
@@ -112,9 +116,9 @@ public class Tile extends GameObject {
      * A debug outline drawn over the Tile.
      */
     private void drawOutline() {
-        GL11.glColor4f(0, 1f, 0, 1);
+        GL11.glColor4f(0f, 0f, 0f, 1);
 
-        GL11.glLineWidth(2f);
+        GL11.glLineWidth(4f);
 
         GL11.glBegin(GL_LINES);
         {
