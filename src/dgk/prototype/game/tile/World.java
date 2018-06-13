@@ -1,5 +1,8 @@
-package dgk.prototype.game;
+package dgk.prototype.game.tile;
 
+import dgk.prototype.game.*;
+import dgk.prototype.game.entities.Peasant;
+import dgk.prototype.game.entities.Ruler;
 import dgk.prototype.util.SpriteSheet;
 import dgk.prototype.util.Vec2D;
 
@@ -42,7 +45,6 @@ public class World {
         ruler = new Ruler(32, 64);
 
         // TODO Format this in a better way.
-        GameWindow.getInstance().getWorldCamera().setTarget(ruler);
 
         for(int i = 0; i < 32; i++) {
             for(int j = 0; j < 32; j++) {

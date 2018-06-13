@@ -1,4 +1,4 @@
-package dgk.prototype.game;
+package dgk.prototype.game.tile;
 
 /**
  * A DynamicTile represents dynamic 'moving' Tiles that may move 'out of grid'.

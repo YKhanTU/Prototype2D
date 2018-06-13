@@ -1,5 +1,8 @@
-package dgk.prototype.game;
+package dgk.prototype.game.entities;
 
+import dgk.prototype.game.Camera;
+import dgk.prototype.game.Direction;
+import dgk.prototype.game.GameWindow;
 import dgk.prototype.input.InputManager;
 import dgk.prototype.util.Animation;
 import dgk.prototype.util.SpriteSheet;
@@ -99,10 +102,10 @@ public class Ruler extends Person {
 
         GL11.glPopMatrix();
 
-        if(isSelected)
+        if(isSelected) {
             drawOutline();
-
-        drawHealthBar(worldCamera);
+            drawHealthBar(worldCamera);
+        }
 
         GL11.glColor4f(1, 1, 1, 1);
     }
@@ -266,6 +269,10 @@ public class Ruler extends Person {
             isSelected = true;
         }else{
             isSelected = false;
+        }
+
+        if(manager.isKeyPressed(GLFW.GLFW_KEY_SPACE)) {
+            this.setHealthPoints(this.getHealthPoints() - 1);
         }
     }
 }

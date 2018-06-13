@@ -10,6 +10,8 @@
       <root url="jar://$PROJECT_DIR$/../TWL.jar!/" />
       <root url="jar://$PROJECT_DIR$/../lwjgl-3.1.6/lwjgl-stb/lwjgl-stb.jar!/" />
       <root url="jar://$PROJECT_DIR$/../lwjgl-3.1.6/lwjgl-stb/lwjgl-stb-natives-windows.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../lwjgl-3.1.6/lwjgl-openal/lwjgl-openal-natives-windows.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../lwjgl-3.1.6/lwjgl-openal/lwjgl-openal.jar!/" />
     </CLASSES>
     <JAVADOC>
       <root url="jar://$PROJECT_DIR$/../lwjgl-3.1.6/lwjgl/lwjgl-javadoc.jar!/" />

@@ -1,5 +1,6 @@
 package dgk.prototype.game;
 
+import dgk.prototype.game.entities.Person;
 import dgk.prototype.util.Vec2D;
 import org.lwjgl.opengl.GL11;
 
@@ -57,7 +58,7 @@ public abstract class Projectile extends GameObject {
                 if(target.hasArmor()) {
                     target.setHealthPoints(target.getHealthPoints() - (int) (damage * .75));
                     target.setArmorPoints(target.getArmorPoints() - (int) (damage * .5));
-                }else {
+                }else{
                     target.setHealthPoints(target.getHealthPoints() - damage);
                 }
             }

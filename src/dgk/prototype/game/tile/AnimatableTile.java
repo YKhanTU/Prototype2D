@@ -1,4 +1,4 @@
-package dgk.prototype.game;
+package dgk.prototype.game.tile;
 
 import dgk.prototype.util.Animation;
 

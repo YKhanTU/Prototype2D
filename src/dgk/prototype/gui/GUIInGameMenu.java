@@ -1,5 +1,6 @@
 package dgk.prototype.gui;
 
+import dgk.prototype.game.GameCamera;
 import dgk.prototype.game.GameWindow;
 
 public class GUIInGameMenu extends GUI {
@@ -20,11 +21,22 @@ public class GUIInGameMenu extends GUI {
             }
         });
 
+        debugMenu.addElement(new GUIButton(this, debugMenu, "Camera Toggle", 680, 125, 75, 20) {
+            @Override
+            void onButtonClick() {
+                GameCamera camera = GameWindow.getInstance().getWorldCamera();
+                if(camera.hasTarget()) {
+                    camera.setTarget(null);
+                }else {
+                    camera.setTarget(GameWindow.getInstance().world.ruler);
+                }
+            }
+        });
+
         addMenu(debugMenu);
 
 
         GUIMenu buildMenu = new GUIMenu(this, "Build Menu", 0, 450, 400, 150, true, false);
-
 
 
         addMenu(buildMenu);

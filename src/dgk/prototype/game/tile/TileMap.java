@@ -1,13 +1,17 @@
-package dgk.prototype.game;
+package dgk.prototype.game.tile;
 
+import dgk.prototype.game.*;
 import dgk.prototype.util.Vec2D;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 
 public class TileMap implements Serializable {
+
+
+    // TODO: Each TileMap Chunk is 128x128 or 64x64 tiles in length.
+    // TODO: Create a 'Zone' or 'Bounds' class that represents a city's bounds or a zone where
+    // TODO: a specific Enemy can be spawned.
 
     /**
      * The map size will be 128x128 until proper loading functionality is added.

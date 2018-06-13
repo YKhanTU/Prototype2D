@@ -1,5 +1,7 @@
-package dgk.prototype.game;
+package dgk.prototype.game.entities;
 
+import dgk.prototype.game.Camera;
+import dgk.prototype.game.GameWindow;
 import dgk.prototype.input.InputManager;
 import dgk.prototype.util.SpriteSheet;
 import dgk.prototype.util.Vec2D;

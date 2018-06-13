@@ -1,5 +1,7 @@
-package dgk.prototype.game;
+package dgk.prototype.game.entities;
 
+import dgk.prototype.game.*;
+import dgk.prototype.game.tile.World;
 import dgk.prototype.util.AABB;
 import dgk.prototype.util.Vec2D;
 import org.lwjgl.opengl.GL11;
@@ -93,7 +95,7 @@ public abstract class Person extends Entity {
     }
 
     public int getHealthPoints() {
-        return healthPoints;
+        return this.healthPoints;
     }
 
     public void setHealthPoints(int healthPoints) {
@@ -247,11 +249,13 @@ public abstract class Person extends Entity {
         GL11.glScalef(worldCamera.getZoom(), worldCamera.getZoom(), 0);
         GL11.glTranslated(getPosition().getX() - worldCamera.getPosition().getX() + 2, getPosition().getY() - worldCamera.getPosition().getY() - (healthBarHeight + 5), 0);
 
+        float healthRatio = ((float) currentHealth / 100.0f);
+
         GL11.glBegin(GL11.GL_QUADS);
         {
             GL11.glVertex2f(0, 0);
-            GL11.glVertex2f(healthBarWidth  * (currentHealth / 100), 0);
-            GL11.glVertex2f(healthBarWidth * (currentHealth / 100), healthBarHeight);
+            GL11.glVertex2f(healthBarWidth * healthRatio, 0);
+            GL11.glVertex2f(healthBarWidth * healthRatio, healthBarHeight);
             GL11.glVertex2f(0, healthBarHeight);
         }
         GL11.glEnd();

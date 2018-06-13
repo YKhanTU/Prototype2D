@@ -22,5 +22,8 @@ public abstract class GameObject implements IEntity, Serializable {
         return this.textureId;
     }
 
+    public void setTextureId(int textureId) {
+        this.textureId = textureId;
+    }
 
 }

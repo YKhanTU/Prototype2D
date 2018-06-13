@@ -1,6 +1,9 @@
-package dgk.prototype.game;
+package dgk.prototype.game.tile;
 
-import java.util.ArrayList;
+import dgk.prototype.game.ComponentType;
+import dgk.prototype.game.Direction;
+import dgk.prototype.game.tile.AnimatableTile;
+import dgk.prototype.game.tile.TileMap;
 
 public abstract class BuildingComponent extends AnimatableTile {
 

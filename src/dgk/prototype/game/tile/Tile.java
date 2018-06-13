@@ -1,5 +1,9 @@
-package dgk.prototype.game;
+package dgk.prototype.game.tile;
 
+import dgk.prototype.game.Camera;
+import dgk.prototype.game.GameObject;
+import dgk.prototype.game.GameWindow;
+import dgk.prototype.game.IEntity;
 import dgk.prototype.util.AABB;
 import dgk.prototype.util.Vec2D;
 import org.lwjgl.opengl.GL11;

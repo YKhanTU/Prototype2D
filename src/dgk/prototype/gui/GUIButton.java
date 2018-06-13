@@ -10,6 +10,7 @@ import java.nio.DoubleBuffer;
 
 import static org.lwjgl.glfw.GLFW.glfwGetCursorPos;
 import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
+import static org.lwjgl.opengl.GL11.glDisable;
 import static org.lwjgl.opengl.GL11.glEnable;
 
 public abstract class GUIButton implements GUIElement {
@@ -48,7 +49,11 @@ public abstract class GUIButton implements GUIElement {
     }
 
     public void render() {
-        glEnable(GL_TEXTURE_2D);
+        if(hasTexture()) {
+            glEnable(GL_TEXTURE_2D);
+        }else{
+            glDisable(GL_TEXTURE_2D);
+        }
 
         GL11.glMatrixMode(GL11.GL_MODELVIEW_MATRIX);
         GL11.glPushMatrix();

@@ -1,4 +1,4 @@
-package dgk.prototype.game;
+package dgk.prototype.game.tile;
 
 /**
  * A StaticTile represents scenery or other objects that are there simply to be aesthetic.

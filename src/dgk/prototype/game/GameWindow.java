@@ -1,19 +1,16 @@
 package dgk.prototype.game;
 
+import dgk.prototype.game.tile.World;
 import dgk.prototype.gui.GUI;
 import dgk.prototype.gui.GUIInGameMenu;
-import dgk.prototype.gui.GUILoadingScreen;
 import dgk.prototype.input.InputManager;
-import dgk.prototype.util.ParticleSystem;
-import dgk.prototype.util.SpriteSheet;
-import dgk.prototype.util.Vec2D;
+import dgk.prototype.sound.SoundManager;
 import org.lwjgl.*;
 import org.lwjgl.glfw.*;
 import org.lwjgl.opengl.*;
 import org.lwjgl.system.*;
 
 import java.nio.*;
-import java.util.HashMap;
 
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.*;
@@ -36,6 +33,7 @@ public class GameWindow {
 
     public ResourceManager resourceManager;
     public InputManager inputManager;
+    public SoundManager soundManager;
 
     public World world;
     private GameCamera worldCamera;
@@ -53,6 +51,7 @@ public class GameWindow {
 
         this.inputManager = inputManager;
         this.resourceManager = new ResourceManager();
+        this.soundManager = new SoundManager();
 
         isHidden = false;
     }
@@ -167,6 +166,7 @@ public class GameWindow {
         // TODO: ResourceManager that loads the textures and all IDs are stored adequately
         resourceManager.start();
         inputManager.start();
+        soundManager.start();
 
         gui.init();
         world.load();
@@ -207,6 +207,8 @@ public class GameWindow {
         GLFW.glfwSetErrorCallback(null).free();
 
         resourceManager.stop();
+        soundManager.stop();
+        inputManager.stop();
 
         //spriteSheet.destroyTextures();
         //charSheet.destroyTextures();

@@ -1,6 +1,9 @@
-package dgk.prototype.game;
+package dgk.prototype.game.tile;
 
-import java.awt.*;
+import dgk.prototype.game.ComponentType;
+import dgk.prototype.game.Direction;
+import dgk.prototype.game.tile.BuildingComponent;
+import dgk.prototype.game.tile.Tile;
 
 public class WallComponent extends BuildingComponent {
 
@@ -37,8 +40,8 @@ public class WallComponent extends BuildingComponent {
             switch (getDirection()) {
                 case NORTH:
                     this.textureId = 22;
-                    subComponents[0].textureId = 23;
-                    subComponents[1].textureId = 24;
+                    subComponents[0].setTextureId(23);
+                    subComponents[1].setTextureId(24);
                     break;
                 case SOUTH:
                     System.out.println("Not supported yet D:");
