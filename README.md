@@ -45,11 +45,6 @@ Some features that I have thought about this game were:
     other 'NPC' that is apart of your Nation to help lead the battlefield!
 - More ideas to come!
 
-Media:
-
-    Draggable GUIMenu Implementation:
-[![https://gyazo.com/1805ebfe8b3519551e522fe561768c64](https://i.gyazo.com/1805ebfe8b3519551e522fe561768c64.gif)](https://gyazo.com/1805ebfe8b3519551e522fe561768c64)
-
 Why Java?
 
     I have been programming in Java since my Freshman year in High School, so I feel like this was a very well-suited project to work on
@@ -73,5 +68,13 @@ Why is the artwork not in this Open-Source Project?
     I find it more respectable and well-suited to not publicly share the artwork as I am paying for it as a customer and this 'game'
     has no official release date or plans for publishing as of yet.
     
-    
 * NOTICE: No license has been added to this project because this is already open-source. The only intended use of my code is for EDUCATIONAL PURPOSES. You may not use this code for commercial purposes or re-distribution. Period.
+
+Media:
+
+Draggable Menu:
+[![https://gyazo.com/8e1cdf86d7d636d13663e843d4edbf74](https://i.gyazo.com/8e1cdf86d7d636d13663e843d4edbf74.gif)](https://gyazo.com/8e1cdf86d7d636d13663e843d4edbf74)
+AxisAlignedBoundingBox Collision and Render Ordering:
+[![https://gyazo.com/f18e69230b438444731a8f5fc1344d9b](https://i.gyazo.com/f18e69230b438444731a8f5fc1344d9b.gif)](https://gyazo.com/f18e69230b438444731a8f5fc1344d9b)
+Health Bar and Outline Example:
+[![https://gyazo.com/e829e25cb5ecfb3abf0d29c65ec34c7b](https://i.gyazo.com/e829e25cb5ecfb3abf0d29c65ec34c7b.gif)](https://gyazo.com/e829e25cb5ecfb3abf0d29c65ec34c7b)
