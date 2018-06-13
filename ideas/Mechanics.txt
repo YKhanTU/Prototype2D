@@ -2,3 +2,5 @@
 - Implement 'ownership' for Tiles (sub-classes in particular), Items, and GameObjects so that we know who owns what.
     The player will have an 'ID' and this will be used to identify who is the owner of what. Or we can just use the instance
      of that class.
+- DynamicTiles and GameObjects that are 'dynamic' can be pushed in a certain direction.
+- Destruction animations for walls and other buildings.
