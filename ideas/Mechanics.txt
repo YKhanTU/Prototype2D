@@ -5,4 +5,5 @@
 - DynamicTiles and GameObjects that are 'dynamic' can be pushed in a certain direction.
 - Destruction animations for walls and other buildings.
 - Pathfinding to and from Tasks (Task System for NPCs, Players, etc.)
-- 
+- Resizable Screen and Fullscreen mode ****
+- Zooming in (with proper mouse to world coordinate conversion)
