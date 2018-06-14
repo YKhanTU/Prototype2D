@@ -5,7 +5,7 @@ package dgk.prototype.game.tile;
  * TODO: Possibly make this extend AnimatableTile?
  * These tiles have an AxisAlignedBoundingBox, but collisions may or may not be accounted for.
  */
-public class DynamicTile extends Tile {
+public class DynamicTile extends AnimatableTile {
 
     public DynamicTile(int textureId, byte renderLayer, int x, int y, int size) {
         super(textureId, renderLayer, x, y, size);

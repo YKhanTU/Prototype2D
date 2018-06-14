@@ -72,7 +72,8 @@ public class TileMap implements Serializable {
 
     public Tile getTile(int gridX, int gridY) {
         if((gridX < 0 || gridY < 0) || (gridX > 127 || gridY > 127)) {
-            throw new IndexOutOfBoundsException("You are attempting to place an object out of Tile Map bounds! (" + gridX + ", " + gridY + ")");
+            //throw new IndexOutOfBoundsException("You are attempting to place an object out of Tile Map bounds! (" + gridX + ", " + gridY + ")");
+            return null;
         }
 
         if(tileMap[gridX][gridY] != null) {
@@ -198,6 +199,10 @@ public class TileMap implements Serializable {
             }
         }
 
+    }
+
+    public ArrayList<GameObject> getGameObjects() {
+        return gameObjects;
     }
 
 }

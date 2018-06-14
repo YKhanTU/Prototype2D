@@ -2,6 +2,7 @@ package dgk.prototype.game.entities;
 
 import dgk.prototype.game.*;
 import dgk.prototype.game.tile.World;
+import dgk.prototype.input.InputManager;
 import dgk.prototype.util.AABB;
 import dgk.prototype.util.Vec2D;
 import org.lwjgl.opengl.GL11;
@@ -17,49 +18,25 @@ public abstract class Person extends Entity {
     public static final int WIDTH = 32;
     public static final int HEIGHT = 48;
 
-    private String name;
+    protected double movementSpeed;
+
     private Person spouse;
-
-    private Direction direction;
-    private CharacterState state;
-
-    private Inventory inventory;
-
-    private int healthPoints;
-    private int armorPoints;
-
-    private transient IEntity target;
-
-    public boolean isMoving = false;
 
     protected Vec2D lastPosition;
 
     public Person(int textureId, String name, double x, double y) {
-        super(textureId, x, y);
+        super(textureId, name, x, y);
 
-        this.name = name;
+        this.movementSpeed = 2.0D;
         this.spouse = null;
-
-        this.direction = Direction.SOUTH;
-
-        this.inventory = new Inventory(24, false);
-
-        this.state = CharacterState.IDLE;
-
-        this.healthPoints = 100;
-        this.armorPoints = 0;
-
-        this.target = null;
-
-        this.lastPosition = getPosition();
     }
 
-    public String getName() {
-        return name;
+    public double getMovementSpeed() {
+        return movementSpeed;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setMovementSpeed(double movementSpeed) {
+        this.movementSpeed = movementSpeed;
     }
 
     public boolean isMarried() {
@@ -76,80 +53,6 @@ public abstract class Person extends Entity {
 
     public void setSpouse(Person spouse) {
         this.spouse = spouse;
-    }
-
-    public Direction getDirection() {
-        return direction;
-    }
-
-    public void setDirection(Direction direction) {
-        this.direction = direction;
-    }
-
-    public Inventory getInventory() {
-        return inventory;
-    }
-
-    public void setInventory(Inventory inventory) {
-        this.inventory = inventory;
-    }
-
-    public int getHealthPoints() {
-        return this.healthPoints;
-    }
-
-    public void setHealthPoints(int healthPoints) {
-        if(healthPoints < 0) {
-            this.healthPoints = 0;
-            return;
-        }
-
-        this.healthPoints = healthPoints;
-    }
-
-    public int getArmorPoints() {
-        return armorPoints;
-    }
-
-    public void setArmorPoints(int armorPoints) {
-        if(armorPoints < 0) {
-            this.armorPoints = 0;
-            return;
-        }
-
-        this.armorPoints = armorPoints;
-    }
-
-    public boolean isMoving() {
-        return isMoving;
-    }
-
-    public boolean isIdle() {
-        return !isMoving;
-    }
-
-    private boolean isInCombat() {
-        return hasTarget();
-    }
-
-    public boolean isDead() {
-        return this.healthPoints <= 0;
-    }
-
-    public boolean hasTarget() {
-        return (target == null) ? false : true;
-    }
-
-    public IEntity getTarget() {
-        return target;
-    }
-
-    public void setTarget(IEntity target) {
-        this.target = target;
-    }
-
-    public boolean hasArmor() {
-        return this.getArmorPoints() > 0;
     }
 
     @Override
@@ -180,6 +83,7 @@ public abstract class Person extends Entity {
      */
     protected void checkForCollision(World world) {
         List<Entity> entityList = world.getEntities();
+        List<GameObject> gameObjects = world.getTileMap().getGameObjects();
 
         for(Entity e : entityList) {
             if(e.equals(this))
@@ -189,6 +93,14 @@ public abstract class Person extends Entity {
                 continue;
 
             if(this.getAABB().isIntersecting(e.getAABB())) {
+                this.position = lastPosition;
+
+                return;
+            }
+        }
+
+        for(GameObject gameObject : gameObjects) {
+            if(this.getAABB().isIntersecting(gameObject.getAABB())) {
                 this.position = lastPosition;
 
                 return;
@@ -268,4 +180,19 @@ public abstract class Person extends Entity {
      * Draws information above the character when they are selected.
      */
     protected void drawSelectionInfo() {}
+
+    protected void checkForSelection() {
+        InputManager manager = GameWindow.getInstance().inputManager;
+        GameCamera worldCamera = GameWindow.getInstance().getWorldCamera();
+
+        Vec2D mousePos = manager.getMousePosition();
+        int mX = (int) mousePos.getX() + (int) worldCamera.getPosition().getX();
+        int mY = (int) mousePos.getY() + (int) worldCamera.getPosition().getY();
+
+        if((mX >= getPosition().getX() && mX <= (getPosition().getX() + 64)) && (mY >= getPosition().getY() && mY <= (getPosition().getY() + 64))) {
+            isSelected = true;
+        }else{
+            isSelected = false;
+        }
+    }
 }

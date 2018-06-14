@@ -8,6 +8,7 @@ public class GUIInGameMenu extends GUI {
 
     public GUIInGameMenu(int width, int height) {
         super(width, height);
+        init();
     }
 
     @Override
@@ -24,6 +25,8 @@ public class GUIInGameMenu extends GUI {
         debugMenu.addElement(new GUIButton(this, debugMenu, "Camera Toggle", 680, 125, 75, 20) {
             @Override
             void onButtonClick() {
+                playSound();
+
                 GameCamera camera = GameWindow.getInstance().getWorldCamera();
                 if(camera.hasTarget()) {
                     camera.setTarget(null);
@@ -38,6 +41,32 @@ public class GUIInGameMenu extends GUI {
 
         GUIMenu buildMenu = new GUIMenu(this, "Build Menu", 0, 450, 400, 150, true, false);
 
+        buildMenu.addElement(new GUIButton(this, buildMenu, 84, "Select", 5, 455, 32, 32) {
+            @Override
+            public void onButtonClick() {
+                playSound();
+
+                System.out.println("BUILDING SELECTION MODE set to SELECT.");
+            }
+        });
+
+        buildMenu.addElement(new GUIButton(this, buildMenu, 82, "Place", 5 + 37, 455, 32, 32) {
+            @Override
+            public void onButtonClick() {
+                playSound();
+
+                System.out.println("BUILDING SELECTION MODE set to PLACE.");
+            }
+        });
+
+        buildMenu.addElement(new GUIButton(this, buildMenu, 83, "Remove", 5 + 74, 455, 32, 32) {
+            @Override
+            public void onButtonClick() {
+                playSound();
+
+                System.out.println("BUILDING SELECTION MODE set to REMOVE.");
+            }
+        });
 
         addMenu(buildMenu);
     }

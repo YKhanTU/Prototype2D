@@ -3,12 +3,9 @@ package dgk.prototype.gui;
 import dgk.prototype.game.Camera;
 import dgk.prototype.game.GameWindow;
 import dgk.prototype.util.Vec2D;
-import org.lwjgl.BufferUtils;
+import dgk.prototype.sound.SoundManager;
 import org.lwjgl.opengl.GL11;
 
-import java.nio.DoubleBuffer;
-
-import static org.lwjgl.glfw.GLFW.glfwGetCursorPos;
 import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
 import static org.lwjgl.opengl.GL11.glDisable;
 import static org.lwjgl.opengl.GL11.glEnable;
@@ -17,6 +14,7 @@ public abstract class GUIButton implements GUIElement {
 
     private GUI gui;
     protected GUIMenu guiMenu;
+    protected SoundManager soundManager;
 
     private int textureId;
 
@@ -38,6 +36,7 @@ public abstract class GUIButton implements GUIElement {
     public GUIButton(GUI gui, GUIMenu guiMenu, int textureId, String label, double x, double y, double width, double height) {
         this.gui = gui;
         this.guiMenu = guiMenu;
+        this.soundManager = GameWindow.getInstance().soundManager;
         this.textureId = textureId;
         this.label = label;
         this.x = x;
@@ -150,6 +149,10 @@ public abstract class GUIButton implements GUIElement {
      * This is called anytime that a Left Click Click is detected for the button.
      */
     abstract void onButtonClick();
+
+    public void playSound() {
+        soundManager.getSound("buttonClick").playSound();
+    }
 
     @Override
     public void onUpdate() {}

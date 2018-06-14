@@ -131,16 +131,6 @@ public class Peasant extends Person {
 
     @Override
     public void onUpdate() {
-        InputManager manager = GameWindow.getInstance().inputManager;
-
-        Vec2D mousePos = manager.getMousePosition();
-        int mX = (int) mousePos.getX() + (int) worldCamera.getPosition().getX();
-        int mY = (int) mousePos.getY() + (int) worldCamera.getPosition().getY();
-
-        if((mX >= getPosition().getX() && mX <= (getPosition().getX() + 64)) && (mY >= getPosition().getY() && mY <= (getPosition().getY() + 64))) {
-            isSelected = true;
-        }else{
-            isSelected = false;
-        }
+        this.checkForSelection();
     }
 }

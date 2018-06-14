@@ -164,7 +164,18 @@ public class Tile extends GameObject {
     }
 
     @Override
-    public void onCollision(IEntity other) {
+    public void onCollision(IEntity other) {}
 
+    @Override
+    public boolean equals(Object o1) {
+        if(!(o1 instanceof Tile)) {
+            return false;
+        }
+
+        Tile other = (Tile) o1;
+
+        return (other.getGridX() == this.getGridX() &&
+                other.getGridY() == this.getGridY() &&
+                other.getSize() == this.getSize());
     }
 }

@@ -98,7 +98,7 @@ public class ResourceManager implements IManager {
         uiElements.loadTexture(2, 0, 32, 32);
         uiElements.loadTexture(3, 0, 32, 32);
 
-        spriteSheetMap.put("UISpriteSheet", uiElements);
+        //spriteSheetMap.put("UISpriteSheet", uiElements);
 
         SpriteSheet rulerWalkingAnims = new SpriteSheet(this, "sprites/test/sprites");
         for(int col = 0; col < 4; col++) {
@@ -150,6 +150,15 @@ public class ResourceManager implements IManager {
         spriteSheetMap.put("PeasantGlow", peasantWalkingHighlights);
 
         // TODO - To finish.
+
+        // "PLACE" Button
+        uiElements.loadTexture(0, 2, 32, 32);
+        // "REMOVE" Button
+        uiElements.loadTexture(1, 2, 32, 32);
+        // "SELECT" Button
+        uiElements.loadTexture(2, 2, 32, 32);
+
+        spriteSheetMap.put("UISpriteSheet", uiElements);
 
         /*rulerAnimations = new SpriteSheet("sprites/test/sprites");
 

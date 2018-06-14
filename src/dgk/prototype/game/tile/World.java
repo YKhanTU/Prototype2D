@@ -52,8 +52,10 @@ public class World {
             }
         }
 
-        addGameObject(new Tile(SpriteSheet.SHRUB, World.MID_LAYER, 200, 200, 48));
-        addGameObject(new Tile(SpriteSheet.TREE, World.MID_LAYER, 300, 200, 96));
+        addGameObject(new TileShrub(150, 200));
+        addGameObject(new TileShrub(600, 234));
+        addGameObject(new TileTree(600, 500));
+        addGameObject(new TileTree(300, 200));
 
         //addGameObject(new WallComponent(ComponentType.WOOD, World.MID_LAYER, 4 * 48, 8 * 48, 48, Direction.NORTH));
 
@@ -143,12 +145,12 @@ public class World {
 
             BuildingComponent component = tileMap.getBuildingComponent(gridX, gridY);
 
-            if(component != null) {
-                System.out.println("Cannot build here!");
-            }else{
-                addGameObject(new WallComponent(ComponentType.WOOD, World.MID_LAYER, gridX * 48, gridY * 48, 48, Direction.NORTH));
-                return true;
-            }
+//            if(component != null) {
+//                System.out.println("Cannot build here!");
+//            }else{
+//                addGameObject(new WallComponent(ComponentType.WOOD, World.MID_LAYER, gridX * 48, gridY * 48, 48, Direction.NORTH));
+//                return true;
+//            }
 
             Tile tile = tileMap.getTile(gridX, gridY);
 
@@ -175,5 +177,9 @@ public class World {
 
     public ArrayList<Entity> getEntities() {
         return this.entities;
+    }
+
+    public TileMap getTileMap() {
+        return this.tileMap;
     }
 }

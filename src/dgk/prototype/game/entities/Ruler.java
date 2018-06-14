@@ -162,27 +162,27 @@ public class Ruler extends Person {
         if(gw.isKeyPressed(GLFW.GLFW_KEY_S)) {
             setDirection(Direction.SOUTH);
             this.velocity.setX(0);
-            this.velocity.setY(2);
+            this.velocity.setY(movementSpeed);
 
             isMoving = true;
             //breathingAnimation.stop();
         }else if(gw.isKeyPressed(GLFW.GLFW_KEY_W)) {
             setDirection(Direction.NORTH);
             this.velocity.setX(0);
-            this.velocity.setY(-2);
+            this.velocity.setY(-movementSpeed);
 
             isMoving = true;
             //breathingAnimation.stop();
         }else if(gw.isKeyPressed(GLFW.GLFW_KEY_A)) {
             setDirection(Direction.EAST);
-            this.velocity.setX(-2);
+            this.velocity.setX(-movementSpeed);
             this.velocity.setY(0);
 
             isMoving = true;
             //breathingAnimation.stop();
         }else if(gw.isKeyPressed(GLFW.GLFW_KEY_D)) {
             setDirection(Direction.WEST);
-            this.velocity.setX(2);
+            this.velocity.setX(movementSpeed);
             this.velocity.setY(0);
 
             isMoving = true;
@@ -259,20 +259,6 @@ public class Ruler extends Person {
 
         this.checkForCollision(GameWindow.getInstance().world);
 
-        InputManager manager = GameWindow.getInstance().inputManager;
-
-        Vec2D mousePos = manager.getMousePosition();
-        int mX = (int) mousePos.getX() + (int) worldCamera.getPosition().getX();
-        int mY = (int) mousePos.getY() + (int) worldCamera.getPosition().getY();
-
-        if((mX >= getPosition().getX() && mX <= (getPosition().getX() + 64)) && (mY >= getPosition().getY() && mY <= (getPosition().getY() + 64))) {
-            isSelected = true;
-        }else{
-            isSelected = false;
-        }
-
-        if(manager.isKeyPressed(GLFW.GLFW_KEY_SPACE)) {
-            this.setHealthPoints(this.getHealthPoints() - 1);
-        }
+        this.checkForSelection();
     }
 }

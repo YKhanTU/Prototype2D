@@ -1,8 +1,11 @@
 package dgk.prototype.game;
 
+import dgk.prototype.game.tile.Pathfinder;
+import dgk.prototype.game.tile.TileMap;
 import dgk.prototype.game.tile.World;
 import dgk.prototype.gui.GUI;
 import dgk.prototype.gui.GUIInGameMenu;
+import dgk.prototype.gui.GUILoadingScreen;
 import dgk.prototype.input.InputManager;
 import dgk.prototype.sound.SoundManager;
 import org.lwjgl.*;
@@ -47,7 +50,7 @@ public class GameWindow {
         this.world = new World();
         this.worldCamera = new GameCamera(0,0, width, height);
 
-        this.gui = new GUIInGameMenu(800, 600);
+        this.gui = new GUILoadingScreen(800, 600, resourceManager);
 
         this.inputManager = inputManager;
         this.resourceManager = new ResourceManager();
@@ -163,6 +166,8 @@ public class GameWindow {
 
         glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
 
+        boolean isLoading = true;
+
         // TODO: ResourceManager that loads the textures and all IDs are stored adequately
         resourceManager.start();
         inputManager.start();
@@ -171,15 +176,39 @@ public class GameWindow {
         gui.init();
         world.load();
 
+        /// TESTING
+
+        TileMap tileMap = world.getTileMap();
+
+        Pathfinder pathFinder = new Pathfinder(world.getTileMap(), tileMap.getTile(0, 0), tileMap.getTile(10, 1));
+        pathFinder.constructFastestPath();
+        System.out.println("PathFinder size: " + pathFinder.getPathSize());
+        System.out.println("PathFinder: " + pathFinder.getOpenSetSize());
+
+        /// REMOVE AFTER TEST
+
         while(!hasWindowRequestedClose() && isRunning) {
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+            if(gui instanceof GUILoadingScreen) {
+                GUILoadingScreen loadingScreen = (GUILoadingScreen) gui;
+
+                if(loadingScreen.isComplete()) {
+                    gui = new GUIInGameMenu(800, 600);
+                    isLoading = false;
+                }
+            }
+
             worldCamera.onUpdate(this);
 
-            world.onUpdate();
+            if(!isLoading) {
+                world.onUpdate();
+            }
             gui.update();
 
-            world.render();
+            if(!isLoading) {
+                world.render();
+            }
             gui.render();
 
             glfwSwapBuffers(handle);

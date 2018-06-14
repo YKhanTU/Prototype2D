@@ -45,7 +45,7 @@ public class Sound {
 
         alBufferData(bufferPointer, format, audioBuffer, sampleRate);
 
-        //free(audioBuffer);
+        free(audioBuffer);
 
         sourcePointer = alGenSources();
     }
