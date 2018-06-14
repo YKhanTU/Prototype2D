@@ -1,5 +1,7 @@
 package dgk.prototype.sound;
 
+import dgk.prototype.game.GameWindow;
+
 import java.nio.IntBuffer;
 import java.nio.ShortBuffer;
 
@@ -12,10 +14,13 @@ import static org.lwjgl.system.libc.LibCStdlib.free;
 
 public class Sound {
 
+    private SoundManager soundManager;
+
     private int bufferPointer;
     private int sourcePointer;
 
     public Sound(String fileName) {
+        this.soundManager = GameWindow.getInstance().soundManager;
         //File file = new File("res/sounds/" + fileName + ".wav");
 
         stackPush();
@@ -25,7 +30,6 @@ public class Sound {
         IntBuffer sampleRateBuffer = stackMallocInt(1);
 
         ShortBuffer audioBuffer = stb_vorbis_decode_filename(fileName, channelBuffer, sampleRateBuffer);
-
 
         int channels = channelBuffer.get();
         int sampleRate = sampleRateBuffer.get();
@@ -56,6 +60,10 @@ public class Sound {
 
     public void playSound() {
         alSourcei(sourcePointer, AL_BUFFER, bufferPointer);
+        // GAIN (volume)
+        alSourcef(sourcePointer, AL_GAIN, soundManager.getCurrentVolume());
+        // PITCH
+        //alSourcef(sourcePointer, AL_PITCH, .3f);
 
         alSourcePlay(sourcePointer);
     }

@@ -71,7 +71,7 @@ public class GUIMenu implements GUIElement {
     /**
      * This function adds the exit, minimize, maximize, and pin buttons to the UI.
      */
-    private void addUtilButtons() {
+    protected void addUtilButtons() {
         if(!isAlwaysOnTop) {
             addElement(new GUIButton(gui, this, 26, "Close", (x + width) - 20, y + 5, 15, 15) {
                 @Override

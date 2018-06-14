@@ -6,6 +6,7 @@ import dgk.prototype.game.tile.World;
 import dgk.prototype.gui.GUI;
 import dgk.prototype.gui.GUIInGameMenu;
 import dgk.prototype.gui.GUILoadingScreen;
+import dgk.prototype.gui.GUIOptions;
 import dgk.prototype.input.InputManager;
 import dgk.prototype.sound.SoundManager;
 import org.lwjgl.*;
@@ -180,7 +181,7 @@ public class GameWindow {
 
         TileMap tileMap = world.getTileMap();
 
-        Pathfinder pathFinder = new Pathfinder(world.getTileMap(), tileMap.getTile(0, 0), tileMap.getTile(10, 1));
+        Pathfinder pathFinder = new Pathfinder(world.getTileMap(), tileMap.getTile(0, 0), tileMap.getTile(10, 1), false);
         pathFinder.constructFastestPath();
         System.out.println("PathFinder size: " + pathFinder.getPathSize());
         System.out.println("PathFinder: " + pathFinder.getOpenSetSize());
@@ -194,7 +195,7 @@ public class GameWindow {
                 GUILoadingScreen loadingScreen = (GUILoadingScreen) gui;
 
                 if(loadingScreen.isComplete()) {
-                    gui = new GUIInGameMenu(800, 600);
+                    setGUI(new GUIOptions(800, 600));
                     isLoading = false;
                 }
             }
@@ -217,6 +218,10 @@ public class GameWindow {
         }
 
         destroy();
+    }
+
+    public void setGUI(GUI gui) {
+        this.gui = gui;
     }
 
     public void stop() {

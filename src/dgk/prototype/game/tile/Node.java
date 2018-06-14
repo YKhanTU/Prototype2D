@@ -2,6 +2,8 @@ package dgk.prototype.game.tile;
 
 public class Node {
 
+    // TODO: When implementing the HashSet, override the hashCode();
+
     private Tile tile;
 
     /**
@@ -29,7 +31,7 @@ public class Node {
             this.hScore = (int) tile.getPosition().getDistance(end.getPosition());
         }
 
-        this.fScore = gScore + hScore;
+        calculateFScore();
     }
 
     public Tile getTile() {
@@ -45,14 +47,14 @@ public class Node {
     }
 
     public void calculateFScore() {
-        this.fScore = gScore + hScore;
+        this.fScore = getGScore() + getHScore();
     }
 
     public int getGScore() {
         return gScore;
     }
 
-    public int getHScore() {
+    private int getHScore() {
         return hScore;
     }
 

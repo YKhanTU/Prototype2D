@@ -140,8 +140,12 @@ public class World {
     // TODO THIS IS TEMPORARY AND SHOULD BE REMOVED IMMEDIATELY... SOON.
     public boolean onMouseInput(double mX, double mY, boolean press) {
         if(press) {
-            int gridX = (int) Math.floor((mX + GameWindow.getInstance().getWorldCamera().getPosition().getX()) / TileMap.TILE_SIZE);
-            int gridY = (int) Math.floor((mY + GameWindow.getInstance().getWorldCamera().getPosition().getY()) / TileMap.TILE_SIZE);
+            GameCamera worldCamera = GameWindow.getInstance().getWorldCamera();
+
+            System.out.println(worldCamera.getZoom() * TileMap.TILE_SIZE);
+
+            int gridX = (int) Math.floor((mX + GameWindow.getInstance().getWorldCamera().getPosition().getX()) / (TileMap.TILE_SIZE * worldCamera.getZoom()));
+            int gridY = (int) Math.floor((mY + GameWindow.getInstance().getWorldCamera().getPosition().getY()) / (TileMap.TILE_SIZE * worldCamera.getZoom()));
 
             BuildingComponent component = tileMap.getBuildingComponent(gridX, gridY);
 

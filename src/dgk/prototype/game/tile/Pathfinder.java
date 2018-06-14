@@ -1,6 +1,7 @@
 package dgk.prototype.game.tile;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 
 /**
@@ -13,6 +14,13 @@ public class Pathfinder {
     // The Open set is the 'potential' Nodes that we check to see
     // if they are eligible for constructing the fastest route.
 
+    /*
+
+    TODO: Look for diagonal tiles - #1 improvement
+    TODO: Remove the currentNode (lowestScoreNode) from the Open Set
+
+     */
+
     private TileMap tileMap;
 
     private ArrayList<Node> openSet;
@@ -22,7 +30,9 @@ public class Pathfinder {
 
     private Node endNode;
 
-    public Pathfinder(TileMap tileMap, Tile start, Tile end) {
+    private boolean isDiagonal;
+
+    public Pathfinder(TileMap tileMap, Tile start, Tile end, boolean isDiagonal) {
         this.tileMap = tileMap;
 
         Node startNode = new Node(start, end, 0, false);
@@ -33,10 +43,11 @@ public class Pathfinder {
         this.path = new ArrayList<Node>();
 
         this.openSet.add(startNode);
+
+        this.isDiagonal = isDiagonal;
     }
 
     public void constructFastestPath() {
-
         int count = 0;
 
         while(openSet.size() > 0) {
@@ -64,11 +75,14 @@ public class Pathfinder {
             if(lowestScoreNode != null) {
                 openSet.remove(lowestScoreNode);
 
-                ArrayList<Node> adjacentNodes = getAdjacentTiles(lowestScoreNode);
+                //ArrayList<Node> adjacentNodes = getAdjacentTiles(lowestScoreNode);
 
-                System.out.println("Adjacent Node Size: " + adjacentNodes.size());
+                Node[] adjacentNodes = getAdjacentTiles(lowestScoreNode);
 
                 for(Node node : adjacentNodes) {
+                    if(node == null)
+                        continue;
+
                     if(isInClosedSet(node))
                         continue;
 
@@ -78,8 +92,6 @@ public class Pathfinder {
 
                     if(lowestScoreNode.getFScore() >= node.getFScore())
                         continue;
-
-                    path.add(lowestScoreNode);
                 }
 
                 closedSet.add(lowestScoreNode);
@@ -87,6 +99,23 @@ public class Pathfinder {
                 System.out.println("Error finding path!");
             }
         }
+
+        for(int i = 0; i < closedSet.size(); i++) {
+            path.add(closedSet.get(i));
+        }
+
+        /*
+               TODO: Fix this shit.
+         */
+
+        path.add(endNode);
+
+        for(int i = 0; i < path.size(); i++) {
+            Node n = path.get(i);
+            System.out.print("[" + n.getGridX() + ", " + n.getGridY() + "], ");
+        }
+
+        System.out.println();
     }
 
     public int getPathSize() {
@@ -117,41 +146,88 @@ public class Pathfinder {
         return false;
     }
 
-    public ArrayList<Node> getAdjacentTiles(Node node) {
+//    public ArrayList<Node> getAdjacentTiles(Node node) {
+//        int gridX = node.getGridX();
+//        int gridY = node.getGridY();
+//
+//        ArrayList<Node> adjacentTiles = new ArrayList<Node>();
+//
+//        // RIGHT TILE
+//        if(tileMap.getTile(gridX + 1, gridY) != null) {
+//            Tile tile = tileMap.getTile(gridX + 1, gridY);
+//
+//            Node right = new Node(tile, endNode.getTile(), node.getGScore() + 1, false);
+//            adjacentTiles.add(right);
+//        }
+//        // LEFT TILE
+//        if(tileMap.getTile(gridX - 1, gridY) != null) {
+//            Tile tile = tileMap.getTile(gridX - 1, gridY);
+//
+//            Node left = new Node(tile, endNode.getTile(), node.getGScore() + 1, false);
+//            adjacentTiles.add(left);
+//        }
+//        // TOP TILE
+//        if(tileMap.getTile(gridX, gridY + 1) != null) {
+//            Tile tile = tileMap.getTile(gridX, gridY + 1);
+//
+//            Node top = new Node(tile, endNode.getTile(), node.getGScore() + 1, false);
+//            adjacentTiles.add(top);
+//        }
+//        // BOTTOM TILE
+//        if(tileMap.getTile(gridX, gridY - 1) != null) {
+//            Tile tile = tileMap.getTile(gridX, gridY - 1);
+//
+//            Node bottom = new Node(tile, endNode.getTile(), node.getGScore() + 1, false);
+//            adjacentTiles.add(bottom);
+//        }
+//
+//        return adjacentTiles;
+//    }
+
+    /**
+     * Returns an array of Nodes of the adjacent tiles. (Not diagonal)
+     * @param node
+     * @return Array of length 4 containing an instance of a Node, or Null.
+     */
+    public Node[] getAdjacentTiles(Node node) {
         int gridX = node.getGridX();
         int gridY = node.getGridY();
 
-        ArrayList<Node> adjacentTiles = new ArrayList<Node>();
+        Node[] adjacentTiles = new Node[4];
 
         // RIGHT TILE
         if(tileMap.getTile(gridX + 1, gridY) != null) {
             Tile tile = tileMap.getTile(gridX + 1, gridY);
 
             Node right = new Node(tile, endNode.getTile(), node.getGScore() + 1, false);
-            adjacentTiles.add(right);
+            adjacentTiles[0] = right;
         }
         // LEFT TILE
         if(tileMap.getTile(gridX - 1, gridY) != null) {
             Tile tile = tileMap.getTile(gridX - 1, gridY);
 
             Node left = new Node(tile, endNode.getTile(), node.getGScore() + 1, false);
-            adjacentTiles.add(left);
+            adjacentTiles[1] = left;
         }
         // TOP TILE
         if(tileMap.getTile(gridX, gridY + 1) != null) {
             Tile tile = tileMap.getTile(gridX, gridY + 1);
 
             Node top = new Node(tile, endNode.getTile(), node.getGScore() + 1, false);
-            adjacentTiles.add(top);
+            adjacentTiles[2] = top;
         }
         // BOTTOM TILE
         if(tileMap.getTile(gridX, gridY - 1) != null) {
             Tile tile = tileMap.getTile(gridX, gridY - 1);
 
             Node bottom = new Node(tile, endNode.getTile(), node.getGScore() + 1, false);
-            adjacentTiles.add(bottom);
+            adjacentTiles[3] = bottom;
         }
 
         return adjacentTiles;
+    }
+
+    public boolean isDiagonal() {
+        return isDiagonal;
     }
 }

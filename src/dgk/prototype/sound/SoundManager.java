@@ -17,8 +17,11 @@ public class SoundManager implements IManager {
     private long device;
     private long context;
 
+    private float currentVolume;
+
     public SoundManager() {
         this.soundMap = new HashMap<String, Sound>();
+        this.currentVolume = 1f;
     }
 
     @Override
@@ -53,6 +56,22 @@ public class SoundManager implements IManager {
 
     public boolean hasSound(String name) {
         return (soundMap.containsKey(name));
+    }
+
+    public float getCurrentVolume() {
+        return currentVolume;
+    }
+
+    public void setCurrentVolume(float volume) {
+        if(volume < 0.0f) {
+            this.currentVolume = 0.0f;
+            return;
+        }else if(volume > 1.5f) {
+            this.currentVolume = 1.5f;
+            return;
+        }
+
+        this.currentVolume = volume;
     }
 
     @Override
