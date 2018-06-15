@@ -41,12 +41,15 @@ public class SoundManager implements IManager {
             System.out.println("OpenAL 1.0 is supported.");
         }
 
-        Sound uiButtonClick = new Sound("res/sounds/buttonClick.ogg");
+        Sound uiButtonClick = new Sound("res/sounds/buttonClick.ogg", .5f, 1f, 1f, false);
 
-        Sound walkingSound = new Sound ("res/sounds/walkingSound.ogg");
+        Sound walkingSound = new Sound ("res/sounds/walkingSound.ogg", .5f, .8f, 1f, false);
+
+        Sound rainLoop = new Sound("res/sounds/rainLoop.ogg", .05f, .5f, 1f, true);
 
         soundMap.put("buttonClick", uiButtonClick);
         soundMap.put("walkingSound", walkingSound);
+        soundMap.put("rainLoop", rainLoop);
     }
 
     public Sound getSound(String name) {
@@ -72,6 +75,12 @@ public class SoundManager implements IManager {
         }else if(volume > 1.5f) {
             this.currentVolume = 1.5f;
             return;
+        }
+
+        for(Sound sound: soundMap.values()) {
+            if(sound.isLooping()) {
+                sound.onVolumeChange();
+            }
         }
 
         this.currentVolume = volume;

@@ -34,8 +34,6 @@ public class World {
         this.entities = new ArrayList<Entity>();
         this.tileMap = new TileMap();
 
-        this.weatherSystem = new ParticleSystemRain(new Vec2D(0, -96), 800 - (48));
-
         this.renderLayerList = new ArrayList<IEntity>();
     }
 
@@ -73,10 +71,10 @@ public class World {
         testTile.setPassable(false);
         //addGameObject(testTile);
 
-        //addGameObject(new WallComponent(ComponentType.WOOD, World.MID_LAYER, 4 * 48, 8 * 48, 48, Direction.NORTH));
-
         entities.add(ruler);
         entities.add(new Peasant(96, 64));
+
+        this.weatherSystem = new ParticleSystemRain(new Vec2D(0, -96), 800 - (48));
     }
 
     private void addTile(Tile tile, int x, int y) {

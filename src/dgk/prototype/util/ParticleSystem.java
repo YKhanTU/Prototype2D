@@ -8,6 +8,13 @@ import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Random;
 
+/**
+ * The ParticleSystem class. This represents the 'system' or body that contains all of the
+ * particles. This class is intended to have multiple forms of functionality:
+ *
+ * TODO: Influence of scale/angle by the origin of the particle system.
+ * TODO: ParticleSystem types, such as "spurts" of particles every few seconds, or a "waterfall".
+ */
 public abstract class ParticleSystem {
 
     protected static final Random RANDOM = new Random();
@@ -34,6 +41,14 @@ public abstract class ParticleSystem {
         return this.particles.size();
     }
 
+    /**
+     * This method is executed when the Particle System is started up.
+     */
+    abstract void init();
+
+    /**
+     * This method is called when a particle is added at a constant rate per second.
+     */
     abstract void addParticle();
 
     public void onUpdate() {

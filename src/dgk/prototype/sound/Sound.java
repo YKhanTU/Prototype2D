@@ -16,14 +16,23 @@ public class Sound {
 
     private SoundManager soundManager;
 
-    private float pitch = 1.0f;
+    private float gain;
+    private float pitch;
+    private float frequency;
+
+    private boolean isLooping;
 
     private int bufferPointer;
     private int sourcePointer;
 
-    public Sound(String fileName) {
+    public Sound(String fileName, float gain, float pitch, float frequency, boolean isLooping) {
         this.soundManager = GameWindow.getInstance().soundManager;
         //File file = new File("res/sounds/" + fileName + ".wav");
+
+        this.isLooping = isLooping;
+        this.gain = gain;
+        this.pitch = pitch;
+        this.frequency = frequency;
 
         stackPush();
 
@@ -62,16 +71,48 @@ public class Sound {
 
     public void playSound() {
         alSourcei(sourcePointer, AL_BUFFER, bufferPointer);
+
+        if(isLooping) {
+            alSourcef(sourcePointer, AL_LOOPING, AL_TRUE);
+        }else{
+            alSourcef(sourcePointer, AL_LOOPING, AL_FALSE);
+        }
+
         // GAIN (volume)
-        alSourcef(sourcePointer, AL_GAIN, soundManager.getCurrentVolume());
+        float realGain = soundManager.getCurrentVolume() * this.gain;
+        alSourcef(sourcePointer, AL_GAIN, realGain);
+
+        // FREQUENCY
+        alSourcef(sourcePointer, AL_FREQUENCY, frequency);
+
         // PITCH
         alSourcef(sourcePointer, AL_PITCH, pitch);
 
         alSourcePlay(sourcePointer);
     }
 
+    public void stopSound() {
+        alSourceStop(sourcePointer);
+    }
+
     public void destroy() {
         alDeleteBuffers(bufferPointer);
         alDeleteSources(sourcePointer);
+    }
+
+    public boolean isLooping() {
+        return this.isLooping;
+    }
+
+    public float getGain(float gain) {
+        return this.gain;
+    }
+
+    public void setGain(float gain) {
+        this.gain = gain;
+    }
+
+    public void onVolumeChange() {
+        alSourcef(sourcePointer, AL_GAIN, soundManager.getCurrentVolume() * this.gain);
     }
 }

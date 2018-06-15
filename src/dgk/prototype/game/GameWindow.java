@@ -75,6 +75,14 @@ public class GameWindow {
         return this.worldCamera;
     }
 
+    public int getWidth() {
+        return width;
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
     public boolean setup() {
         GLFWErrorCallback.createPrint(System.err).set();
 
@@ -186,7 +194,7 @@ public class GameWindow {
         TileMap tileMap = world.getTileMap();
 
         Random r = new Random();
-        Pathfinder pathFinder = new Pathfinder(world.getTileMap(), tileMap.getTile(0, 0), tileMap.getTile(90, 100), false);
+        Pathfinder pathFinder = new Pathfinder(world.getTileMap(), tileMap.getTile(0, 0), tileMap.getTile(r.nextInt(100), r.nextInt(100)), false);
         pathFinder.constructFastestPath();
 
         System.out.println("Path time took: " + (System.currentTimeMillis() - start));
