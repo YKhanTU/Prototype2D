@@ -160,7 +160,8 @@ public class Tile extends GameObject {
 
     @Override
     public AABB getAABB() {
-        return new AABB(getPosition(), new Vec2D(getPosition().getX() + size, getPosition().getY() + size));
+        return new AABB(new Vec2D(getPosition().getX(), getPosition().getY()),
+                        new Vec2D(getPosition().getX() + size, getPosition().getY() + size));
     }
 
     @Override

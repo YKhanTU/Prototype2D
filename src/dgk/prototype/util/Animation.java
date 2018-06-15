@@ -82,8 +82,6 @@ public class Animation {
             return;
         }
 
-        System.out.println("start method called");
-
         startTime = System.currentTimeMillis();
     }
 

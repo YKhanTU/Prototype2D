@@ -14,8 +14,8 @@ public class TileShrub extends StaticTile {
     @Override
     public AABB getAABB() {
         Vec2D position = getPosition();
-        Vec2D AxisAlignedBBpos = new Vec2D(position.getX() - 8, position.getY() + (SIZE / 2));
-        Vec2D bottomRight =  new Vec2D(getPosition().getX() + SIZE - 16, getPosition().getY() + SIZE - 8);
+        Vec2D AxisAlignedBBpos = new Vec2D(position.getX(), position.getY() + (SIZE / 2));
+        Vec2D bottomRight =  new Vec2D(getPosition().getX() + SIZE, getPosition().getY() + SIZE);
 
         return new AABB(AxisAlignedBBpos, bottomRight);
     }

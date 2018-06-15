@@ -48,12 +48,7 @@ public class Pathfinder {
     }
 
     public void constructFastestPath() {
-        int count = 0;
-
         while(openSet.size() > 0) {
-
-            count++;
-            System.out.println(count);
 
             int lowestScore = Integer.MAX_VALUE;
             Node lowestScoreNode = null;
@@ -104,18 +99,18 @@ public class Pathfinder {
             path.add(closedSet.get(i));
         }
 
-        /*
-               TODO: Fix this shit.
-         */
-
         path.add(endNode);
 
         for(int i = 0; i < path.size(); i++) {
             Node n = path.get(i);
-            System.out.print("[" + n.getGridX() + ", " + n.getGridY() + "], ");
+            //System.out.print("[" + n.getGridX() + ", " + n.getGridY() + "], ");
         }
 
         System.out.println();
+    }
+
+    public ArrayList<Node> getPath() {
+        return path;
     }
 
     public int getPathSize() {

@@ -41,9 +41,12 @@ public class SoundManager implements IManager {
             System.out.println("OpenAL 1.0 is supported.");
         }
 
-        Sound sound = new Sound("res/sounds/buttonClick.ogg");
+        Sound uiButtonClick = new Sound("res/sounds/buttonClick.ogg");
 
-        soundMap.put("buttonClick", sound);
+        Sound walkingSound = new Sound ("res/sounds/walkingSound.ogg");
+
+        soundMap.put("buttonClick", uiButtonClick);
+        soundMap.put("walkingSound", walkingSound);
     }
 
     public Sound getSound(String name) {

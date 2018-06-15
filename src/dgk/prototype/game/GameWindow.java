@@ -1,5 +1,6 @@
 package dgk.prototype.game;
 
+import dgk.prototype.game.tile.Node;
 import dgk.prototype.game.tile.Pathfinder;
 import dgk.prototype.game.tile.TileMap;
 import dgk.prototype.game.tile.World;
@@ -15,6 +16,8 @@ import org.lwjgl.opengl.*;
 import org.lwjgl.system.*;
 
 import java.nio.*;
+import java.util.ArrayList;
+import java.util.Random;
 
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.*;
@@ -177,16 +180,24 @@ public class GameWindow {
         gui.init();
         world.load();
 
-        /// TESTING
+        long start = System.currentTimeMillis();
+        /// TESTING ----------------------------------------------------------
 
         TileMap tileMap = world.getTileMap();
 
-        Pathfinder pathFinder = new Pathfinder(world.getTileMap(), tileMap.getTile(0, 0), tileMap.getTile(10, 1), false);
+        Random r = new Random();
+        Pathfinder pathFinder = new Pathfinder(world.getTileMap(), tileMap.getTile(0, 0), tileMap.getTile(90, 100), false);
         pathFinder.constructFastestPath();
-        System.out.println("PathFinder size: " + pathFinder.getPathSize());
-        System.out.println("PathFinder: " + pathFinder.getOpenSetSize());
 
-        /// REMOVE AFTER TEST
+        System.out.println("Path time took: " + (System.currentTimeMillis() - start));
+
+        ArrayList<Node> path = pathFinder.getPath();
+
+        for(Node n : path) {
+            world.getTileMap().onTileSelection(n.getTile());
+        }
+
+        /// REMOVE AFTER TEST ------------------------------------------------
 
         while(!hasWindowRequestedClose() && isRunning) {
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -195,7 +206,7 @@ public class GameWindow {
                 GUILoadingScreen loadingScreen = (GUILoadingScreen) gui;
 
                 if(loadingScreen.isComplete()) {
-                    setGUI(new GUIOptions(800, 600));
+                    setGUI(new GUIInGameMenu(800, 600));
                     isLoading = false;
                 }
             }

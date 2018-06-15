@@ -16,6 +16,8 @@ public class Sound {
 
     private SoundManager soundManager;
 
+    private float pitch = 1.0f;
+
     private int bufferPointer;
     private int sourcePointer;
 
@@ -63,7 +65,7 @@ public class Sound {
         // GAIN (volume)
         alSourcef(sourcePointer, AL_GAIN, soundManager.getCurrentVolume());
         // PITCH
-        //alSourcef(sourcePointer, AL_PITCH, .3f);
+        alSourcef(sourcePointer, AL_PITCH, pitch);
 
         alSourcePlay(sourcePointer);
     }

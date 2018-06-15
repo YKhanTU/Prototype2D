@@ -29,7 +29,7 @@ public class ResourceManager implements IManager {
 
     @Override
     public void start() {
-        SpriteSheet tileSheet = new SpriteSheet(this,"sprites/test/A2/A1updated");
+        SpriteSheet tileSheet = new SpriteSheet(this,"sprites/test/A2/A1updated2");
 
         // GRASS
         tileSheet.loadTexture(1, 2, 48, 48);
@@ -76,7 +76,7 @@ public class ResourceManager implements IManager {
 
         // WALLS (WOOD)
         //      WOOD GATE
-        tileSheet.loadTexture(528, 347, 96);
+        tileSheet.loadTexture(624, 299, 96);
         //      WOOD WALL NORTH PIECE 1A
         tileSheet.loadTexture(8, 1, 48, 48);
         //      WOOD WALL NORTH PIECE 1B
@@ -90,7 +90,7 @@ public class ResourceManager implements IManager {
         //      WOOD WALL SOUTH PIECE 1A
         //tileSheet.loadTexture(8, 1, 48, 48);
 
-        spriteSheetMap.put("TileSpriteSheet", tileSheet);
+
 
         SpriteSheet uiElements = new SpriteSheet(this, "InterfaceSheetTrans");
         uiElements.loadTexture(0, 0, 32, 32);
@@ -159,6 +159,45 @@ public class ResourceManager implements IManager {
         uiElements.loadTexture(2, 2, 32, 32);
 
         spriteSheetMap.put("UISpriteSheet", uiElements);
+
+        SpriteSheet rainParticles = new SpriteSheet(this, "sprites/test/A2/particles2");
+
+        // GATE ANIMATIONS
+        rainParticles.loadTextureManually(0, 50, 48, 96);
+        rainParticles.loadTextureManually(49, 50, 48, 96);
+        rainParticles.loadTextureManually(97, 50, 48, 96);
+        rainParticles.loadTextureManually(145, 50, 48, 96);
+        rainParticles.loadTextureManually(193, 50, 48, 96);
+
+        spriteSheetMap.put("RainParticles", rainParticles);
+
+        SpriteSheet rulerBreathing = new SpriteSheet(this, "sprites/test/A2/sprites");
+
+        for(int i = 0; i < 5; i++) {
+            rulerBreathing.loadTexture(i,  0, 50, 50);
+        }
+
+        spriteSheetMap.put("TestBreathing", rulerBreathing);
+
+        // WALLS (WOOD)
+        //      WOOD GATE
+        tileSheet.loadTexture(528, 347, 96);
+        //      WOOD WALL SOUTH PIECE 1
+        tileSheet.loadTexture(11, 5, 48, 48);
+        //      WOOD WALL SOUTH PIECE 1A
+        tileSheet.loadTexture(11, 6, 48, 48);
+
+        //      WOOD WALL NORTH PIECE 1C
+        //tileSheet.loadTexture(11, 0, 48, 48);
+        //      WOOD WALL NORTH STAIR 1
+        //tileSheet.loadTexture(8, 7, 48, 48);
+
+        tileSheet.loadTextureManually(426, 398, 96, 130);
+        tileSheet.loadTextureManually(522, 398, 96, 130);
+        tileSheet.loadTextureManually(618, 398, 96, 130);
+        tileSheet.loadTextureManually(714, 398, 96, 130);
+
+        spriteSheetMap.put("TileSpriteSheet", tileSheet);
 
         /*rulerAnimations = new SpriteSheet("sprites/test/sprites");
 

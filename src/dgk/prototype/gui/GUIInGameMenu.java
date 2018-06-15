@@ -36,6 +36,15 @@ public class GUIInGameMenu extends GUI {
             }
         });
 
+        debugMenu.addElement(new GUIButton(this, debugMenu, "OptionsMenu Test", 680, 155, 75, 20) {
+            @Override
+            void onButtonClick() {
+                playSound();
+
+                GameWindow.getInstance().setGUI(new GUIOptions(800, 600));
+            }
+        });
+
         addMenu(debugMenu);
 
 

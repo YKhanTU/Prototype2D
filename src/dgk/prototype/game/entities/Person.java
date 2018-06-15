@@ -1,6 +1,7 @@
 package dgk.prototype.game.entities;
 
 import dgk.prototype.game.*;
+import dgk.prototype.game.tile.Tile;
 import dgk.prototype.game.tile.World;
 import dgk.prototype.input.InputManager;
 import dgk.prototype.util.AABB;
@@ -58,7 +59,7 @@ public abstract class Person extends Entity {
     @Override
     public AABB getAABB() {
         Vec2D position = getPosition();
-        Vec2D AxisAlignedBBpos = new Vec2D(position.getX(), position.getY() + (HEIGHT / 2 + 8));
+        Vec2D AxisAlignedBBpos = new Vec2D(position.getX() + 12, position.getY() + 40);
 
         /**
          * AABB
@@ -69,7 +70,7 @@ public abstract class Person extends Entity {
          *                      64x16
          */
 
-        return new AABB(AxisAlignedBBpos, new Vec2D(getPosition().getX() + WIDTH, getPosition().getY() + HEIGHT));
+        return new AABB(AxisAlignedBBpos, new Vec2D(getPosition().getX() + 52, getPosition().getY() + 56));
     }
 
     @Override
@@ -94,12 +95,20 @@ public abstract class Person extends Entity {
 
             if(this.getAABB().isIntersecting(e.getAABB())) {
                 this.position = lastPosition;
+                System.out.println("Collision detected.");
 
                 return;
             }
         }
 
         for(GameObject gameObject : gameObjects) {
+            if(gameObject instanceof Tile) {
+                Tile tile = (Tile) gameObject;
+
+                if(tile.isPassable())
+                    continue;
+            }
+
             if(this.getAABB().isIntersecting(gameObject.getAABB())) {
                 this.position = lastPosition;
 

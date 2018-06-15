@@ -23,7 +23,7 @@ public class GUIOptions extends GUI {
             protected void addUtilButtons() {}
         };
 
-        optionsMenu.addElement(new GUISlider(this, optionsMenu, 300, 170, 200, .5f) {
+        optionsMenu.addElement(new GUISlider(this, optionsMenu, 300, 170, 200, soundManager.getCurrentVolume()) {
             @Override
             public void onSliderValueChange() {
                 soundManager.setCurrentVolume(getSliderValue());

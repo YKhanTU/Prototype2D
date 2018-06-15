@@ -4,6 +4,7 @@ import dgk.prototype.game.Camera;
 import dgk.prototype.game.Direction;
 import dgk.prototype.game.GameWindow;
 import dgk.prototype.input.InputManager;
+import dgk.prototype.sound.Sound;
 import dgk.prototype.util.Animation;
 import dgk.prototype.util.SpriteSheet;
 import dgk.prototype.util.Vec2D;
@@ -30,6 +31,8 @@ public class Ruler extends Person {
     private Animation breathingAnimation;
 
     private int[][] walkingAnimations;
+
+    private Sound walkingSound;
 
     private int currentAnim;
 
@@ -64,7 +67,9 @@ public class Ruler extends Person {
 
         currentAnim = walkingAnimations[0][0];
 
-        this.breathingAnimation = new Animation(51, 3, 400L, true);
+        walkingSound = GameWindow.getInstance().soundManager.getSound("walkingSound");
+
+        this.breathingAnimation = new Animation(90, 4, 250L, true);
 
         worldCamera = GameWindow.getInstance().getWorldCamera();
     }
@@ -148,6 +153,8 @@ public class Ruler extends Person {
         }else if(animationFrame == 1) {
             animationFrame = 2;
         }
+
+        //walkingSound.playSound();
     }
 
     private void updateStartTime() {
@@ -166,28 +173,28 @@ public class Ruler extends Person {
             this.velocity.setY(movementSpeed);
 
             isMoving = true;
-            //breathingAnimation.stop();
+            breathingAnimation.stop();
         }else if(gw.isKeyPressed(GLFW.GLFW_KEY_W)) {
             setDirection(Direction.NORTH);
             this.velocity.setX(0);
             this.velocity.setY(-movementSpeed);
 
             isMoving = true;
-            //breathingAnimation.stop();
+            breathingAnimation.stop();
         }else if(gw.isKeyPressed(GLFW.GLFW_KEY_A)) {
             setDirection(Direction.EAST);
             this.velocity.setX(-movementSpeed);
             this.velocity.setY(0);
 
             isMoving = true;
-            //breathingAnimation.stop();
+            breathingAnimation.stop();
         }else if(gw.isKeyPressed(GLFW.GLFW_KEY_D)) {
             setDirection(Direction.WEST);
             this.velocity.setX(movementSpeed);
             this.velocity.setY(0);
 
             isMoving = true;
-            //breathingAnimation.stop();
+            breathingAnimation.stop();
         }else{
             this.velocity.setX(0);
             this.velocity.setY(0);
@@ -196,7 +203,7 @@ public class Ruler extends Person {
             animationFrame = 1;
         }
 
-        //if(!isIdle()) {
+        if(!isIdle()) {
             updateStartTime();
 
             switch (getDirection()) {
@@ -205,6 +212,7 @@ public class Ruler extends Person {
                         if (System.currentTimeMillis() - startTime >= animTime) {
                             startTime = System.currentTimeMillis();
                             switchAnimFrame();
+
                         }
                         currentAnim = walkingAnimations[1][animationFrame];
                     } else {
@@ -245,14 +253,14 @@ public class Ruler extends Person {
                     }
                     break;
             }
-        //}
-//        else{
-//            breathingAnimation.start();
-//
-//            breathingAnimation.onUpdate();
-//
-//            currentAnim = breathingAnimation.getCurrentFrameTextureId();
-//        }
+        }
+        else{
+            breathingAnimation.start();
+
+            breathingAnimation.onUpdate();
+
+            currentAnim = breathingAnimation.getCurrentFrameTextureId();
+        }
 
         this.lastPosition = new Vec2D(getPosition().getX(), getPosition().getY());
 

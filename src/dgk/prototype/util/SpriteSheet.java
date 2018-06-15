@@ -18,7 +18,7 @@ import static org.lwjgl.opengl.GL12.GL_CLAMP_TO_EDGE;
 
 public class SpriteSheet {
 
-    public static final int GRASS_1 = 1;
+    public static final int PUDDLE = 1;
     public static final int GRASS_2 = 2;
     public static final int STONE = 3;
     public static final int BRICK = 4;
@@ -141,6 +141,47 @@ public class SpriteSheet {
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, buffer);
 
         System.out.println(sheetName + " ---> [ " + column + ", " + row + "] has been loaded. (w: " + w + ", y: " + h + ") = " + id);
+
+        glBindTexture(GL_TEXTURE_2D, 0);
+
+        textureMap.add(id);
+
+        resourceManager.onTextureLoad();
+    }
+
+    public void loadTextureManually(int x, int y, int w, int h) {
+        int id = glGenTextures(); // 1 ---> MAX INTEGER SIZE
+
+        int[] pixels = new int[w * h];
+        spriteSheet.getRGB(x, y, w, h, pixels, 0, w);
+
+        ByteBuffer buffer = BufferUtils.createByteBuffer(w * h * 4);
+
+        for (int i = 0; i < h; i++) {
+            for (int j = 0; j < w; j++) {
+                int pixel = pixels[i * w + j];
+                buffer.put((byte) ((pixel >> 16) & 0xFF));
+                buffer.put((byte) ((pixel >> 8) & 0xFF));
+                buffer.put((byte) (pixel & 0xFF));
+                buffer.put((byte) ((pixel >> 24) & 0xFF));
+            }
+        }
+
+        int width = w;
+        int height = h;
+
+        buffer.flip();
+
+        glBindTexture(GL_TEXTURE_2D, id);
+
+        glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+        glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+        glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+        glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, buffer);
+
+        System.out.println(sheetName + " ---> [ " + x + ", " + y + "] has been loaded. (w: " + w + ", y: " + h + ") = " + id);
 
         glBindTexture(GL_TEXTURE_2D, 0);
 

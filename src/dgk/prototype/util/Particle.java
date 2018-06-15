@@ -1,5 +1,6 @@
 package dgk.prototype.util;
 
+import dgk.prototype.game.GameCamera;
 import dgk.prototype.game.GameWindow;
 import dgk.prototype.game.IEntity;
 import dgk.prototype.game.Camera;
@@ -20,11 +21,9 @@ public class Particle implements IEntity {
     private int width;
     private int height;
 
-    private float scale;
-
-    private float angle;
-
-    private float lifeSpan;
+    protected float scale;
+    protected float angle;
+    protected float lifeSpan;
 
     public Particle(int textureId, int width, int height, float scale, Vec2D initPosition) {
         this(textureId, width, height, scale, initPosition, new Vec2D(0, 0));
@@ -92,6 +91,10 @@ public class Particle implements IEntity {
         }
     }
 
+    protected Camera getWorldCamera() {
+        return worldCamera;
+    }
+
     public Texture getTexture() {
         return TextureLoader.getTexture(textureId);
     }
@@ -102,6 +105,10 @@ public class Particle implements IEntity {
 
     public Vec2D getPosition() {
         return this.position;
+    }
+
+    protected Vec2D getVelocity() {
+        return this.velocity;
     }
 
     public void applyForce(Vec2D acceleration) {
@@ -126,6 +133,10 @@ public class Particle implements IEntity {
 
     public void setHeight(int height) {
         this.height = height;
+    }
+
+    public float getScale() {
+        return scale;
     }
 
     public float getAngle() {

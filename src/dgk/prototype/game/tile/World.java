@@ -3,8 +3,7 @@ package dgk.prototype.game.tile;
 import dgk.prototype.game.*;
 import dgk.prototype.game.entities.Peasant;
 import dgk.prototype.game.entities.Ruler;
-import dgk.prototype.util.SpriteSheet;
-import dgk.prototype.util.Vec2D;
+import dgk.prototype.util.*;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -12,12 +11,17 @@ import java.util.Comparator;
 
 public class World {
 
+    public static final int RAIN_WIDTH = 48;
+    public static final int RAIN_HEIGHT = 96;
+
     public static final byte LOWER_LAYER = 0;
     public static final byte MID_LAYER = 1;
     public static final byte UPPER_LAYER = 2;
 
     private ArrayList<Entity> entities;
     private TileMap tileMap;
+
+    private ParticleSystem weatherSystem;
 
     /**
      * Used to hold the render order of all objects on the screen. TEMPORARY.
@@ -29,6 +33,8 @@ public class World {
     public World() {
         this.entities = new ArrayList<Entity>();
         this.tileMap = new TileMap();
+
+        this.weatherSystem = new ParticleSystemRain(new Vec2D(0, -96), 800 - (48));
 
         this.renderLayerList = new ArrayList<IEntity>();
     }
@@ -46,8 +52,8 @@ public class World {
 
         // TODO Format this in a better way.
 
-        for(int i = 0; i < 32; i++) {
-            for(int j = 0; j < 32; j++) {
+        for(int i = 0; i < 128; i++) {
+            for(int j = 0; j < 128; j++) {
                 addTile(new Tile(SpriteSheet.GRASS_2, World.LOWER_LAYER, i * 48, j * 48, 48), i, j);
             }
         }
@@ -56,6 +62,16 @@ public class World {
         addGameObject(new TileShrub(600, 234));
         addGameObject(new TileTree(600, 500));
         addGameObject(new TileTree(300, 200));
+
+        AnimatableTile gateAnimation = new AnimatableTile(-1, World.MID_LAYER, 500, 500, 130);
+
+        gateAnimation.setAnimation(new Animation(98, 4, 300, true));
+
+        //addGameObject(gateAnimation);
+
+        Tile testTile = new Tile(SpriteSheet.WOOD_GATE, World.MID_LAYER, 500 - 96, 500, 96);
+        testTile.setPassable(false);
+        //addGameObject(testTile);
 
         //addGameObject(new WallComponent(ComponentType.WOOD, World.MID_LAYER, 4 * 48, 8 * 48, 48, Direction.NORTH));
 
@@ -93,6 +109,8 @@ public class World {
         for(IEntity entity : entities) {
             entity.onUpdate();
         }
+
+        weatherSystem.onUpdate();
     }
 
     public void render() {
@@ -120,11 +138,20 @@ public class World {
         Collections.sort(renderLayerList, new Comparator<IEntity>() {
             @Override
             public int compare(IEntity o1, IEntity o2) {
-                if(o1.getPosition().getY() > o2.getPosition().getY()) {
+                AABB axisAlignedBB1 = o1.getAABB();
+                AABB axisAlignedBB2 = o2.getAABB();
+
+                if(axisAlignedBB1.getMin().getY() > axisAlignedBB2.getMin().getY()) {
                     return 1;
-                }else if(o1.getPosition().getY() < o2.getPosition().getY()) {
+                }else if(axisAlignedBB1.getMin().getY() < axisAlignedBB2.getMin().getY()) {
                     return -1;
                 }
+
+//                if(o1.getPosition().getY() > o2.getPosition().getY()) {
+//                    return 1;
+//                }else if(o1.getPosition().getY() < o2.getPosition().getY()) {
+//                    return -1;
+//                }
 
                 return 0;
             }
@@ -135,6 +162,8 @@ public class World {
         }
 
         renderLayerList.clear();
+
+        weatherSystem.render();
     }
 
     // TODO THIS IS TEMPORARY AND SHOULD BE REMOVED IMMEDIATELY... SOON.
@@ -149,12 +178,14 @@ public class World {
 
             BuildingComponent component = tileMap.getBuildingComponent(gridX, gridY);
 
-//            if(component != null) {
-//                System.out.println("Cannot build here!");
-//            }else{
-//                addGameObject(new WallComponent(ComponentType.WOOD, World.MID_LAYER, gridX * 48, gridY * 48, 48, Direction.NORTH));
-//                return true;
-//            }
+            if(component != null) {
+                System.out.println("Cannot build here!");
+            }else{
+                WallComponent newWall = new WallComponent(ComponentType.WOOD, World.MID_LAYER, gridX * 48, gridY * 48, 48, Direction.NORTH);
+                addGameObject(newWall);
+                newWall.onAdd(this);
+                return true;
+            }
 
             Tile tile = tileMap.getTile(gridX, gridY);
 

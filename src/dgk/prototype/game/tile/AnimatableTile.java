@@ -1,6 +1,12 @@
 package dgk.prototype.game.tile;
 
+import dgk.prototype.game.Camera;
+import dgk.prototype.game.GameWindow;
 import dgk.prototype.util.Animation;
+import org.lwjgl.opengl.GL11;
+
+import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
 
 /**
  * An AnimatableTile represents a tile that has an Animation.

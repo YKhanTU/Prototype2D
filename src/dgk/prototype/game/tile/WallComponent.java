@@ -19,19 +19,32 @@ public class WallComponent extends BuildingComponent {
         this.subComponents[0] = new Tile(0, renderLayer, x, y + 48, size);
         this.subComponents[1] = new Tile(0, renderLayer, x, y - 48, size);
 
+        this.setPassable(true);
+        this.subComponents[0].setPassable(false);
+        this.subComponents[1].setPassable(false);
+
         setType(type);
         onDirectionChange();
     }
+
+    public void onAdd(World world) {
+        TileMap tileMap = world.getTileMap();
+
+        for(Tile tile : subComponents) {
+            tileMap.addGameObject(tile);
+        }
+    }
+
 
     @Override
     public void render() {
         super.render();
 
-        for(Tile t : subComponents) {
-            if(t != null) {
-                t.render();
-            }
-        }
+//        for(Tile t : subComponents) {
+//            if(t != null) {
+//                t.render();
+//            }
+//        }
     }
 
     @Override
