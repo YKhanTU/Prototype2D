@@ -171,21 +171,29 @@ public class World {
 
             System.out.println(worldCamera.getZoom() * TileMap.TILE_SIZE);
 
+            Vec2D mousePos = new Vec2D(mX, mY);
+            Vec2D convertedPos;
+            Vec2D gridCoords;
+
+            System.out.println((convertedPos = toWorldCoordinates(mousePos)));
+            System.out.println(gridCoords = toGridCoordinates(convertedPos));
+
+
             int gridX = (int) Math.floor((mX + GameWindow.getInstance().getWorldCamera().getPosition().getX()) / (TileMap.TILE_SIZE * worldCamera.getZoom()));
             int gridY = (int) Math.floor((mY + GameWindow.getInstance().getWorldCamera().getPosition().getY()) / (TileMap.TILE_SIZE * worldCamera.getZoom()));
 
             BuildingComponent component = tileMap.getBuildingComponent(gridX, gridY);
 
-            if(component != null) {
-                System.out.println("Cannot build here!");
-            }else{
-                WallComponent newWall = new WallComponent(ComponentType.WOOD, World.MID_LAYER, gridX * 48, gridY * 48, 48, Direction.NORTH);
-                addGameObject(newWall);
-                newWall.onAdd(this);
-                return true;
-            }
+//            if(component != null) {
+//                System.out.println("Cannot build here!");
+//            }else{
+//                WallComponent newWall = new WallComponent(ComponentType.WOOD, World.MID_LAYER, (int) gridCoords.getX() * 48, (int) gridCoords.getY() * 48, 48, Direction.NORTH);
+//                addGameObject(newWall);
+//                newWall.onAdd(this);
+//                return true;
+//            }
 
-            Tile tile = tileMap.getTile(gridX, gridY);
+            Tile tile = tileMap.getTile((int) gridCoords.getX(), (int) gridCoords.getY());
 
             if(tile == null) {
                 return true;
@@ -197,6 +205,30 @@ public class World {
         }
 
         return false;
+    }
+
+    public Vec2D toGridCoordinates(Vec2D worldCoordinates) {
+
+        Camera worldCamera = GameWindow.getInstance().getWorldCamera();
+
+        double zoomFactor = worldCamera.getZoom() * TileMap.TILE_SIZE;
+
+        return new Vec2D(Math.floor(worldCoordinates.getX() / TileMap.TILE_SIZE), Math.floor(worldCoordinates.getY() / TileMap.TILE_SIZE));
+    }
+
+    public Vec2D toWorldCoordinates(Vec2D mouseCoordinates) {
+        double mX = mouseCoordinates.getX();
+        double mY = mouseCoordinates.getY();
+
+        Camera worldCamera = GameWindow.getInstance().getWorldCamera();
+
+        double zoomFactor = worldCamera.getZoom();
+
+        final Vec2D cameraPosition = worldCamera.getPosition();
+
+        Vec2D convertedCoords = new Vec2D((mX / zoomFactor) + cameraPosition.getX(), ((mY / zoomFactor) + cameraPosition.getY()));
+
+        return convertedCoords;
     }
 
     public Vec2D getGridCoordinates(Entity entity) {

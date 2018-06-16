@@ -41,6 +41,8 @@ public class SpriteSheet {
     // 11, 2
     public static final int WOOD_WALL_NORTH_1C = 35;
 
+    public static final int DISEASE_ICON = 116;
+
     private ResourceManager resourceManager;
 
     private String sheetName;

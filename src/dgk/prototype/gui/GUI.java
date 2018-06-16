@@ -1,11 +1,14 @@
 package dgk.prototype.gui;
 
+import dgk.prototype.font.TrueTypeFont;
 import dgk.prototype.game.Camera;
 import dgk.prototype.game.GameWindow;
 import dgk.prototype.util.Color;
 import dgk.prototype.util.Vec2D;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
+
+import java.io.File;
 import java.nio.DoubleBuffer;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -22,7 +25,7 @@ import static org.lwjgl.glfw.GLFW.glfwGetCursorPos;
  */
 public abstract class GUI {
 
-    public static final int FONT_HEIGHT = 24;
+    public static final int FONT_HEIGHT = 20;
 
     public static final int NOTIFICATION_LIMIT = 5;
     public static final int NOTIFICATION_Y = 300;
@@ -52,9 +55,9 @@ public abstract class GUI {
         guiMenus.add(menu);
     }
 
-    //public void drawString(String text, int x, int y) {
-    //    trueTypeFont.drawString(x, y, text);
-    //}
+    public void drawString(TrueTypeFont trueTypeFont, String text, float x, float y) {
+       trueTypeFont.drawString(trueTypeFont, text, x, y);
+    }
 
     public void addNotification(GUINotification notification) {
         if(guiNotifications.size() == NOTIFICATION_LIMIT)

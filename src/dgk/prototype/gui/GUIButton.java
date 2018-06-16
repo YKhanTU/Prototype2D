@@ -1,5 +1,6 @@
 package dgk.prototype.gui;
 
+import dgk.prototype.font.TrueTypeFont;
 import dgk.prototype.game.Camera;
 import dgk.prototype.game.GameWindow;
 import dgk.prototype.util.Vec2D;
@@ -15,6 +16,8 @@ public abstract class GUIButton implements GUIElement {
     private GUI gui;
     protected GUIMenu guiMenu;
     protected SoundManager soundManager;
+
+    private TrueTypeFont font;
 
     private int textureId;
 
@@ -37,6 +40,7 @@ public abstract class GUIButton implements GUIElement {
         this.gui = gui;
         this.guiMenu = guiMenu;
         this.soundManager = GameWindow.getInstance().soundManager;
+        this.font = GameWindow.getInstance().resourceManager.getFont("GUIButtonFont");
         this.textureId = textureId;
         this.label = label;
         this.x = x;
@@ -135,13 +139,16 @@ public abstract class GUIButton implements GUIElement {
         }
         GL11.glEnd();
 
-        if(label != null) {
-            //gui.drawString(label, (int) (x - viewport.getPosition().getX() + 5), (int) (y - viewport.getPosition().getY() + 5));
-        }
-
         GL11.glPopMatrix();
 
         GL11.glColor4f(1f, 1f, 1f, 1f);
+
+        if(label != null) {
+            int length = (font.getFontTextLength(label));
+            int height = GUI.FONT_HEIGHT;
+
+            gui.drawString(font, label, (float) x + ((float) width / 2) - (length / 2), (float) y + ((float) this.height / 2) - (height / 4));
+        }
     }
 
     /**

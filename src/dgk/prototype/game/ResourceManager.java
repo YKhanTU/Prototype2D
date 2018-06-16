@@ -1,10 +1,12 @@
 package dgk.prototype.game;
 
+import dgk.prototype.font.TrueTypeFont;
 import dgk.prototype.util.IManager;
 import dgk.prototype.util.SpriteSheet;
 import org.lwjgl.opengl.GL;
 import org.lwjgl.opengl.GL11;
 
+import java.io.File;
 import java.util.HashMap;
 
 public class ResourceManager implements IManager {
@@ -13,18 +15,27 @@ public class ResourceManager implements IManager {
      * The total amount of textures that we need to load.
      * Used to determine the 'progress' of the ResourceManager.
      */
-    public static final int GOAL = 69;
+    public static final int GOAL = 100;
 
     protected int currentProgress;
 
     private boolean isComplete;
 
     private HashMap<String, SpriteSheet> spriteSheetMap;
+    private HashMap<String, TrueTypeFont> trueTypeFontMap;
 
     public ResourceManager() {
         this.currentProgress = 0;
         this.isComplete = false;
         this.spriteSheetMap = new HashMap<String, SpriteSheet>();
+        this.trueTypeFontMap = new HashMap<String, TrueTypeFont>();
+    }
+
+    private void loadFonts() {
+        File fontLoc = new File("res/font/BNRegular.ttf");
+
+        trueTypeFontMap.put("GUIButtonFont", new TrueTypeFont(fontLoc, 12));
+        trueTypeFontMap.put("GUILabelFont", new TrueTypeFont(fontLoc, 20));
     }
 
     @Override
@@ -199,6 +210,42 @@ public class ResourceManager implements IManager {
 
         spriteSheetMap.put("TileSpriteSheet", tileSheet);
 
+        SpriteSheet rulerBreathingAnim = new SpriteSheet(this, "sprites/test/A2/Ruler_breathing");
+
+        for(int col = 0; col < 4; col++) {
+            for(int row = 0; row < 5; row++) {
+                rulerBreathingAnim.loadTexture(row, col, 50, 50);
+            }
+        }
+
+        spriteSheetMap.put("RulerBreathingFull", rulerBreathingAnim);
+
+        SpriteSheet uiTest = new SpriteSheet(this, "sprites/test/A2/UI");
+
+        for(int i = 0; i < 3; i++) {
+            uiTest.loadTexture(i, 0, 32, 32);
+        }
+
+        spriteSheetMap.put("TestIcons", uiTest);
+
+        SpriteSheet rulerBreathingAnimGlow = new SpriteSheet(this, "sprites/test/A2/Ruler_breathing_glow");
+
+        for(int col = 0; col < 4; col++) {
+            for(int row = 0; row < 5; row++) {
+                rulerBreathingAnimGlow.loadTexture(row, col, 50, 50);
+            }
+        }
+
+        spriteSheetMap.put("RulerBreathingFullGlow", rulerBreathingAnim);
+
+        SpriteSheet testZombie = new SpriteSheet(this, "sprites/test/A2/char_zombie_2");
+
+        testZombie.loadTexture(50, 0, 50);
+
+        spriteSheetMap.put("TestZombie", testZombie);
+
+        loadFonts();
+
         /*rulerAnimations = new SpriteSheet("sprites/test/sprites");
 
         for(int col = 0; col < 4; col++) {
@@ -254,6 +301,13 @@ public class ResourceManager implements IManager {
             return null;
 
         return spriteSheetMap.get(name);
+    }
+
+    public TrueTypeFont getFont(String name) {
+        if(!trueTypeFontMap.containsKey(name))
+            return null;
+
+        return trueTypeFontMap.get(name);
     }
 
     public void onTextureLoad() {

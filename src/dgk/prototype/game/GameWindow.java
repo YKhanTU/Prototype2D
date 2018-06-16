@@ -1,5 +1,6 @@
 package dgk.prototype.game;
 
+import dgk.prototype.font.TrueTypeFont;
 import dgk.prototype.game.tile.Node;
 import dgk.prototype.game.tile.Pathfinder;
 import dgk.prototype.game.tile.TileMap;
@@ -15,6 +16,7 @@ import org.lwjgl.glfw.*;
 import org.lwjgl.opengl.*;
 import org.lwjgl.system.*;
 
+import java.io.File;
 import java.nio.*;
 import java.util.ArrayList;
 import java.util.Random;

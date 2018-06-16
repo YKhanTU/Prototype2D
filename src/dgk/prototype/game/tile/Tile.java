@@ -86,6 +86,7 @@ public class Tile extends GameObject {
         GL11.glMatrixMode(GL_MODELVIEW_MATRIX);
         GL11.glPushMatrix();
 
+        //GL11.glTranslated(-(getPosition().x - worldCamera.getPosition().getX()), -(getPosition().y - worldCamera.getPosition().getY()), 0);
         GL11.glScalef(worldCamera.getZoom(), worldCamera.getZoom(), 0);
         GL11.glTranslated(getPosition().x - worldCamera.getPosition().getX(), getPosition().y - worldCamera.getPosition().getY(), 0);
 

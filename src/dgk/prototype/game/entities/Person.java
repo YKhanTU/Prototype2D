@@ -5,6 +5,7 @@ import dgk.prototype.game.tile.Tile;
 import dgk.prototype.game.tile.World;
 import dgk.prototype.input.InputManager;
 import dgk.prototype.util.AABB;
+import dgk.prototype.util.SpriteSheet;
 import dgk.prototype.util.Vec2D;
 import org.lwjgl.opengl.GL11;
 
@@ -183,20 +184,88 @@ public abstract class Person extends Entity {
 
         GL11.glPopMatrix();
         GL11.glEnable(GL_TEXTURE_2D);
+
+        GL11.glColor4f(1f, 1f, 1f, 1f);
     }
 
     /**
      * Draws information above the character when they are selected.
      */
-    protected void drawSelectionInfo() {}
+    protected void drawSelectionInfo(Camera worldCamera) {
+        glEnable(GL_TEXTURE_2D);
+
+        GL11.glMatrixMode(GL_MODELVIEW_MATRIX);
+        GL11.glPushMatrix();
+
+        GL11.glScalef(worldCamera.getZoom(), worldCamera.getZoom(), 0);
+        GL11.glTranslated(getPosition().getX() - worldCamera.getPosition().getX() - 32, getPosition().getY() - worldCamera.getPosition().getY(), 0);
+
+        GameWindow.getInstance().resourceManager.getSpriteSheet("UISpriteSheet").bindTexture(115);
+
+        GL11.glBegin(GL11.GL_QUADS);
+        {
+            GL11.glTexCoord2f(0, 0);
+            GL11.glVertex2f(0, 0);
+
+            GL11.glTexCoord2f(1, 0);
+            GL11.glVertex2f(32, 0);
+
+            GL11.glTexCoord2f(1, 1);
+            GL11.glVertex2f(32, 32);
+
+            GL11.glTexCoord2f(0, 1);
+            GL11.glVertex2f(0, 32);
+        }
+        GL11.glEnd();
+
+        GL11.glPopMatrix();
+        GL11.glDisable(GL_TEXTURE_2D);
+
+        GL11.glColor4f(1f, 1f, 1f, 1f);
+    }
+
+    protected void drawDiseaseIcon(Camera worldCamera) {
+        glEnable(GL_TEXTURE_2D);
+
+        GL11.glMatrixMode(GL_MODELVIEW_MATRIX);
+        GL11.glPushMatrix();
+
+        GL11.glScalef(worldCamera.getZoom(), worldCamera.getZoom(), 0);
+        GL11.glTranslated(getPosition().getX() - worldCamera.getPosition().getX() - 32, getPosition().getY() - worldCamera.getPosition().getY() - 32, 0);
+        GameWindow.getInstance().resourceManager.getSpriteSheet("UISpriteSheet").bindTexture(SpriteSheet.DISEASE_ICON);
+
+        GL11.glBegin(GL11.GL_QUADS);
+        {
+            GL11.glTexCoord2f(0, 0);
+            GL11.glVertex2f(0, 0);
+
+            GL11.glTexCoord2f(1, 0);
+            GL11.glVertex2f(32, 0);
+
+            GL11.glTexCoord2f(1, 1);
+            GL11.glVertex2f(32, 32);
+
+            GL11.glTexCoord2f(0, 1);
+            GL11.glVertex2f(0, 32);
+        }
+        GL11.glEnd();
+
+        GL11.glPopMatrix();
+        GL11.glDisable(GL_TEXTURE_2D);
+    }
 
     protected void checkForSelection() {
         InputManager manager = GameWindow.getInstance().inputManager;
         GameCamera worldCamera = GameWindow.getInstance().getWorldCamera();
 
         Vec2D mousePos = manager.getMousePosition();
-        int mX = (int) mousePos.getX() + (int) worldCamera.getPosition().getX();
-        int mY = (int) mousePos.getY() + (int) worldCamera.getPosition().getY();
+
+        // Translate, Rotate, then Scale
+
+        // Un-scale ----> un-translate
+
+        int mX = (int) (mousePos.getX() / worldCamera.getZoom()) + (int) worldCamera.getPosition().getX();
+        int mY = (int) (mousePos.getY() / worldCamera.getZoom()) + (int) worldCamera.getPosition().getY();
 
         if((mX >= getPosition().getX() && mX <= (getPosition().getX() + 64)) && (mY >= getPosition().getY() && mY <= (getPosition().getY() + 64))) {
             isSelected = true;

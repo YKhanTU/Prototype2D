@@ -58,5 +58,7 @@ public class ParticleSystemRain extends ParticleSystem {
             }
             particle.onUpdate();
         }
+
+        //System.out.println(particles.size());
     }
 }

@@ -5,6 +5,8 @@ import dgk.prototype.game.GameWindow;
 
 public class GUIInGameMenu extends GUI {
 
+    private static final int NATION_INFORMATION_WIDTH = 150;
+    private static final int NATION_INFORMATION_HEIGHT = 250;
 
     public GUIInGameMenu(int width, int height) {
         super(width, height);
@@ -36,7 +38,7 @@ public class GUIInGameMenu extends GUI {
             }
         });
 
-        debugMenu.addElement(new GUIButton(this, debugMenu, "OptionsMenu Test", 680, 155, 75, 20) {
+        debugMenu.addElement(new GUIButton(this, debugMenu, "Options Menu", 680, 155, 75, 20) {
             @Override
             void onButtonClick() {
                 playSound();
@@ -47,36 +49,46 @@ public class GUIInGameMenu extends GUI {
 
         addMenu(debugMenu);
 
+        GUIMenu buildMenu = new GUIMenu(this, "Build Menu", 5, 450, 400, 145, true, false);
 
-        GUIMenu buildMenu = new GUIMenu(this, "Build Menu", 0, 450, 400, 150, true, false);
-
-        buildMenu.addElement(new GUIButton(this, buildMenu, 84, "Select", 5, 455, 32, 32) {
-            @Override
-            public void onButtonClick() {
-                playSound();
-
-                System.out.println("BUILDING SELECTION MODE set to SELECT.");
-            }
-        });
-
-        buildMenu.addElement(new GUIButton(this, buildMenu, 82, "Place", 5 + 37, 455, 32, 32) {
-            @Override
-            public void onButtonClick() {
-                playSound();
-
-                System.out.println("BUILDING SELECTION MODE set to PLACE.");
-            }
-        });
-
-        buildMenu.addElement(new GUIButton(this, buildMenu, 83, "Remove", 5 + 74, 455, 32, 32) {
-            @Override
-            public void onButtonClick() {
-                playSound();
-
-                System.out.println("BUILDING SELECTION MODE set to REMOVE.");
-            }
-        });
+//        buildMenu.addElement(new GUIButton(this, buildMenu, 114, "Select", 5, 455, 32, 32) {
+//            @Override
+//            public void onButtonClick() {
+//                playSound();
+//
+//                System.out.println("BUILDING SELECTION MODE set to SELECT.");
+//            }
+//        });
+//
+//        buildMenu.addElement(new GUIButton(this, buildMenu, 115, "Place", 5 + 37, 455, 32, 32) {
+//            @Override
+//            public void onButtonClick() {
+//                playSound();
+//
+//                System.out.println("BUILDING SELECTION MODE set to PLACE.");
+//            }
+//        });
+//
+//        buildMenu.addElement(new GUIButton(this, buildMenu, 116, "Remove", 5 + 74, 455, 32, 32) {
+//            @Override
+//            public void onButtonClick() {
+//                playSound();
+//
+//                System.out.println("BUILDING SELECTION MODE set to REMOVE.");
+//            }
+//        });
 
         addMenu(buildMenu);
+
+        GUIMenu nationMenu = new GUIMenu(this, "Nation Menu", 5, 5, NATION_INFORMATION_WIDTH, NATION_INFORMATION_HEIGHT, false, true);
+
+        nationMenu.addElement(new GUIButton(this, nationMenu, 122, "Currency", 10, 25, 32, 32) {
+            @Override
+            public void onButtonClick() {}
+        });
+
+        nationMenu.addElement(new GUILabel(this, nationMenu, 45, 35, "100"));
+
+        addMenu(nationMenu);
     }
 }
