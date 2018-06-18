@@ -119,19 +119,25 @@ public class Tile extends GameObject {
         }
         GL11.glEnd();
 
-        if(TileMap.DEBUG_MODE && isSelected && TileMap.BUILDING_MODE) {
-            drawOutline();
-        }
-
         GL11.glPopMatrix();
 
         glDisable(GL_TEXTURE_2D);
+
+        if(TileMap.DEBUG_MODE && isSelected && TileMap.BUILDING_MODE) {
+            drawOutline();
+        }
     }
 
     /**
      * A debug outline drawn over the Tile.
      */
     private void drawOutline() {
+        GL11.glMatrixMode(GL_MODELVIEW);
+        GL11.glPushMatrix();
+
+        GL11.glScalef(worldCamera.getZoom(), worldCamera.getZoom(), 0);
+        GL11.glTranslated(getPosition().x - worldCamera.getPosition().getX(), getPosition().y - worldCamera.getPosition().getY(), 0);
+
         GL11.glColor4f(0f, 0f, 0f, 1);
 
         GL11.glLineWidth(4f);
@@ -153,6 +159,8 @@ public class Tile extends GameObject {
         GL11.glEnd();
 
         GL11.glColor4f(1, 1, 1, 1f);
+
+        GL11.glPopMatrix();
     }
 
     public int getSize() {

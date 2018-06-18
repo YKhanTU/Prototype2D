@@ -36,20 +36,20 @@ public abstract class GUISlider implements GUIElement {
         this.gui = gui;
         this.guiMenu = guiMenu;
 
-        this.x = x;
-        this.y = y;
-        this.refX = x - guiMenu.x;
-        this.refY = y - guiMenu.y;
+        this.x = guiMenu.x + x;
+        this.y = guiMenu.y + y;
+        this.refX = x;
+        this.refY = y;
 
         this.sliderValue = initValue;
 
-        this.sliderX = (length * sliderValue) + x;
+        this.sliderX = (length * sliderValue) + this.x;
 
         this.length = length;
     }
 
     public void render() {
-        GL11.glMatrixMode(GL11.GL_MODELVIEW_MATRIX);
+        GL11.glMatrixMode(GL11.GL_MODELVIEW);
         GL11.glPushMatrix();
 
         Camera viewport = gui.getCamera();
@@ -74,7 +74,7 @@ public abstract class GUISlider implements GUIElement {
 
         GL11.glPopMatrix();
 
-        GL11.glMatrixMode(GL11.GL_MODELVIEW_MATRIX);
+        GL11.glMatrixMode(GL11.GL_MODELVIEW);
         GL11.glPushMatrix();
 
         GL11.glTranslated(x - viewport.getPosition().getX(), y - viewport.getPosition().getY(), 0);
@@ -173,6 +173,9 @@ public abstract class GUISlider implements GUIElement {
 
         this.y = guiMenu.y + refY;
     }
+
+    @Override
+    public void onWindowResize() {}
 
     public void onSliderMove(double mouseX) {
         this.sliderValue = ((float) this.x - (float) mouseX) / (float) length;

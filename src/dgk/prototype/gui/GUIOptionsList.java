@@ -60,7 +60,7 @@ public class GUIOptionsList implements GUIElement {
 
     @Override
     public void render() {
-        GL11.glMatrixMode(GL11.GL_MODELVIEW_MATRIX);
+        GL11.glMatrixMode(GL11.GL_MODELVIEW);
 
         GL11.glPushMatrix();
 
@@ -102,4 +102,7 @@ public class GUIOptionsList implements GUIElement {
 
     @Override
     public void onDrag(GUIMenu guiMenu) {}
+
+    @Override
+    public void onWindowResize() {}
 }

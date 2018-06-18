@@ -21,10 +21,10 @@ public class GUILabel implements GUIElement {
     public GUILabel(GUI gui, GUIMenu guiMenu, double x, double y, String text) {
         this.gui = gui;
         this.guiMenu = guiMenu;
-        this.x = x;
-        this.y = y;
-        this.refX = x - guiMenu.x;
-        this.refY = y - guiMenu.y;
+        this.x = guiMenu.x + x;
+        this.y = guiMenu.y + y;
+        this.refX = x;
+        this.refY = y;
         this.font = GameWindow.getInstance().resourceManager.getFont("GUILabelFont");
         this.text = text;
     }
@@ -52,7 +52,11 @@ public class GUILabel implements GUIElement {
 
     @Override
     public void onDrag(GUIMenu guiMenu) {
+        System.out.println(refX + ", " + refY);
         this.x = guiMenu.x + refX;
         this.y = guiMenu.y + refY;
     }
+
+    @Override
+    public void onWindowResize() {}
 }

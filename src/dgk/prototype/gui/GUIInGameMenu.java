@@ -15,16 +15,16 @@ public class GUIInGameMenu extends GUI {
 
     @Override
     public void init() {
-        GUIMenu debugMenu = new GUIMenu(this, "In-Game UI", 645, 5, 150, 200, false, true);
+        GUIMenu debugMenu = new GUIMenu(this, "In-Game UI", GUILayout.TOP_RIGHT, 645, 5, 150, 200, false, true);
 
-        debugMenu.addElement(new GUISlider(this, debugMenu,670, 75, 100, .25f) {
+        debugMenu.addElement(new GUISlider(this, debugMenu,25, 70, 100, .25f) {
             @Override
             public void onSliderValueChange() {
                 GameWindow.getInstance().getWorldCamera().setChaseFactor(getSliderValue());
             }
         });
 
-        debugMenu.addElement(new GUIButton(this, debugMenu, "Camera Toggle", 680, 125, 75, 20) {
+        debugMenu.addElement(new GUIButton(this, debugMenu, "Camera Toggle", 35, 120, 75, 20) {
             @Override
             void onButtonClick() {
                 playSound();
@@ -38,7 +38,7 @@ public class GUIInGameMenu extends GUI {
             }
         });
 
-        debugMenu.addElement(new GUIButton(this, debugMenu, "Options Menu", 680, 155, 75, 20) {
+        debugMenu.addElement(new GUIButton(this, debugMenu, "Options Menu", 35, 150, 75, 20) {
             @Override
             void onButtonClick() {
                 playSound();
@@ -49,7 +49,7 @@ public class GUIInGameMenu extends GUI {
 
         addMenu(debugMenu);
 
-        GUIMenu buildMenu = new GUIMenu(this, "Build Menu", 5, 450, 400, 145, true, false);
+        GUIMenu buildMenu = new GUIMenu(this, "Build Menu", GUILayout.BOTTOM_LEFT, 5, 450, 400, 145, true, false);
 
 //        buildMenu.addElement(new GUIButton(this, buildMenu, 114, "Select", 5, 455, 32, 32) {
 //            @Override
@@ -80,14 +80,14 @@ public class GUIInGameMenu extends GUI {
 
         addMenu(buildMenu);
 
-        GUIMenu nationMenu = new GUIMenu(this, "Nation Menu", 5, 5, NATION_INFORMATION_WIDTH, NATION_INFORMATION_HEIGHT, false, true);
+        GUIMenu nationMenu = new GUIMenu(this, "Nation Menu", GUILayout.TOP_LEFT, 5, 5, NATION_INFORMATION_WIDTH, NATION_INFORMATION_HEIGHT, false, true);
 
-        nationMenu.addElement(new GUIButton(this, nationMenu, 122, "Currency", 10, 25, 32, 32) {
+        nationMenu.addElement(new GUIButton(this, nationMenu, 122, "Currency", 5, 20, 32, 32) {
             @Override
             public void onButtonClick() {}
         });
 
-        nationMenu.addElement(new GUILabel(this, nationMenu, 45, 35, "100"));
+        nationMenu.addElement(new GUILabel(this, nationMenu, 40, 30, "100"));
 
         addMenu(nationMenu);
     }

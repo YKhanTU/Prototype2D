@@ -8,8 +8,12 @@ import dgk.prototype.util.Vec2D;
 
 public class BuildingComponent extends AnimatableTile {
 
+    protected static final int INIT_HEALTH = 250;
+
     private ComponentType type;
     private Direction direction;
+
+    private int health;
 
     private boolean isConnected;
 
@@ -21,6 +25,9 @@ public class BuildingComponent extends AnimatableTile {
         super(textureId, renderingLayer, x, y, size);
 
         this.direction = direction;
+
+        this.health = INIT_HEALTH;
+
         isConnected = false;
     }
 
@@ -43,6 +50,10 @@ public class BuildingComponent extends AnimatableTile {
     public void setDirection(Direction direction) {
         this.direction = direction;
         onDirectionChange();
+    }
+
+    public boolean isDestroyed() {
+        return (health <= 0);
     }
 
     public int getGridX() {

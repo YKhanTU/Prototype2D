@@ -171,6 +171,8 @@ public class GameWindow {
             this.width = width;
             this.height = height;
             getWorldCamera().onWindowResize(width, height);
+            gui.onWindowResize();
+
             glViewport(0, 0, width, height);
 
             glMatrixMode(GL_PROJECTION);
@@ -231,7 +233,7 @@ public class GameWindow {
                 GUILoadingScreen loadingScreen = (GUILoadingScreen) gui;
 
                 if (loadingScreen.isComplete()) {
-                    setGUI(new GUIInGameMenu(800, 600));
+                    setGUI(new GUIInGameMenu(width, height));
                     isLoading = false;
                 }
             }

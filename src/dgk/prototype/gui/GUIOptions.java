@@ -17,16 +17,16 @@ public class GUIOptions extends GUI {
 
     @Override
     public void init() {
-        GUIMenu optionsMenu = new GUIMenu(this, "Options", 200, 150, 400, 300, true, false) {
+        GUIMenu optionsMenu = new GUIMenu(this, "Options", GUILayout.CENTER, 200, 150, 400, 300, true, false) {
             // We do not want an 'exit' button at the top right corner.
             @Override
             protected void addUtilButtons() {}
         };
 
-        GUILabel volumeLabel = new GUILabel(this, optionsMenu, 235, 160, "Volume: ");
-        GUILabel sliderLabel = new GUILabel(this, optionsMenu, 520, 160, "" + soundManager.getCurrentVolume());
+        GUILabel volumeLabel = new GUILabel(this, optionsMenu, 35, 10, "Volume: ");
+        GUILabel sliderLabel = new GUILabel(this, optionsMenu, 320, 10, "" + soundManager.getCurrentVolume());
 
-        optionsMenu.addElement(new GUISlider(this, optionsMenu, 300, 170, 200, soundManager.getCurrentVolume()) {
+        optionsMenu.addElement(new GUISlider(this, optionsMenu, 100, 20, 200, soundManager.getCurrentVolume()) {
             @Override
             public void onSliderValueChange() {
                 soundManager.setCurrentVolume(getSliderValue());
@@ -38,12 +38,14 @@ public class GUIOptions extends GUI {
         optionsMenu.addElement(volumeLabel);
         optionsMenu.addElement(sliderLabel);
 
-        optionsMenu.addElement(new GUIButton(this, optionsMenu, "Exit", (800 / 2) - 25, 430, 50, 15) {
+        optionsMenu.addElement(new GUIButton(this, optionsMenu, "Exit", 175, 280, 50, 15) {
             @Override
             public void onButtonClick() {
                 playSound();
 
-                GameWindow.getInstance().setGUI(new GUIInGameMenu(800, 600));
+                GameWindow gameWindow = GameWindow.getInstance();
+
+                gameWindow.setGUI(new GUIInGameMenu(gameWindow.getWidth(), gameWindow.getHeight()));
 
                 System.out.println("Exiting...");
 

@@ -18,6 +18,8 @@ public class GUIMenu implements GUIElement {
 
     private String name;
 
+    private GUILayout layout;
+
     protected double x;
     protected double y;
     
@@ -38,9 +40,10 @@ public class GUIMenu implements GUIElement {
 
     private boolean shouldRemove;
 
-    public GUIMenu(GUI gui, String name, double x, double y, double width, double height, boolean alwaysOnTop, boolean isDraggable) {
+    public GUIMenu(GUI gui, String name, GUILayout layout, double x, double y, double width, double height, boolean alwaysOnTop, boolean isDraggable) {
         this.gui = gui;
         this.name = name;
+        this.layout = layout;
         this.x = x;
         this.y = y;
         this.refX = 0;
@@ -62,6 +65,13 @@ public class GUIMenu implements GUIElement {
         this.shouldRemove = false;
 
         addUtilButtons();
+
+        // Deal with the Layout
+        onLayoutChange();
+    }
+
+    public GUIMenu(GUI gui, String name, double x, double y, double width, double height) {
+        this(gui, name, GUILayout.CENTER, x, y, width, height, false, false);
     }
 
     public void addElement(GUIElement element) {
@@ -73,7 +83,7 @@ public class GUIMenu implements GUIElement {
      */
     protected void addUtilButtons() {
         if(!isAlwaysOnTop) {
-            addElement(new GUIButton(gui, this, 26, "Close", (x + width) - 20, y + 5, 15, 15) {
+            addElement(new GUIButton(gui, this, 26, "Close", width - 20, 5, 15, 15) {
                 @Override
                 void onButtonClick() {
                     close();
@@ -82,7 +92,7 @@ public class GUIMenu implements GUIElement {
         }
 
         if(isDraggable) {
-            addElement(new GUIButton(gui, this, 28, "Pin", (x + width) - 40, y + 5, 15, 15) {
+            addElement(new GUIButton(gui, this, 28, "Pin", width - 40, 5, 15, 15) {
                 @Override
                 void onButtonClick() {
                     if (isPinned) {
@@ -94,7 +104,7 @@ public class GUIMenu implements GUIElement {
                     isPinned = !isPinned;
                 }
             });
-            addElement(new GUIButton(gui, this, 27, "Minimize", (x + width) - 60, y + 5, 15, 15) {
+            addElement(new GUIButton(gui, this, 27, "Minimize",  width- 60, 5, 15, 15) {
                 @Override
                 void onButtonClick() {
                     System.out.println("Minimize Button Clicked.");
@@ -177,6 +187,7 @@ public class GUIMenu implements GUIElement {
 
     @Override
     public void onDrag(GUIMenu guiMenu) {
+
         Vec2D pos = gui.getMousePosition();
 
         double mX = pos.getX();
@@ -187,6 +198,68 @@ public class GUIMenu implements GUIElement {
 
         for(GUIElement element : elements) {
             element.onDrag(this);
+        }
+    }
+
+    @Override
+    public void onWindowResize() {
+        onLayoutChange();
+    }
+
+    protected void onLayoutChange() {
+        GUILayout layout = this.layout;
+
+        double width = gui.getCamera().getWidth();
+        double height = gui.getCamera().getHeight();
+
+        double borderX = GUI.BORDER_WIDTH;
+        double borderY = GUI.BORDER_WIDTH;
+
+        if(isDraggable) {
+            if(x >= (width / 2)) {
+                borderX = width - (this.x + this.width);
+                this.x = (width - (this.width)) - borderX;
+            }
+
+            if(y >= (height / 2)) {
+                borderY = height - (this.y + this.height);
+                this.y = (height - this.height) - borderY;
+            }
+
+            for(GUIElement guiElement : elements) {
+                guiElement.onDrag(this);
+            }
+
+            return;
+        }
+
+        switch(layout) {
+            case TOP_LEFT:
+                this.x = GUI.BORDER_WIDTH;
+                this.y = GUI.BORDER_WIDTH;
+                break;
+            case TOP_RIGHT:
+                this.x = (width - this.width) - GUI.BORDER_WIDTH;
+                this.y = GUI.BORDER_WIDTH;
+                break;
+            case BOTTOM_LEFT:
+                this.x = GUI.BORDER_WIDTH;
+                this.y = (height - this.height) - GUI.BORDER_WIDTH;
+                break;
+            case BOTTOM_RIGHT:
+                this.x = (width - this.width) - GUI.BORDER_WIDTH;
+                this.y = (height - this.height) - GUI.BORDER_WIDTH;
+                break;
+            case CENTER:
+                this.x = (width / 2) - (this.width / 2);
+                this.y = (height / 2) - (this.height / 2);
+                break;
+            default:
+                break;
+        }
+
+        for(GUIElement guiElement : elements) {
+            guiElement.onDrag(this);
         }
     }
 

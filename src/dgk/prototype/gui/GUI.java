@@ -27,6 +27,11 @@ public abstract class GUI {
 
     public static final int FONT_HEIGHT = 20;
 
+    /**
+     * The width of the border, or how far out from the sides of the screen the GUI will be clipped from.
+     */
+    public static final int BORDER_WIDTH = 5;
+
     public static final int NOTIFICATION_LIMIT = 5;
     public static final int NOTIFICATION_Y = 300;
 
@@ -42,6 +47,8 @@ public abstract class GUI {
 
         this.guiMenus = new ArrayList<GUIMenu>();
         this.guiNotifications = new ArrayList<GUINotification>();
+
+        onWindowResize();
     }
 
     public abstract void init();
@@ -242,6 +249,15 @@ public abstract class GUI {
         }
 
         drawGUINotifications();
+    }
+
+    public void onWindowResize() {
+        GameWindow gameWindow = GameWindow.getInstance();
+        this.camera.onWindowResize(gameWindow.getWidth(), gameWindow.getHeight());
+
+        for(GUIMenu guiMenu : guiMenus) {
+            guiMenu.onWindowResize();
+        }
     }
 
     /**

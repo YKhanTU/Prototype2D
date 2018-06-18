@@ -11,6 +11,19 @@ import java.util.ArrayList;
 
 public class WallComponent extends BuildingComponent {
 
+    /*
+
+
+    STRATEGY FOR BUILDING WALLS/GATES/STAIRS:
+
+                - Each and every building component (wall component) has Health, isDestroyed, and an Owner (Nation ID)
+                - Each building component's 'sub component' will not have collision boxes. The collision AABB will be set
+                inside the Component's class over multiple tiles to provide proper collisions instead of setting it for
+                each individual tile.
+
+
+     */
+
     private static final int MAX_SUB_COMPONENTS = 2;
 
     private BuildingComponent componentOne;

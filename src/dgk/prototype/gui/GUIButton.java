@@ -43,10 +43,10 @@ public abstract class GUIButton implements GUIElement {
         this.font = GameWindow.getInstance().resourceManager.getFont("GUIButtonFont");
         this.textureId = textureId;
         this.label = label;
-        this.x = x;
-        this.y = y;
-        this.refX = x - guiMenu.x;
-        this.refY = y - guiMenu.y;
+        this.x = guiMenu.x + x;
+        this.y = guiMenu.y + y;
+        this.refX = x;
+        this.refY = y;
         this.width = width;
         this.height = height;
     }
@@ -58,7 +58,7 @@ public abstract class GUIButton implements GUIElement {
             glDisable(GL_TEXTURE_2D);
         }
 
-        GL11.glMatrixMode(GL11.GL_MODELVIEW_MATRIX);
+        GL11.glMatrixMode(GL11.GL_MODELVIEW);
         GL11.glPushMatrix();
 
         Camera viewport = gui.getCamera();
@@ -183,6 +183,8 @@ public abstract class GUIButton implements GUIElement {
         this.x = guiMenu.x + refX;
         this.y = guiMenu.y + refY;
     }
+
+    public void onWindowResize() {}
 
     private boolean hasTexture() {
         return textureId != 0;

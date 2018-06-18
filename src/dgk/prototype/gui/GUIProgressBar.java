@@ -35,4 +35,7 @@ public class GUIProgressBar implements GUIElement {
     public void onDrag(GUIMenu guiMenu) {
 
     }
+
+    @Override
+    public void onWindowResize() {}
 }

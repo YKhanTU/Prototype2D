@@ -6,4 +6,5 @@ public interface GUIElement {
     void onUpdate();
     boolean onMouseInput(double x, double y, boolean press);
     void onDrag(GUIMenu guiMenu);
+    void onWindowResize();
 }

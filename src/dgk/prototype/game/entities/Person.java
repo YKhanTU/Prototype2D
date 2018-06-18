@@ -12,14 +12,14 @@ import org.lwjgl.opengl.GL11;
 
 import java.util.List;
 
-import static org.lwjgl.opengl.GL11.GL_MODELVIEW_MATRIX;
-import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
-import static org.lwjgl.opengl.GL11.glEnable;
+import static org.lwjgl.opengl.GL11.*;
 
 public abstract class Person extends Entity {
 
     public static final int WIDTH = 32;
     public static final int HEIGHT = 48;
+
+    public static final int ICON_SIZE = 32;
 
     protected double movementSpeed;
 
@@ -128,7 +128,7 @@ public abstract class Person extends Entity {
     protected void drawShadow(Camera worldCamera) {
         glEnable(GL_TEXTURE_2D);
 
-        GL11.glMatrixMode(GL_MODELVIEW_MATRIX);
+        GL11.glMatrixMode(GL_MODELVIEW);
         GL11.glPushMatrix();
 
         GL11.glScalef(worldCamera.getZoom(), worldCamera.getZoom(), 0);
@@ -164,7 +164,7 @@ public abstract class Person extends Entity {
 
         GL11.glDisable(GL_TEXTURE_2D);
 
-        GL11.glMatrixMode(GL_MODELVIEW_MATRIX);
+        GL11.glMatrixMode(GL_MODELVIEW);
         GL11.glPushMatrix();
 
         GL11.glColor4f(0f, 1f, 0f, 1f);
@@ -184,7 +184,6 @@ public abstract class Person extends Entity {
         GL11.glEnd();
 
         GL11.glPopMatrix();
-        GL11.glEnable(GL_TEXTURE_2D);
 
         GL11.glColor4f(1f, 1f, 1f, 1f);
     }
@@ -195,13 +194,13 @@ public abstract class Person extends Entity {
     protected void drawSelectionInfo(Camera worldCamera) {
         glEnable(GL_TEXTURE_2D);
 
-        GL11.glMatrixMode(GL_MODELVIEW_MATRIX);
+        GL11.glMatrixMode(GL_MODELVIEW);
         GL11.glPushMatrix();
 
         GL11.glScalef(worldCamera.getZoom(), worldCamera.getZoom(), 0);
         GL11.glTranslated(getPosition().getX() - worldCamera.getPosition().getX() - 32, getPosition().getY() - worldCamera.getPosition().getY(), 0);
 
-        GameWindow.getInstance().resourceManager.getSpriteSheet("UISpriteSheet").bindTexture(115);
+        GameWindow.getInstance().resourceManager.getSpriteSheet("UISpriteSheet").bindTexture(SpriteSheet.CONVERSATION_ICON);
 
         GL11.glBegin(GL11.GL_QUADS);
         {
@@ -209,13 +208,13 @@ public abstract class Person extends Entity {
             GL11.glVertex2f(0, 0);
 
             GL11.glTexCoord2f(1, 0);
-            GL11.glVertex2f(32, 0);
+            GL11.glVertex2f(ICON_SIZE, 0);
 
             GL11.glTexCoord2f(1, 1);
-            GL11.glVertex2f(32, 32);
+            GL11.glVertex2f(ICON_SIZE, ICON_SIZE);
 
             GL11.glTexCoord2f(0, 1);
-            GL11.glVertex2f(0, 32);
+            GL11.glVertex2f(0, ICON_SIZE);
         }
         GL11.glEnd();
 
@@ -228,7 +227,7 @@ public abstract class Person extends Entity {
     protected void drawDiseaseIcon(Camera worldCamera) {
         glEnable(GL_TEXTURE_2D);
 
-        GL11.glMatrixMode(GL_MODELVIEW_MATRIX);
+        GL11.glMatrixMode(GL_MODELVIEW);
         GL11.glPushMatrix();
 
         GL11.glScalef(worldCamera.getZoom(), worldCamera.getZoom(), 0);

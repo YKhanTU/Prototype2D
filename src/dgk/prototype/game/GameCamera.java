@@ -8,6 +8,11 @@ import static org.lwjgl.glfw.GLFW.GLFW_KEY_UP;
 
 public class GameCamera extends Camera {
 
+    public static final float MAX_ZOOM = 1.5f;
+    public static final float MIN_ZOOM = .75f;
+
+    public static final float CAMERA_ZOOM_VALUE = .01f;
+
     private double chaseFactor;
 
     public GameCamera(double x, double y, double width, double height) {
@@ -72,20 +77,20 @@ public class GameCamera extends Camera {
         }
 
         if(gameWindow.isKeyPressed(GLFW_KEY_PAGE_UP)) {
-            setZoom(getZoom() + 0.01f);
+            setZoom(getZoom() + CAMERA_ZOOM_VALUE);
 
-            if(getZoom() >= 1.5f) {
-                setZoom(1.5f);
+            if(getZoom() >= MAX_ZOOM) {
+                setZoom(MAX_ZOOM);
             }
 
             System.out.println(this);
         }
 
         if(gameWindow.isKeyPressed(GLFW_KEY_PAGE_DOWN)) {
-            setZoom(getZoom() - 0.01f);
+            setZoom(getZoom() - CAMERA_ZOOM_VALUE);
 
-            if(getZoom() < .5f) {
-                setZoom(.5f);
+            if(getZoom() < MIN_ZOOM) {
+                setZoom(MIN_ZOOM);
             }
 
             System.out.println(this);

@@ -53,6 +53,7 @@ public class SpriteSheet {
 
 
 
+    public static final int CONVERSATION_ICON = 115;
     public static final int DISEASE_ICON = 116;
 
     public static final int CHARACTER_ZOMBIE_TEST = 145;

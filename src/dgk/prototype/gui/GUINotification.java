@@ -73,6 +73,9 @@ public class GUINotification implements GUIElement {
     public void onDrag(GUIMenu guiMenu) {}
 
     @Override
+    public void onWindowResize() {}
+
+    @Override
     public boolean onMouseInput(double x, double y, boolean press) {
         return true;
     }

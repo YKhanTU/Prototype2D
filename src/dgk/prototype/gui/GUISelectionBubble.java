@@ -36,4 +36,7 @@ public class GUISelectionBubble implements GUIElement {
     public boolean onMouseInput(double x, double y, boolean press) {
         return false;
     }
+
+    @Override
+    public void onWindowResize() {}
 }

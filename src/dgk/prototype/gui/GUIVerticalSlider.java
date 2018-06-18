@@ -4,6 +4,9 @@ import dgk.prototype.game.Camera;
 import dgk.prototype.util.Vec2D;
 import org.lwjgl.opengl.GL11;
 
+import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
+import static org.lwjgl.opengl.GL11.glEnable;
+
 public abstract class GUIVerticalSlider extends GUISlider {
 
     public static final int SLIDER_WIDTH = 8;
@@ -43,7 +46,9 @@ public abstract class GUIVerticalSlider extends GUISlider {
 
     @Override
     public void render() {
-        GL11.glMatrixMode(GL11.GL_MODELVIEW_MATRIX);
+        GL11.glDisable(GL_TEXTURE_2D);
+
+        GL11.glMatrixMode(GL11.GL_MODELVIEW);
         GL11.glPushMatrix();
 
         Camera viewport = gui.getCamera();
@@ -70,7 +75,7 @@ public abstract class GUIVerticalSlider extends GUISlider {
 
         GL11.glPopMatrix();
 
-        GL11.glMatrixMode(GL11.GL_MODELVIEW_MATRIX);
+        GL11.glMatrixMode(GL11.GL_MODELVIEW);
         GL11.glPushMatrix();
 
         GL11.glTranslated(getX() - viewport.getPosition().getX() - (SLIDER_WIDTH / 2), getY() - viewport.getPosition().getY(), 0);
@@ -87,6 +92,8 @@ public abstract class GUIVerticalSlider extends GUISlider {
         GL11.glEnd();
 
         GL11.glPopMatrix();
+
+        glEnable(GL_TEXTURE_2D);
 
         GL11.glColor4f(1f, 1f, 1f, 1f);
     }

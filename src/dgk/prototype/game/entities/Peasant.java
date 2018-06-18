@@ -87,6 +87,8 @@ public class Peasant extends Person {
     private void drawOutline() {
         final int highlightAnimation = currentAnim + 12;
 
+        GL11.glEnable(GL_TEXTURE_2D);
+
         GL11.glMatrixMode(GL_MODELVIEW);
         GL11.glPushMatrix();
 

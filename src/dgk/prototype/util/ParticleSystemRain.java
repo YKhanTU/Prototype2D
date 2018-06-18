@@ -25,6 +25,9 @@ public class ParticleSystemRain extends ParticleSystem {
 
     @Override
     void addParticle() {
+        Camera gameCamera = GameWindow.getInstance().getWorldCamera();
+        this.xOffset = (int) gameCamera.getWidth();
+
         double minVelocity = .05D;
         double maxVelocity = 1.5D;
         double randomVelocity = RANDOM.nextDouble() * (maxVelocity - minVelocity) + minVelocity;

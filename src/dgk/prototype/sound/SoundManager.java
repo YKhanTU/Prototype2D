@@ -21,7 +21,7 @@ public class SoundManager implements IManager {
 
     public SoundManager() {
         this.soundMap = new HashMap<String, Sound>();
-        this.currentVolume = .5f;
+        this.currentVolume = .1f;
     }
 
     @Override

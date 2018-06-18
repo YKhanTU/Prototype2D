@@ -27,6 +27,8 @@ public class GUIViewport extends Camera {
 
     public void onSliderChange() {
         float sliderValue = this.verticalSlider.getSliderValue();
+
+
     }
 
 }
