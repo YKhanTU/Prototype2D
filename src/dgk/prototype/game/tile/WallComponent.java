@@ -4,35 +4,46 @@ import dgk.prototype.game.ComponentType;
 import dgk.prototype.game.Direction;
 import dgk.prototype.game.tile.BuildingComponent;
 import dgk.prototype.game.tile.Tile;
+import dgk.prototype.util.SpriteSheet;
+import org.lwjglx.test.spaceinvaders.Sprite;
+
+import java.util.ArrayList;
 
 public class WallComponent extends BuildingComponent {
 
     private static final int MAX_SUB_COMPONENTS = 2;
 
-    private Tile[] subComponents;
+    private BuildingComponent componentOne;
+    private BuildingComponent componentTwo;
+    //private Tile[] subComponents;
 
     public WallComponent(ComponentType type, byte renderLayer, int x, int y, int size, Direction initDirection) {
         super(0, renderLayer, x, y, size, initDirection);
-
-        this.subComponents = new Tile[MAX_SUB_COMPONENTS];
-
-        this.subComponents[0] = new Tile(0, renderLayer, x, y + 48, size);
-        this.subComponents[1] = new Tile(0, renderLayer, x, y - 48, size);
-
-        this.setPassable(true);
-        this.subComponents[0].setPassable(false);
-        this.subComponents[1].setPassable(false);
 
         setType(type);
         onDirectionChange();
     }
 
+    /**
+     * Adds the sub-components to the TileMap rendering queue.
+     * This should be changed because right now this isn't the "safest" way,
+     * and we need a better way to delete things from the list as well.
+     * @param world
+     */
     public void onAdd(World world) {
         TileMap tileMap = world.getTileMap();
 
-        for(Tile tile : subComponents) {
-            tileMap.addGameObject(tile);
+        if(componentOne != null) {
+            tileMap.addGameObject(componentOne);
         }
+
+        if(componentTwo != null) {
+            tileMap.addGameObject(componentTwo);
+        }
+    }
+
+    public void onRemove(World world) {
+        TileMap tileMap = world.getTileMap();
     }
 
 
@@ -48,22 +59,39 @@ public class WallComponent extends BuildingComponent {
     }
 
     @Override
-    void onDirectionChange() {
+    public void onDirectionChange() {
         if(getType() == ComponentType.WOOD) {
             switch (getDirection()) {
                 case NORTH:
-                    this.textureId = 22;
-                    subComponents[0].setTextureId(23);
-                    subComponents[1].setTextureId(24);
+                    this.textureId = SpriteSheet.WOOD_WALL_NORTH_1A;
+                    this.setPassable(true);
+                    componentOne = new BuildingComponent(SpriteSheet.WOOD_WALL_NORTH_1B, getRenderLayer(), getGridX() * 48, getGridY() * 48 + 48, TileMap.TILE_SIZE);
+                    componentTwo = new BuildingComponent(SpriteSheet.WOOD_WALL_NORTH_1C, getRenderLayer(), getGridX() * 48, getGridY() * 48 - 48, TileMap.TILE_SIZE);
+                    componentOne.setPassable(false);
+                    componentTwo.setPassable(false);
                     break;
                 case SOUTH:
-                    System.out.println("Not supported yet D:");
+                    this.textureId = SpriteSheet.WOOD_WALL_SOUTH_1A;
+                    this.setPassable(false);
+                    componentOne = new BuildingComponent(SpriteSheet.WOOD_WALL_SOUTH_1B, getRenderLayer(), getGridX() * 48, getGridY() * 48 + 48, TileMap.TILE_SIZE);
+                    componentTwo = null;
+                    componentOne.setPassable(false);
                     break;
                 case EAST:
-                    System.out.println("Not supported yet D:");
+                    this.textureId = SpriteSheet.WOOD_WALL_EAST_1A;
+                    this.setPassable(true);
+                    componentOne = new BuildingComponent(SpriteSheet.WOOD_WALL_WEST_1B, getRenderLayer(), getGridX() * 48 - 48, getGridY() * 48, TileMap.TILE_SIZE);
+                    componentTwo = new BuildingComponent(SpriteSheet.WOOD_WALL_EAST_1C, getRenderLayer(), getGridX() * 48, getGridY() * 48 + 48, TileMap.TILE_SIZE);
+                    componentOne.setPassable(false);
+                    componentTwo.setPassable(false);
                     break;
                 case WEST:
-                    System.out.println("Not supported yet D:");
+                    this.textureId = SpriteSheet.WOOD_WALL_WEST_1A;
+                    this.setPassable(true);
+                    componentOne = new BuildingComponent(SpriteSheet.WOOD_WALL_EAST_1B, getRenderLayer(), getGridX() * 48 + 48, getGridY() * 48, TileMap.TILE_SIZE);
+                    componentTwo = new BuildingComponent(SpriteSheet.WOOD_WALL_WEST_1C, getRenderLayer(), getGridX() * 48, getGridY() * 48 + 48, TileMap.TILE_SIZE);
+                    componentOne.setPassable(false);
+                    componentTwo.setPassable(false);
                     break;
             }
         }else if(getType() == ComponentType.WOOD) {

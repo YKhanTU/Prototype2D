@@ -1,9 +1,11 @@
 package dgk.prototype.input;
 
+import dgk.prototype.game.Direction;
 import dgk.prototype.game.GameWindow;
 import dgk.prototype.util.IManager;
 import dgk.prototype.util.Vec2D;
 import org.lwjgl.BufferUtils;
+import org.lwjgl.glfw.GLFW;
 
 import java.nio.DoubleBuffer;
 import java.util.HashMap;
@@ -47,11 +49,14 @@ public class InputManager implements IManager {
             keyMap.put(key, true);
         }else if(action == GLFW_RELEASE) {
             keyMap.replace(key, false);
+            onKeyTyped(key, scancode, action, mods);
         }
     }
 
     public void onKeyTyped(int key, int scancode, int action, int mods) {
-
+        if(key == GLFW.GLFW_KEY_R) {
+            GameWindow.getInstance().world.getTileMap().currentBuildingDirection = Direction.WEST;
+        }
     }
 
     public boolean isKeyPressed(int keyCode) {

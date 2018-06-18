@@ -5,6 +5,7 @@ import dgk.prototype.util.Vec2D;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Random;
 
 public class TileMap implements Serializable {
 
@@ -39,6 +40,14 @@ public class TileMap implements Serializable {
      */
     public static final transient boolean BUILDING_MODE = true;
 
+
+    /* TODO: TESTING PURPOSES ONLY! REMOVE AFTERWARDS
+
+     */
+    public Direction currentBuildingDirection = Direction.NORTH;
+
+    private World world;
+
     // TODO: Make the TileMap compatible for multiple layers per 48x48
     private Tile[][] tileMap;
 
@@ -47,13 +56,20 @@ public class TileMap implements Serializable {
 
     private ArrayList<Tile> selectedTiles;
 
+    private Zone testZone;
+
     private int tileRenderCount = 0;
 
-    public TileMap() {
+    public TileMap(World world) {
+        this.world = world;
+
         this.tileMap = new Tile[MAP_SIZE][MAP_SIZE];
         this.gameObjects = new ArrayList<GameObject>();
 
         this.selectedTiles = new ArrayList<Tile>();
+
+        this.testZone = new Zone(world, 0, 0, 32, 32);
+        this.testZone.setOrigin(new Vec2D(5, 5));
     }
 
     public boolean addTile(Tile tile, int gridX, int gridY) {
@@ -84,20 +100,6 @@ public class TileMap implements Serializable {
         return null;
     }
 
-    public BuildingComponent getBuildingComponent(int gridX, int gridY) {
-        for(GameObject go : gameObjects) {
-            if(go instanceof BuildingComponent) {
-                BuildingComponent component = (BuildingComponent) go;
-
-                if(gridX == component.getGridX() && gridY == component.getGridY()) {
-                    return component;
-                }
-            }
-        }
-
-        return null;
-    }
-
     /**
      * Returns an array of length 4 of all possible neighbors of a tile.
      * DOES NOT INCLUDE DIAGONAL NEIGHBORS!
@@ -124,6 +126,10 @@ public class TileMap implements Serializable {
      * @param tile
      */
     public void onTileSelection(Tile tile) {
+        if(testZone.isInside(tile.getGridX(), tile.getGridY())) {
+            System.out.println("Clicked inside of Test Zone!");
+        }
+
         if(tile.isSelected) {
             tile.isSelected = false;
             selectedTiles.remove(tile);
@@ -134,6 +140,17 @@ public class TileMap implements Serializable {
         selectedTiles.add(tile);
     }
 
+    public void onPlace(int gridX, int gridY) {
+        Random rand = new Random();
+        currentBuildingDirection = Direction.values()[rand.nextInt(4)];
+
+        this.testZone.addBuildingComponent(new WallComponent(ComponentType.WOOD, World.MID_LAYER, gridX * 48, gridY * 48, 48, currentBuildingDirection), gridX, gridY);
+    }
+
+    /**
+     * Adds a GameObject to the TileMap. These are not snapped to a grid.
+     * @param gameObject
+     */
     public void addGameObject(GameObject gameObject) {
         if(this.gameObjects.size() >= OBJECT_LIMIT)
             throw new IllegalStateException("You are attempting to add too many Game Objects to the world!");
@@ -147,6 +164,10 @@ public class TileMap implements Serializable {
         }
     }
 
+    /**
+     * Renders the world and properly culls it based on the Game Camera's current position.
+     * @param world
+     */
     public void render(World world) {
         GameCamera camera = GameWindow.getInstance().getWorldCamera();
 
@@ -155,10 +176,8 @@ public class TileMap implements Serializable {
 
         tileRenderCount = 0;
 
-        ArrayList<Tile> tileToArray = new ArrayList<Tile>();
-
-        for(int i = sX; i < ((800) / TileMap.TILE_SIZE) + sX + 2; i++) {
-            for(int j = sY; j < (600 / TileMap.TILE_SIZE) + sY + 2; j++) {
+        for(int i = sX; i < (camera.getWidth() / TileMap.TILE_SIZE) + sX + 2; i++) {
+            for(int j = sY; j < (camera.getHeight() / TileMap.TILE_SIZE) + sY + 2; j++) {
                 if(i < 0 || j < 0)
                     continue;
 
@@ -203,6 +222,14 @@ public class TileMap implements Serializable {
 
     public ArrayList<GameObject> getGameObjects() {
         return gameObjects;
+    }
+
+    /**
+     * Mainly used for debugging.
+     * @return
+     */
+    public int getTileRenderCount() {
+        return tileRenderCount;
     }
 
 }

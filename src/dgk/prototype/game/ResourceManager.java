@@ -208,8 +208,6 @@ public class ResourceManager implements IManager {
         tileSheet.loadTextureManually(618, 398, 96, 130);
         tileSheet.loadTextureManually(714, 398, 96, 130);
 
-        spriteSheetMap.put("TileSpriteSheet", tileSheet);
-
         SpriteSheet rulerBreathingAnim = new SpriteSheet(this, "sprites/test/A2/Ruler_breathing");
 
         for(int col = 0; col < 4; col++) {
@@ -243,6 +241,29 @@ public class ResourceManager implements IManager {
         testZombie.loadTexture(50, 0, 50);
 
         spriteSheetMap.put("TestZombie", testZombie);
+
+        tileSheet.loadTexture(624, 299, 96);
+        //      WOOD WALL WEST PIECE 1A (Platform)
+        tileSheet.loadTexture(10, 2, 48, 48);
+        //      WOOD WALL WEST PIECE 1B (Outside Wall Spikes)
+        tileSheet.loadTexture(9, 2, 48, 48);
+        //      WOOD WALL WEST PIECE 1C (Support Beams)
+        tileSheet.loadTexture(10, 4, 48, 48);
+        //      WOOD WALL WEST STAIR (Short Version)
+        tileSheet.loadTexture(9, 7, 48, 48);
+
+        tileSheet.loadTexture(624, 299, 96);
+        //      WOOD WALL EAST PIECE 1A (Platform)
+        tileSheet.loadTexture(12, 2, 48, 48);
+        //      WOOD WALL EAST PIECE 1B (Outside Wall Spikes)
+        tileSheet.loadTexture(13, 2, 48, 48);
+        //      WOOD WALL EAST PIECE 1C (Support Beams)
+        tileSheet.loadTexture(12, 4, 48, 48);
+
+
+
+
+        spriteSheetMap.put("TileSpriteSheet", tileSheet);
 
         loadFonts();
 

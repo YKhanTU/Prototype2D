@@ -52,7 +52,7 @@ public class Particle implements IEntity {
     public void render() {
         glDisable(GL_TEXTURE_2D);
 
-        GL11.glMatrixMode(GL_MODELVIEW_MATRIX);
+        GL11.glMatrixMode(GL_MODELVIEW);
         GL11.glPushMatrix();
 
         GL11.glScalef(scale, scale, 0);

@@ -1,7 +1,6 @@
 package dgk.prototype.game.tile;
 
 import dgk.prototype.game.Camera;
-import dgk.prototype.game.GameObject;
 import dgk.prototype.game.GameWindow;
 import dgk.prototype.game.IEntity;
 import dgk.prototype.util.AABB;
@@ -43,6 +42,8 @@ public class Tile extends GameObject {
 
     protected boolean isSelected;
 
+    private Tile parent;
+
     public Tile(int textureId, byte renderLayer, int x, int y, int size) {
         super(textureId, new Vec2D(x, y));
 
@@ -56,7 +57,17 @@ public class Tile extends GameObject {
 
         this.isSelected = false;
 
+        this.parent = null;
+
         this.worldCamera = GameWindow.getInstance().getWorldCamera();
+    }
+
+    public boolean hasParent() {
+        return (parent != null);
+    }
+
+    public void setParent(Tile tile) {
+        this.parent = tile;
     }
 
     public byte getRenderLayer() {
@@ -83,7 +94,7 @@ public class Tile extends GameObject {
     public void render() {
         glEnable(GL_TEXTURE_2D);
 
-        GL11.glMatrixMode(GL_MODELVIEW_MATRIX);
+        GL11.glMatrixMode(GL_MODELVIEW);
         GL11.glPushMatrix();
 
         //GL11.glTranslated(-(getPosition().x - worldCamera.getPosition().getX()), -(getPosition().y - worldCamera.getPosition().getY()), 0);

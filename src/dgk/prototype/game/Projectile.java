@@ -1,6 +1,7 @@
 package dgk.prototype.game;
 
 import dgk.prototype.game.entities.Person;
+import dgk.prototype.game.tile.GameObject;
 import dgk.prototype.util.Vec2D;
 import org.lwjgl.opengl.GL11;
 
@@ -95,7 +96,7 @@ public abstract class Projectile extends GameObject {
     public void render() {
         glEnable(GL_TEXTURE_2D);
 
-        GL11.glMatrixMode(GL_MODELVIEW_MATRIX);
+        GL11.glMatrixMode(GL_MODELVIEW);
         GL11.glPushMatrix();
 
         GL11.glScalef(getHeightScale(), getHeightScale(), 0);

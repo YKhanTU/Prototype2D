@@ -1,6 +1,7 @@
 package dgk.prototype.game.entities;
 
 import dgk.prototype.game.*;
+import dgk.prototype.game.tile.GameObject;
 import dgk.prototype.game.tile.Tile;
 import dgk.prototype.game.tile.World;
 import dgk.prototype.input.InputManager;

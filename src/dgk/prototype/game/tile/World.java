@@ -32,7 +32,7 @@ public class World {
 
     public World() {
         this.entities = new ArrayList<Entity>();
-        this.tileMap = new TileMap();
+        this.tileMap = new TileMap(this);
 
         this.renderLayerList = new ArrayList<IEntity>();
     }
@@ -60,10 +60,6 @@ public class World {
         addGameObject(new TileShrub(600, 234));
         addGameObject(new TileTree(600, 500));
         addGameObject(new TileTree(300, 200));
-
-        AnimatableTile gateAnimation = new AnimatableTile(-1, World.MID_LAYER, 500, 500, 130);
-
-        gateAnimation.setAnimation(new Animation(98, 4, 300, true));
 
         //addGameObject(gateAnimation);
 
@@ -178,28 +174,18 @@ public class World {
             System.out.println((convertedPos = toWorldCoordinates(mousePos)));
             System.out.println(gridCoords = toGridCoordinates(convertedPos));
 
-
             int gridX = (int) Math.floor((mX + GameWindow.getInstance().getWorldCamera().getPosition().getX()) / (TileMap.TILE_SIZE * worldCamera.getZoom()));
             int gridY = (int) Math.floor((mY + GameWindow.getInstance().getWorldCamera().getPosition().getY()) / (TileMap.TILE_SIZE * worldCamera.getZoom()));
 
-            BuildingComponent component = tileMap.getBuildingComponent(gridX, gridY);
+            //tileMap.onPlace(gridX, gridY);
 
-//            if(component != null) {
-//                System.out.println("Cannot build here!");
-//            }else{
-//                WallComponent newWall = new WallComponent(ComponentType.WOOD, World.MID_LAYER, (int) gridCoords.getX() * 48, (int) gridCoords.getY() * 48, 48, Direction.NORTH);
-//                addGameObject(newWall);
-//                newWall.onAdd(this);
+//            Tile tile = tileMap.getTile((int) gridCoords.getX(), (int) gridCoords.getY());
+//
+//            if(tile == null) {
 //                return true;
 //            }
-
-            Tile tile = tileMap.getTile((int) gridCoords.getX(), (int) gridCoords.getY());
-
-            if(tile == null) {
-                return true;
-            }
-
-            tileMap.onTileSelection(tile);
+//
+//            tileMap.onTileSelection(tile);
 
             return true;
         }

@@ -67,7 +67,7 @@ public abstract class GUI {
     }
 
     public void drawLine(Vec2D start, Vec2D end, float width) {
-        GL11.glMatrixMode(GL11.GL_MODELVIEW_MATRIX);
+        GL11.glMatrixMode(GL11.GL_MODELVIEW);
         GL11.glPushMatrix();
 
         GL11.glTranslated(start.getX(), start.getY(), 0);
@@ -83,7 +83,7 @@ public abstract class GUI {
     }
 
     public void drawRect(double x, double y, double width, double height, Color color) {
-        GL11.glMatrixMode(GL11.GL_MODELVIEW_MATRIX);
+        GL11.glMatrixMode(GL11.GL_MODELVIEW);
         GL11.glPushMatrix();
 
         GL11.glTranslated(x, y, 0);
@@ -105,7 +105,7 @@ public abstract class GUI {
     }
 
     private void drawBorder(double x, double y, double width, double height, float borderWidth, Color color) {
-        GL11.glMatrixMode(GL11.GL_MODELVIEW_MATRIX);
+        GL11.glMatrixMode(GL11.GL_MODELVIEW);
         GL11.glPushMatrix();
 
         GL11.glTranslated(x, y, 0);

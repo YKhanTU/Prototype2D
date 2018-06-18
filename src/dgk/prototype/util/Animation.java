@@ -58,6 +58,7 @@ public class Animation {
                 currentFrame = 0;
                 startTime = System.currentTimeMillis();
             }else{
+                currentFrame = 0;
                 stop();
             }
         }
@@ -87,6 +88,7 @@ public class Animation {
 
     public void stop() {
         if(!isRepeatable) {
+            startTime = -1L;
             isStopped = true;
         }
     }
@@ -109,6 +111,6 @@ public class Animation {
      * @return
      */
     public boolean isAnimationComplete() {
-        return getCurrentFrameTextureId() == (beginningFrameId + animationLength - 1);
+        return isOnLastFrame();
     }
 }

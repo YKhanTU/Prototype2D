@@ -4,8 +4,9 @@ import dgk.prototype.game.ComponentType;
 import dgk.prototype.game.Direction;
 import dgk.prototype.game.tile.AnimatableTile;
 import dgk.prototype.game.tile.TileMap;
+import dgk.prototype.util.Vec2D;
 
-public abstract class BuildingComponent extends AnimatableTile {
+public class BuildingComponent extends AnimatableTile {
 
     private ComponentType type;
     private Direction direction;
@@ -56,5 +57,5 @@ public abstract class BuildingComponent extends AnimatableTile {
         return isConnected;
     }
 
-    abstract void onDirectionChange();
+    public void onDirectionChange() {}
 }

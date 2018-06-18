@@ -29,19 +29,33 @@ public class SpriteSheet {
 
     public static final int RULER = 21;
     public static final int PEASANT = 5;
-    public static final int WOOD_GATE = 21;
+    public static final int WOOD_GATE = 95;
 
     public static final int TREE = 19;
     public static final int SHRUB = 20;
 
-    // 11, 1
-    public static final int WOOD_WALL_NORTH_1A = 33;
-    // 11, 0
-    public static final int WOOD_WALL_NORTH_1B = 34;
-    // 11, 2
-    public static final int WOOD_WALL_NORTH_1C = 35;
+    public static final int WOOD_WALL_NORTH_1A = 22;
+    public static final int WOOD_WALL_NORTH_1B = 23;
+    public static final int WOOD_WALL_NORTH_1C = 24;
+
+    public static final int WOOD_WALL_SOUTH_1A = 96;
+    public static final int WOOD_WALL_SOUTH_1B = 97;
+
+    public static final int WOOD_WALL_WEST_1A = 147;
+    public static final int WOOD_WALL_WEST_1B = 148;
+    public static final int WOOD_WALL_WEST_1C = 149;
+    public static final int WOOD_WALL_WEST_STAIRS = 150;
+
+    public static final int WOOD_WALL_EAST_1A = 152;
+    public static final int WOOD_WALL_EAST_1B = 153;
+    public static final int WOOD_WALL_EAST_1C = 154;
+    // public static final int WOOD_WALL_EAST_STAIRS = 150;
+
+
 
     public static final int DISEASE_ICON = 116;
+
+    public static final int CHARACTER_ZOMBIE_TEST = 145;
 
     private ResourceManager resourceManager;
 

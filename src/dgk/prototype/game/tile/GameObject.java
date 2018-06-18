@@ -1,5 +1,6 @@
-package dgk.prototype.game;
+package dgk.prototype.game.tile;
 
+import dgk.prototype.game.IEntity;
 import dgk.prototype.util.Vec2D;
 
 import java.io.Serializable;

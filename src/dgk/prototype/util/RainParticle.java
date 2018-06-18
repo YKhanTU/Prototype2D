@@ -13,7 +13,7 @@ public class RainParticle extends AnimatableParticle {
     public void render() {
         glEnable(GL_TEXTURE_2D);
 
-        GL11.glMatrixMode(GL_MODELVIEW_MATRIX);
+        GL11.glMatrixMode(GL_MODELVIEW);
         GL11.glPushMatrix();
 
         GL11.glScalef(getScale(), getScale(), 0);

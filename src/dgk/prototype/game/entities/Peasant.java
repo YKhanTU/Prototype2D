@@ -54,7 +54,7 @@ public class Peasant extends Person {
 
         glEnable(GL_TEXTURE_2D);
 
-        GL11.glMatrixMode(GL_MODELVIEW_MATRIX);
+        GL11.glMatrixMode(GL_MODELVIEW);
         GL11.glPushMatrix();
 
         GL11.glScalef(worldCamera.getZoom(), worldCamera.getZoom(), 0);
@@ -87,7 +87,7 @@ public class Peasant extends Person {
     private void drawOutline() {
         final int highlightAnimation = currentAnim + 12;
 
-        GL11.glMatrixMode(GL_MODELVIEW_MATRIX);
+        GL11.glMatrixMode(GL_MODELVIEW);
         GL11.glPushMatrix();
 
         GL11.glTranslated((getPosition().x - worldCamera.getPosition().getX() - 5), (getPosition().y - worldCamera.getPosition().getY()), 0);

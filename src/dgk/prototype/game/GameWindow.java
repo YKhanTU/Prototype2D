@@ -26,6 +26,7 @@ import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL13.GL_MULTISAMPLE;
 import static org.lwjgl.system.MemoryStack.*;
 import static org.lwjgl.system.MemoryUtil.*;
+import static org.lwjglx.util.glu.GLU.gluPerspective;
 
 public class GameWindow {
 
@@ -38,7 +39,7 @@ public class GameWindow {
 
     public boolean isRunning = false;
 
-    private GUI gui;
+    public GUI gui;
 
     public ResourceManager resourceManager;
     public InputManager inputManager;
@@ -48,7 +49,10 @@ public class GameWindow {
     private GameCamera worldCamera;
 
     private long handle;
-    private boolean isHidden;
+
+    private boolean isMinimized;
+
+    private boolean isResizing;
 
     public GameWindow(InputManager inputManager) {
         INSTANCE = this;
@@ -56,13 +60,14 @@ public class GameWindow {
         this.world = new World();
         this.worldCamera = new GameCamera(0,0, width, height);
 
-        this.gui = new GUILoadingScreen(800, 600, resourceManager);
+        this.gui = new GUILoadingScreen(width, height, resourceManager);
 
         this.inputManager = inputManager;
         this.resourceManager = new ResourceManager();
         this.soundManager = new SoundManager();
 
-        isHidden = false;
+        this.isMinimized = false;
+        this.isResizing = false;
     }
 
     public static GameWindow getInstance() {
@@ -120,12 +125,6 @@ public class GameWindow {
 
         GLFW.glfwSetKeyCallback(handle, (window, key, scancode, action, mods) -> {
             inputManager.onKeyCallback(key, scancode, action, mods);
-
-//            if(action == GLFW_PRESS) {
-//                keyMap.put(key, true);
-//            }else if(action == GLFW_RELEASE) {
-//                keyMap.replace(key, false);
-//            }
         });
 
         GLFW.glfwSetMouseButtonCallback(handle, (window, button, action, mods) -> {
@@ -146,12 +145,43 @@ public class GameWindow {
             }
         });
 
-        GLFW.glfwSetWindowSizeCallback(handle, (window, width, height) -> {
+//        GLFW.glfwSetWindowSizeCallback(handle, (window, width, height) -> {
+//
+//            System.out.println("GameWindow Resize Request -> (" + width + ", " + height + ")");
+//
+//            this.width = width;
+//            this.height = height;
+//            getWorldCamera().onWindowResize(width, height);
+//
+//            float aspect = (float) worldCamera.getWidth() / (float) worldCamera.getHeight();
+//
+//            glViewport(0, 0, width, height);
+//
+//            glMatrixMode(GL_PROJECTION_MATRIX);
+//            glPushMatrix();
+//
+//            glOrtho(0, height, width, 0, 1f, -1);
+//
+//            glPopMatrix();
+//
+//            glMatrixMode(GL_MODELVIEW_MATRIX);
+//        });
 
-            System.out.println("GameWindow Resize Request -> (" + width + ", " + height + ")");
-
-            glViewport(0, 0, width, height);
+        GLFW.glfwSetFramebufferSizeCallback(handle, (window, width, height) -> {
+            this.width = width;
+            this.height = height;
             getWorldCamera().onWindowResize(width, height);
+            glViewport(0, 0, width, height);
+
+            glMatrixMode(GL_PROJECTION);
+            glLoadIdentity();
+            glOrtho(0, width, height, 0, 1f, -1f);
+            glMatrixMode(GL_MODELVIEW);
+            glLoadIdentity();
+        });
+
+        GLFW.glfwSetWindowIconifyCallback(handle, (window, iconified) -> {
+            System.out.println(iconified);
         });
 
         GLFW.glfwShowWindow(handle);
@@ -167,13 +197,14 @@ public class GameWindow {
     public void loop() {
         isRunning = true;
 
+
         // Binds GLFW with OpenGL
         GL.createCapabilities();
 
-        glViewport(0, 0, 800, 600);
-        glOrtho(0f, 800, 600, 0f, 1f, -1f);
+        glViewport(0, 0, width, height);
+        glOrtho(0f, width, height, 0f, 1f, -1f);
 
-        glClearColor(1.0f, 1f, 1f, 1f);
+        glClearColor(1f, 1f, 1f, 1f);
 
         glEnable(GL_MULTISAMPLE);
         glEnable(GL_BLEND);
@@ -191,31 +222,15 @@ public class GameWindow {
         world.load();
 
         long start = System.currentTimeMillis();
-        /// TESTING ----------------------------------------------------------
-
-        TileMap tileMap = world.getTileMap();
-
-        Random r = new Random();
-        Pathfinder pathFinder = new Pathfinder(world.getTileMap(), tileMap.getTile(0, 0), tileMap.getTile(r.nextInt(100), r.nextInt(100)), false);
-        pathFinder.constructFastestPath();
-
-        System.out.println("Path time took: " + (System.currentTimeMillis() - start));
-
-        ArrayList<Node> path = pathFinder.getPath();
-
-        for(Node n : path) {
-            world.getTileMap().onTileSelection(n.getTile());
-        }
-
-        /// REMOVE AFTER TEST ------------------------------------------------
 
         while(!hasWindowRequestedClose() && isRunning) {
+
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-            if(gui instanceof GUILoadingScreen) {
+            if (gui instanceof GUILoadingScreen) {
                 GUILoadingScreen loadingScreen = (GUILoadingScreen) gui;
 
-                if(loadingScreen.isComplete()) {
+                if (loadingScreen.isComplete()) {
                     setGUI(new GUIInGameMenu(800, 600));
                     isLoading = false;
                 }
@@ -223,14 +238,16 @@ public class GameWindow {
 
             worldCamera.onUpdate(this);
 
-            if(!isLoading) {
+            if (!isLoading) {
                 world.onUpdate();
             }
+
             gui.update();
 
-            if(!isLoading) {
+            if (!isLoading) {
                 world.render();
             }
+
             gui.render();
 
             glfwSwapBuffers(handle);

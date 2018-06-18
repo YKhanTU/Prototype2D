@@ -80,7 +80,7 @@ public class Ruler extends Person {
 
         glEnable(GL_TEXTURE_2D);
 
-        GL11.glMatrixMode(GL_MODELVIEW_MATRIX);
+        GL11.glMatrixMode(GL_MODELVIEW);
         GL11.glPushMatrix();
 
         GL11.glScalef(worldCamera.getZoom(), worldCamera.getZoom(), 0);
@@ -127,7 +127,7 @@ public class Ruler extends Person {
             highlightAnimation = currentAnimation.getCurrentFrameTextureId() + 23;
         }
 
-        GL11.glMatrixMode(GL_MODELVIEW_MATRIX);
+        GL11.glMatrixMode(GL_MODELVIEW);
         GL11.glPushMatrix();
 
         GL11.glScalef(worldCamera.getZoom(), worldCamera.getZoom(), 0);
