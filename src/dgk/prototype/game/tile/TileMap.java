@@ -56,7 +56,7 @@ public class TileMap implements Serializable {
 
     private ArrayList<Tile> selectedTiles;
 
-    private Zone testZone;
+    protected Zone testZone;
 
     private int tileRenderCount = 0;
 

@@ -149,6 +149,8 @@ public abstract class GUIButton implements GUIElement {
 
             gui.drawString(font, label, (float) x + ((float) width / 2) - (length / 2), (float) y + ((float) this.height / 2) - (height / 4));
         }
+
+        //glEnable(GL_TEXTURE_2D);
     }
 
     /**

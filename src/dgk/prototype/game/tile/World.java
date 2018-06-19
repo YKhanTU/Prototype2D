@@ -177,7 +177,7 @@ public class World {
             int gridX = (int) Math.floor((mX + GameWindow.getInstance().getWorldCamera().getPosition().getX()) / (TileMap.TILE_SIZE * worldCamera.getZoom()));
             int gridY = (int) Math.floor((mY + GameWindow.getInstance().getWorldCamera().getPosition().getY()) / (TileMap.TILE_SIZE * worldCamera.getZoom()));
 
-            //tileMap.onPlace(gridX, gridY);
+            tileMap.onPlace(gridX, gridY);
 
 //            Tile tile = tileMap.getTile((int) gridCoords.getX(), (int) gridCoords.getY());
 //

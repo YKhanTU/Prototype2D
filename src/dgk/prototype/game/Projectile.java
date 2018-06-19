@@ -32,7 +32,7 @@ public abstract class Projectile extends GameObject {
     private boolean shouldRemove;
 
     public Projectile(int textureId, Vec2D initPosition, int damage, int width, int height, Vec2D initVelocity) {
-        super(textureId, initPosition);
+        super(textureId, initPosition, width, height);
 
         this.worldCamera = GameWindow.getInstance().getWorldCamera();
 
@@ -125,6 +125,8 @@ public abstract class Projectile extends GameObject {
 
         glDisable(GL_TEXTURE_2D);
     }
+
+    // TODO: Check for collisions and check if it has reached z value of 0 (hitting the ground)
 
     @Override
     public void onUpdate() {

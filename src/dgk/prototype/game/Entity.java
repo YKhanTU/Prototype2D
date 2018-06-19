@@ -7,6 +7,8 @@ import java.io.Serializable;
 
 public abstract class Entity implements IEntity, Serializable {
 
+    protected static final double DEFAULT_MOVEMENT_SPEED = 2.0;
+
     private int textureId;
 
     private String name;
@@ -21,6 +23,8 @@ public abstract class Entity implements IEntity, Serializable {
 
     private int healthPoints;
     private int armorPoints;
+
+    private double movementSpeed;
 
     private transient IEntity target;
 
@@ -48,6 +52,8 @@ public abstract class Entity implements IEntity, Serializable {
 
         this.healthPoints = 100;
         this.armorPoints = 0;
+
+        this.movementSpeed = DEFAULT_MOVEMENT_SPEED;
 
         this.target = null;
 

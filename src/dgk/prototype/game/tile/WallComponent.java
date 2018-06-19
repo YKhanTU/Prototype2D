@@ -2,8 +2,10 @@ package dgk.prototype.game.tile;
 
 import dgk.prototype.game.ComponentType;
 import dgk.prototype.game.Direction;
+import dgk.prototype.game.GameWindow;
 import dgk.prototype.game.tile.BuildingComponent;
 import dgk.prototype.game.tile.Tile;
+import dgk.prototype.util.AABB;
 import dgk.prototype.util.SpriteSheet;
 import org.lwjglx.test.spaceinvaders.Sprite;
 
@@ -28,7 +30,9 @@ public class WallComponent extends BuildingComponent {
 
     private BuildingComponent componentOne;
     private BuildingComponent componentTwo;
-    //private Tile[] subComponents;
+    private BuildingComponent componentThree;
+
+    private AABB currentAABB;
 
     public WallComponent(ComponentType type, byte renderLayer, int x, int y, int size, Direction initDirection) {
         super(0, renderLayer, x, y, size, initDirection);
@@ -53,6 +57,10 @@ public class WallComponent extends BuildingComponent {
         if(componentTwo != null) {
             tileMap.addGameObject(componentTwo);
         }
+
+        if(componentThree != null) {
+            tileMap.addGameObject(componentThree);
+        }
     }
 
     public void onRemove(World world) {
@@ -73,38 +81,53 @@ public class WallComponent extends BuildingComponent {
 
     @Override
     public void onDirectionChange() {
+        TileMap tileMap = GameWindow.getInstance().world.getTileMap();
+        Zone zone = tileMap.testZone;
+
         if(getType() == ComponentType.WOOD) {
             switch (getDirection()) {
                 case NORTH:
                     this.textureId = SpriteSheet.WOOD_WALL_NORTH_1A;
                     this.setPassable(true);
                     componentOne = new BuildingComponent(SpriteSheet.WOOD_WALL_NORTH_1B, getRenderLayer(), getGridX() * 48, getGridY() * 48 + 48, TileMap.TILE_SIZE);
-                    componentTwo = new BuildingComponent(SpriteSheet.WOOD_WALL_NORTH_1C, getRenderLayer(), getGridX() * 48, getGridY() * 48 - 48, TileMap.TILE_SIZE);
                     componentOne.setPassable(false);
+
+                    componentTwo = new BuildingComponent(SpriteSheet.WOOD_WALL_NORTH_1C, getRenderLayer(), getGridX() * 48, getGridY() * 48 - 48, TileMap.TILE_SIZE);
                     componentTwo.setPassable(false);
+
+                    componentThree = null;
                     break;
                 case SOUTH:
                     this.textureId = SpriteSheet.WOOD_WALL_SOUTH_1A;
                     this.setPassable(false);
                     componentOne = new BuildingComponent(SpriteSheet.WOOD_WALL_SOUTH_1B, getRenderLayer(), getGridX() * 48, getGridY() * 48 + 48, TileMap.TILE_SIZE);
-                    componentTwo = null;
                     componentOne.setPassable(false);
+
+                    componentTwo = null;
+
+                    componentThree = null;
                     break;
                 case EAST:
                     this.textureId = SpriteSheet.WOOD_WALL_EAST_1A;
                     this.setPassable(true);
                     componentOne = new BuildingComponent(SpriteSheet.WOOD_WALL_WEST_1B, getRenderLayer(), getGridX() * 48 - 48, getGridY() * 48, TileMap.TILE_SIZE);
-                    componentTwo = new BuildingComponent(SpriteSheet.WOOD_WALL_EAST_1C, getRenderLayer(), getGridX() * 48, getGridY() * 48 + 48, TileMap.TILE_SIZE);
                     componentOne.setPassable(false);
+
+                    componentTwo = new BuildingComponent(SpriteSheet.WOOD_WALL_EAST_1C, getRenderLayer(), getGridX() * 48, getGridY() * 48 + 48, TileMap.TILE_SIZE);
                     componentTwo.setPassable(false);
+
+                    componentThree = null;
                     break;
                 case WEST:
                     this.textureId = SpriteSheet.WOOD_WALL_WEST_1A;
                     this.setPassable(true);
                     componentOne = new BuildingComponent(SpriteSheet.WOOD_WALL_EAST_1B, getRenderLayer(), getGridX() * 48 + 48, getGridY() * 48, TileMap.TILE_SIZE);
-                    componentTwo = new BuildingComponent(SpriteSheet.WOOD_WALL_WEST_1C, getRenderLayer(), getGridX() * 48, getGridY() * 48 + 48, TileMap.TILE_SIZE);
                     componentOne.setPassable(false);
+
+                    componentTwo = new BuildingComponent(SpriteSheet.WOOD_WALL_WEST_1C, getRenderLayer(), getGridX() * 48, getGridY() * 48 + 48, TileMap.TILE_SIZE);
                     componentTwo.setPassable(false);
+
+                    componentThree = null;
                     break;
             }
         }else if(getType() == ComponentType.WOOD) {
@@ -124,4 +147,14 @@ public class WallComponent extends BuildingComponent {
             }
         }
     }
+
+    /**
+     * This overrideable piece of WallComponent allows for us to switch the collision boxes
+     * based on the direction or piece of WallComponent.
+     * @return
+     */
+//    @Override
+//    public AABB getAABB() {
+//        return currentAABB;
+//    }
 }

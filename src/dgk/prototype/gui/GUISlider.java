@@ -66,10 +66,12 @@ public abstract class GUISlider implements GUIElement {
         }
 
         GL11.glBegin(GL11.GL_QUADS);
+        {
             GL11.glVertex2d(0, 0);
-            GL11.glVertex2d(SLIDER_WIDTH,0);
+            GL11.glVertex2d(SLIDER_WIDTH, 0);
             GL11.glVertex2d(SLIDER_WIDTH, SLIDER_HEIGHT);
             GL11.glVertex2d(0, SLIDER_HEIGHT);
+        }
         GL11.glEnd();
 
         GL11.glPopMatrix();
@@ -82,8 +84,6 @@ public abstract class GUISlider implements GUIElement {
         GL11.glColor4f(.163f, .163f, .163f, .8f);
 
         gui.drawLine(new Vec2D(0, 0), new Vec2D(length, 0), 4f);
-
-        GL11.glEnd();
 
         GL11.glPopMatrix();
 

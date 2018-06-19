@@ -38,22 +38,28 @@ public class Zone {
     }
 
     public boolean hasBuildingComponent(int gridX, int gridY) {
+        int convertedGridX = gridX - (int) origin.getX();
+        int convertedGridY = gridY - (int) origin.getY();
+
         // Account for the origin.
         if(!isInside(gridX, gridY)) {
             return false;
         }
 
-        return zoneMap[gridX][gridY] != null;
+        return zoneMap[convertedGridX][convertedGridY] != null;
     }
 
     public BuildingComponent getBuildingComponent(int gridX, int gridY) {
+        int convertedGridX = gridX - (int) origin.getX();
+        int convertedGridY = gridY - (int) origin.getY();
+
         if(!isInside(gridX, gridY)) {
             System.out.println("You are attempting to get a building component that is not in bounds!");
             return null;
         }
 
         if(hasBuildingComponent(gridX, gridY)) {
-            return zoneMap[gridX][gridY];
+            return zoneMap[convertedGridX][convertedGridY];
         }
 
         return null;
@@ -82,7 +88,10 @@ public class Zone {
             return;
         }
 
-        zoneMap[gridX][gridY] = buildingComponent;
+        int convertedGridX = gridX - (int) origin.getX();
+        int convertedGridY = gridY - (int) origin.getY();
+
+        zoneMap[convertedGridX][convertedGridY] = buildingComponent;
 
         world.getTileMap().addGameObject(buildingComponent);
 

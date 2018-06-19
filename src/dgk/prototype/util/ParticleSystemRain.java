@@ -32,7 +32,7 @@ public class ParticleSystemRain extends ParticleSystem {
         double maxVelocity = 1.5D;
         double randomVelocity = RANDOM.nextDouble() * (maxVelocity - minVelocity) + minVelocity;
 
-        AnimatableParticle rainParticle = new RainParticle(-1, World.RAIN_WIDTH, World.RAIN_HEIGHT, 1, new Vec2D(RANDOM.nextInt(xOffset + 130) + origin.getX() - 130, origin.getY() - 130), new Vec2D(2D, randomVelocity));
+        AnimatableParticle rainParticle = new RainParticle(-1, World.RAIN_WIDTH, World.RAIN_HEIGHT, 1, new Vec2D(RANDOM.nextInt(xOffset + 300) + origin.getX() - 300, origin.getY() - 130), new Vec2D(2D, randomVelocity));
         Animation particleAnimation = new Animation(85, 5, RANDOM.nextInt(100) + 500, false);
         rainParticle.setAnimation(particleAnimation);
         rainParticle.getAnimation().start();

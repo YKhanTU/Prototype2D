@@ -123,6 +123,8 @@ public class GameWindow {
         // OpenGL context current
         GLFW.glfwMakeContextCurrent(handle);
 
+        glfwSwapInterval(1);
+
         GLFW.glfwSetKeyCallback(handle, (window, key, scancode, action, mods) -> {
             inputManager.onKeyCallback(key, scancode, action, mods);
         });

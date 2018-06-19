@@ -217,13 +217,15 @@ public class GUIMenu implements GUIElement {
 
         if(isDraggable) {
             if(x >= (width / 2)) {
-                borderX = width - (this.x + this.width);
-                this.x = (width - (this.width)) - borderX;
+                //borderX = width - (this.x + this.width);
+                //this.x = (width - (this.width)) - borderX;
+                this.x = (width - this.width) - borderX;
             }
 
             if(y >= (height / 2)) {
-                borderY = height - (this.y + this.height);
-                this.y = (height - this.height) - borderY;
+                //borderY = height - (this.y + this.height);
+                //this.y = (height - this.height) - borderY;
+                this.y = borderY;
             }
 
             for(GUIElement guiElement : elements) {

@@ -45,7 +45,7 @@ public class Tile extends GameObject {
     private Tile parent;
 
     public Tile(int textureId, byte renderLayer, int x, int y, int size) {
-        super(textureId, new Vec2D(x, y));
+        super(textureId, new Vec2D(x, y), size, size);
 
         this.size = size;
 
@@ -101,6 +101,8 @@ public class Tile extends GameObject {
         GL11.glScalef(worldCamera.getZoom(), worldCamera.getZoom(), 0);
         GL11.glTranslated(getPosition().x - worldCamera.getPosition().getX(), getPosition().y - worldCamera.getPosition().getY(), 0);
 
+        glColor4f(1f, 1f, 1f, 1f);
+
         GameWindow.getInstance().resourceManager.getSpriteSheet("TileSpriteSheet").bindTexture(getTextureId());
 
         GL11.glBegin(GL11.GL_QUADS);
@@ -119,11 +121,17 @@ public class Tile extends GameObject {
         }
         GL11.glEnd();
 
+        int error = glGetError();
+
+        if(error != 0) {
+            System.out.println(glGetError());
+        }
+
         GL11.glPopMatrix();
 
         glDisable(GL_TEXTURE_2D);
 
-        if(TileMap.DEBUG_MODE && isSelected && TileMap.BUILDING_MODE) {
+        if(TileMap.DEBUG_MODE && TileMap.BUILDING_MODE) {
             drawOutline();
         }
     }

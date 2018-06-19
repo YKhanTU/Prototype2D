@@ -188,7 +188,13 @@ public class Pathfinder {
         int gridX = node.getGridX();
         int gridY = node.getGridY();
 
-        Node[] adjacentTiles = new Node[4];
+        Node[] adjacentTiles;
+
+        if(isDiagonal) {
+            adjacentTiles = new Node[8];
+        }else {
+            adjacentTiles = new Node[4];
+        }
 
         // RIGHT TILE
         if(tileMap.getTile(gridX + 1, gridY) != null) {
@@ -204,19 +210,50 @@ public class Pathfinder {
             Node left = new Node(tile, endNode.getTile(), node.getGScore() + 1, false);
             adjacentTiles[1] = left;
         }
-        // TOP TILE
+        // BOTTOM TILE
         if(tileMap.getTile(gridX, gridY + 1) != null) {
             Tile tile = tileMap.getTile(gridX, gridY + 1);
 
             Node top = new Node(tile, endNode.getTile(), node.getGScore() + 1, false);
             adjacentTiles[2] = top;
         }
-        // BOTTOM TILE
+        // TOP TILE
         if(tileMap.getTile(gridX, gridY - 1) != null) {
             Tile tile = tileMap.getTile(gridX, gridY - 1);
 
             Node bottom = new Node(tile, endNode.getTile(), node.getGScore() + 1, false);
             adjacentTiles[3] = bottom;
+        }
+
+        if(isDiagonal) {
+            // TOP LEFT
+            if(tileMap.getTile(gridX - 1, gridY - 1) != null) {
+                Tile tile = tileMap.getTile(gridX - 1, gridY - 1);
+
+                Node topLeft = new Node(tile, endNode.getTile(), node.getGScore() + 1, false);
+                adjacentTiles[4] = topLeft;
+            }
+            // TOP RIGHT
+            if(tileMap.getTile(gridX + 1, gridY - 1) != null) {
+                Tile tile = tileMap.getTile(gridX + 1, gridY - 1);
+
+                Node topRight = new Node(tile, endNode.getTile(), node.getGScore() + 1, false);
+                adjacentTiles[5] = topRight;
+            }
+            // BOTTOM LEFT
+            if(tileMap.getTile(gridX - 1, gridY + 1) != null) {
+                Tile tile = tileMap.getTile(gridX - 1, gridY + 1);
+
+                Node bottomLeft = new Node(tile, endNode.getTile(), node.getGScore() + 1, false);
+                adjacentTiles[6] = bottomLeft;
+            }
+            // BOTTOM RIGHT
+            if(tileMap.getTile(gridX + 1, gridY + 1) != null) {
+                Tile tile = tileMap.getTile(gridX + 1, gridY + 1);
+
+                Node topLeft = new Node(tile, endNode.getTile(), node.getGScore() + 1, false);
+                adjacentTiles[7] = topLeft;
+            }
         }
 
         return adjacentTiles;
