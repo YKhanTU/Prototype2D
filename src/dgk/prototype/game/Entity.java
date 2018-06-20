@@ -1,9 +1,13 @@
 package dgk.prototype.game;
 
-import dgk.prototype.game.entities.Person;
+import dgk.prototype.game.tile.Node;
+import dgk.prototype.game.tile.Pathfinder;
+import dgk.prototype.game.tile.Tile;
+import dgk.prototype.game.tile.TileMap;
 import dgk.prototype.util.Vec2D;
 
 import java.io.Serializable;
+import java.util.Stack;
 
 public abstract class Entity implements IEntity, Serializable {
 
@@ -30,7 +34,32 @@ public abstract class Entity implements IEntity, Serializable {
 
     public boolean isMoving = false;
 
+    /**
+     * This tells us whether or not this Entity is controlled by the Player.
+     */
+    protected boolean hasController = false;
+
+    /**
+     * The assigned pathfinder instance for this Entity.
+     */
+    protected Pathfinder pathFinder;
+
+    /**
+     * Current path given by the Pathfinder.
+     */
+    public Stack<Node> currentPath;
+    /**
+     * For when the player is pathfinding. The current node is the node they
+     * are currently walking towards for a task, or simply given a 'Move' command.
+     */
+    public Node currentNode;
+
+    /**
+     * This is for remembering/storing the last position of the player temporarily in order
+     * to resolve collisions
+     */
     protected Vec2D lastPosition;
+
     /**
      * Represents if this Entity has been selected or not by the user.
      */
@@ -41,6 +70,8 @@ public abstract class Entity implements IEntity, Serializable {
         this.position = new Vec2D(x, y);
         this.velocity = new Vec2D();
         this.isSelected = false;
+
+
 
         this.name = name;
 
@@ -156,6 +187,84 @@ public abstract class Entity implements IEntity, Serializable {
 
     public boolean isSelected() {
         return isSelected;
+    }
+
+    private void walkToNode(Tile tile) {
+        if(currentNode == null)
+            return;
+
+        int tX = tile.getGridX();
+        int tY = tile.getGridY();
+        int nX = currentNode.getGridX();
+        int nY = currentNode.getGridY();
+
+        // Move Up if it is higher
+        if(nY < tY) {
+            setDirection(Direction.NORTH);
+            getVelocity().setX(0);
+            getVelocity().setY(-2D);
+        }
+        // Move Down
+        else if(nY > tY) {
+            setDirection(Direction.SOUTH);
+            getVelocity().setX(0);
+            getVelocity().setY(2D);
+        }
+        // Move Left
+        else if(nX < tX) {
+            setDirection(Direction.WEST);
+            getVelocity().setX(-2D);
+            getVelocity().setY(0);
+        }
+        // Move Right
+        else if(nX > tX) {
+            setDirection(Direction.EAST);
+            getVelocity().setX(2D);
+            getVelocity().setY(0);
+        }
+
+        isMoving = true;
+    }
+
+    @Override
+    public void onUpdate() {
+        final int gridX = (int) Math.floor(this.getPosition().x / TileMap.TILE_SIZE);
+        final int gridY = (int) Math.floor(this.getPosition().y / TileMap.TILE_SIZE);
+
+        Tile currentTile = GameWindow.getInstance().world.getTileMap().getTile(gridX, gridY);
+
+        if(currentNode != null) {
+            if (currentNode.getGridX() == gridX && currentNode.getGridY() == gridY) {
+                if (currentNode.equals(currentPath.peek())) {
+                    this.currentNode = null;
+                    this.isMoving = false;
+                }else{
+                    currentNode = currentPath.pop();
+                }
+            }
+        }
+
+        if(currentPath == null) {
+            return;
+        }else if(currentPath.size() == 0) {
+            currentPath = null;
+        }else{
+            walkToNode(currentTile);
+        }
+    }
+
+    /**
+     * Sets the path of the Entity to a new one, and makes them walk that path.
+     * This pathfinding is done with the A* algorithm.
+     * @param start
+     * @param end
+     */
+    public void setNewPath(Tile start, Tile end) {
+        pathFinder = new Pathfinder(GameWindow.getInstance().world.getTileMap(), start, end, false);
+
+        pathFinder.constructFastestPath();
+        this.currentPath = pathFinder.getPathAsStack();
+        this.currentNode = currentPath.pop();
     }
 
 }

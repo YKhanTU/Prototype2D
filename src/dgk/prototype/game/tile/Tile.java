@@ -5,6 +5,7 @@ import dgk.prototype.game.GameWindow;
 import dgk.prototype.game.IEntity;
 import dgk.prototype.util.AABB;
 import dgk.prototype.util.Vec2D;
+import javafx.util.Pair;
 import org.lwjgl.opengl.GL11;
 
 import static org.lwjgl.opengl.GL11.*;
@@ -131,7 +132,7 @@ public class Tile extends GameObject {
 
         glDisable(GL_TEXTURE_2D);
 
-        if(TileMap.DEBUG_MODE && TileMap.BUILDING_MODE) {
+        if(TileMap.DEBUG_MODE && isSelected && TileMap.BUILDING_MODE) {
             drawOutline();
         }
     }
@@ -184,7 +185,18 @@ public class Tile extends GameObject {
     }
 
     @Override
-    public void onUpdate() {}
+    public void onUpdate() {
+
+    }
+
+    /**
+     * 
+     * @return
+     */
+    public Pair<Vec2D, Vec2D> getCoveredTiles() {
+
+        return null;
+    }
 
     @Override
     public AABB getAABB() {

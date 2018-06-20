@@ -3,6 +3,9 @@ package dgk.prototype.game.entities;
 import dgk.prototype.game.Camera;
 import dgk.prototype.game.Direction;
 import dgk.prototype.game.GameWindow;
+import dgk.prototype.game.tile.Node;
+import dgk.prototype.game.tile.Tile;
+import dgk.prototype.game.tile.TileMap;
 import dgk.prototype.input.InputManager;
 import dgk.prototype.sound.Sound;
 import dgk.prototype.util.Animation;
@@ -43,9 +46,7 @@ public class Ruler extends Person {
 
     private Animation currentAnimation;
 
-    private Sound walkingSound;
-
-    // Animations are 48x48
+    // Animations are 32x48
 
     public Ruler(double x, double y) {
         super(SpriteSheet.RULER, "Ruler", x, y);
@@ -65,11 +66,7 @@ public class Ruler extends Person {
 
         this.currentAnimation = northIdle;
 
-        //currentAnim = northIdle.getCurrentFrameTextureId();
-
         //walkingSound = GameWindow.getInstance().soundManager.getSound("walkSound");
-
-        //this.breathingAnimation = new Animation(90, 4, 250L, true);
 
         worldCamera = GameWindow.getInstance().getWorldCamera();
     }
@@ -160,58 +157,97 @@ public class Ruler extends Person {
     public void onUpdate() {
         GameWindow gw = GameWindow.getInstance();
 
-        if(gw.isKeyPressed(GLFW.GLFW_KEY_S)) {
-            setDirection(Direction.SOUTH);
-            this.velocity.setX(0);
-            this.velocity.setY(movementSpeed);
+        super.onUpdate();
 
-            currentAnimation = southWalking;
+        if(!hasController) {
+            if (isMoving) {
+                switch (getDirection()) {
+                    case NORTH:
+                        currentAnimation = northWalking;
+                        break;
+                    case SOUTH:
+                        currentAnimation = southWalking;
+                        break;
+                    case EAST:
+                        currentAnimation = eastWalking;
+                        break;
+                    case WEST:
+                        currentAnimation = westWalking;
+                        break;
+                }
+            } else {
+                switch (getDirection()) {
+                    case NORTH:
+                        currentAnimation = northIdle;
+                        break;
+                    case SOUTH:
+                        currentAnimation = southIdle;
+                        break;
+                    case EAST:
+                        currentAnimation = eastIdle;
+                        break;
+                    case WEST:
+                        currentAnimation = westIdle;
+                        break;
+                }
 
-            isMoving = true;
-        }else if(gw.isKeyPressed(GLFW.GLFW_KEY_W)) {
-            setDirection(Direction.NORTH);
-            this.velocity.setX(0);
-            this.velocity.setY(-movementSpeed);
-
-            currentAnimation = northWalking;
-
-            isMoving = true;
-        }else if(gw.isKeyPressed(GLFW.GLFW_KEY_A)) {
-            setDirection(Direction.WEST);
-            this.velocity.setX(-movementSpeed);
-            this.velocity.setY(0);
-
-            currentAnimation = westWalking;
-
-            isMoving = true;
-        }else if(gw.isKeyPressed(GLFW.GLFW_KEY_D)) {
-            setDirection(Direction.EAST);
-            this.velocity.setX(movementSpeed);
-            this.velocity.setY(0);
-
-            currentAnimation = eastWalking;
-
-            isMoving = true;
-        }else{
-            this.velocity.setX(0);
-            this.velocity.setY(0);
-
-            switch(getDirection()) {
-                case NORTH:
-                    currentAnimation = northIdle;
-                    break;
-                case SOUTH:
-                    currentAnimation = southIdle;
-                    break;
-                case EAST:
-                    currentAnimation = eastIdle;
-                    break;
-                case WEST:
-                    currentAnimation = westIdle;
-                    break;
+                getVelocity().setX(0);
+                getVelocity().setY(0);
             }
+        }else {
+            if (gw.isKeyPressed(GLFW.GLFW_KEY_S)) {
+                setDirection(Direction.SOUTH);
+                this.velocity.setX(0);
+                this.velocity.setY(movementSpeed);
 
-            isMoving = false;
+                currentAnimation = southWalking;
+
+                isMoving = true;
+            } else if (gw.isKeyPressed(GLFW.GLFW_KEY_W)) {
+                setDirection(Direction.NORTH);
+                this.velocity.setX(0);
+                this.velocity.setY(-movementSpeed);
+
+                currentAnimation = northWalking;
+
+                isMoving = true;
+            } else if (gw.isKeyPressed(GLFW.GLFW_KEY_A)) {
+                setDirection(Direction.WEST);
+                this.velocity.setX(-movementSpeed);
+                this.velocity.setY(0);
+
+                currentAnimation = westWalking;
+
+                isMoving = true;
+            } else if (gw.isKeyPressed(GLFW.GLFW_KEY_D)) {
+                setDirection(Direction.EAST);
+                this.velocity.setX(movementSpeed);
+                this.velocity.setY(0);
+
+                currentAnimation = eastWalking;
+
+                isMoving = true;
+            } else {
+                this.velocity.setX(0);
+                this.velocity.setY(0);
+
+                switch (getDirection()) {
+                    case NORTH:
+                        currentAnimation = northIdle;
+                        break;
+                    case SOUTH:
+                        currentAnimation = southIdle;
+                        break;
+                    case EAST:
+                        currentAnimation = eastIdle;
+                        break;
+                    case WEST:
+                        currentAnimation = westIdle;
+                        break;
+                }
+
+                isMoving = false;
+            }
         }
 
         currentAnimation.onUpdate();

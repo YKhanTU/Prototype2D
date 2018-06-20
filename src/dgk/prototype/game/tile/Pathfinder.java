@@ -3,6 +3,7 @@ package dgk.prototype.game.tile;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
+import java.util.Stack;
 
 /**
  * The Pathfinder class. This is used to help find the fastest route
@@ -111,6 +112,27 @@ public class Pathfinder {
 
     public ArrayList<Node> getPath() {
         return path;
+    }
+
+    /**
+     * Gives the found 'path' in a stack, allowing for a more efficient way to
+     * use the path.
+     * @return
+     */
+    public Stack<Node> getPathAsStack() {
+        if(path != null) {
+            Stack<Node> nodeStack = new Stack<Node>();
+
+            Collections.reverse(path);
+
+            for(Node n : path) {
+                nodeStack.push(n);
+            }
+
+            return nodeStack;
+        }
+
+        return null;
     }
 
     public int getPathSize() {

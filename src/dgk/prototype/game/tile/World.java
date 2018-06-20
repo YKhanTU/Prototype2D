@@ -68,9 +68,11 @@ public class World {
         //addGameObject(testTile);
 
         entities.add(ruler);
-        entities.add(new Peasant(96, 64));
+        //entities.add(new Peasant(96, 64));
 
         this.weatherSystem = new ParticleSystemRain(new Vec2D(0, -96), 800 - (48));
+
+        ruler.setNewPath(tileMap.getTile(0, 0), tileMap.getTile(15, 15));
     }
 
     private void addTile(Tile tile, int x, int y) {

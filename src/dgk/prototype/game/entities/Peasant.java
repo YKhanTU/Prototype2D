@@ -8,6 +8,7 @@ import dgk.prototype.input.InputManager;
 import dgk.prototype.util.Animation;
 import dgk.prototype.util.SpriteSheet;
 import dgk.prototype.util.Vec2D;
+import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL11;
 
 import java.util.ArrayList;
@@ -38,12 +39,6 @@ public class Peasant extends Person {
     private Animation eastIdle;
     private Animation westIdle;
 
-    public Pathfinder pathFinder;
-
-    public ArrayList<Node> currentPath;
-    public Node currentNode;
-    public int currentIndex = 0;
-
     // TEMPORARY until we get animations
     private int idleAnimationId = 59;
 
@@ -58,12 +53,6 @@ public class Peasant extends Person {
 
         int thisGridX = (int) Math.floor(x / TileMap.TILE_SIZE);
         int thisGridY = (int) Math.floor(x / TileMap.TILE_SIZE);
-
-        this.pathFinder = new Pathfinder(tileMap, tileMap.getTile(thisGridX, thisGridY),
-                                        tileMap.getTile(25, 6), false);
-        this.pathFinder.constructFastestPath();
-        this.currentPath = pathFinder.getPath();
-        this.currentNode = currentPath.get(0);
 
         northWalking = new Animation(67, 3, WALKING_ANIM_SPEED, true);
         southWalking = new Animation(58, 3, WALKING_ANIM_SPEED, true);
@@ -161,42 +150,70 @@ public class Peasant extends Person {
 
     @Override
     public void onUpdate() {
-        final int gridX = (int) Math.floor(this.getPosition().x / TileMap.TILE_SIZE);
-        final int gridY = (int) Math.floor(this.getPosition().y / TileMap.TILE_SIZE);
+        GameWindow gw = GameWindow.getInstance();
 
-        Tile currentTile = GameWindow.getInstance().world.getTileMap().getTile(gridX, gridY);
+        super.onUpdate();
 
-        if(currentNode != null) {
-            if (currentNode.getGridX() == gridX && currentNode.getGridY() == gridY) {
-                if (currentNode.equals(currentPath.get(currentPath.size() - 1))) {
-                    this.currentNode = null;
-                    this.isMoving = false;
-                }else{
-                    currentNode = currentPath.get(currentIndex++);
+        if(!hasController) {
+            if (isMoving) {
+                switch (getDirection()) {
+                    case NORTH:
+                        currentAnimation = northWalking;
+                        break;
+                    case SOUTH:
+                        currentAnimation = southWalking;
+                        break;
+                    case EAST:
+                        currentAnimation = eastWalking;
+                        break;
+                    case WEST:
+                        currentAnimation = westWalking;
+                        break;
                 }
+            } else {
+                getVelocity().setX(0);
+                getVelocity().setY(0);
             }
-        }
+        }else {
+            if (gw.isKeyPressed(GLFW.GLFW_KEY_S)) {
+                setDirection(Direction.SOUTH);
+                this.velocity.setX(0);
+                this.velocity.setY(movementSpeed);
 
-        walkToNode(currentTile);
+                currentAnimation = southWalking;
 
-        if(isMoving) {
-            switch(getDirection()) {
-                case NORTH:
-                    currentAnimation = northWalking;
-                    break;
-                case SOUTH:
-                    currentAnimation = southWalking;
-                    break;
-                case EAST:
-                    currentAnimation = eastWalking;
-                    break;
-                case WEST:
-                    currentAnimation = westWalking;
-                    break;
+                isMoving = true;
+            } else if (gw.isKeyPressed(GLFW.GLFW_KEY_W)) {
+                setDirection(Direction.NORTH);
+                this.velocity.setX(0);
+                this.velocity.setY(-movementSpeed);
+
+                currentAnimation = northWalking;
+
+                isMoving = true;
+            } else if (gw.isKeyPressed(GLFW.GLFW_KEY_A)) {
+                setDirection(Direction.WEST);
+                this.velocity.setX(-movementSpeed);
+                this.velocity.setY(0);
+
+                currentAnimation = westWalking;
+
+                isMoving = true;
+            } else if (gw.isKeyPressed(GLFW.GLFW_KEY_D)) {
+                setDirection(Direction.EAST);
+                this.velocity.setX(movementSpeed);
+                this.velocity.setY(0);
+
+                currentAnimation = eastWalking;
+
+                isMoving = true;
+            } else {
+                this.velocity.setX(0);
+                this.velocity.setY(0);
+
+
+                isMoving = false;
             }
-        }else{
-            getVelocity().setX(0);
-            getVelocity().setY(0);
         }
 
         currentAnimation.onUpdate();
@@ -208,43 +225,6 @@ public class Peasant extends Person {
         this.checkForCollision(GameWindow.getInstance().world);
 
         this.checkForSelection();
-    }
-
-    private void walkToNode(Tile tile) {
-        if(currentNode == null)
-            return;
-
-        int tX = tile.getGridX();
-        int tY = tile.getGridY();
-        int nX = currentNode.getGridX();
-        int nY = currentNode.getGridY();
-
-        // Move Up if it is higher
-        if(nY < tY) {
-            setDirection(Direction.NORTH);
-            getVelocity().setX(0);
-            getVelocity().setY(-2D);
-        }
-        // Move Down
-        else if(nY > tY) {
-            setDirection(Direction.SOUTH);
-            getVelocity().setX(0);
-            getVelocity().setY(2D);
-        }
-        // Move Left
-        else if(nX < tX) {
-            setDirection(Direction.WEST);
-            getVelocity().setX(-2D);
-            getVelocity().setY(0);
-        }
-        // Move Right
-        else if(nX > tX) {
-            setDirection(Direction.EAST);
-            getVelocity().setX(2D);
-            getVelocity().setY(0);
-        }
-
-        isMoving = true;
     }
 
     // Walks to the current tile in this Entity's path.
