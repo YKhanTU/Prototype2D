@@ -167,6 +167,11 @@ public class Tile extends GameObject {
         }
         GL11.glEnd();
 
+        int err = glGetError();
+        if(err != 0) {
+            System.out.println(err);
+        }
+
         GL11.glColor4f(1, 1, 1, 1f);
 
         GL11.glPopMatrix();
@@ -185,17 +190,27 @@ public class Tile extends GameObject {
     }
 
     @Override
-    public void onUpdate() {
-
-    }
+    public void onUpdate() {}
 
     /**
-     * 
+     * Gets the coordinates on the grid where it may block the
+     * player in its path. Used in the Pathfinder class.
      * @return
      */
     public Pair<Vec2D, Vec2D> getCoveredTiles() {
+        AABB aabb = getAABB();
 
-        return null;
+        int minGridX = (int) Math.floor(aabb.getMin().getX() / TileMap.TILE_SIZE);
+        int minGridY = (int) Math.floor(aabb.getMin().getY() / TileMap.TILE_SIZE);
+        int maxGridX = (int) Math.floor(aabb.getMax().getX() / TileMap.TILE_SIZE);
+        int maxGridY = (int) Math.floor(aabb.getMax().getY() / TileMap.TILE_SIZE);
+
+        System.out.println(this.getClass().getName() + ": " + minGridX + ", "  + minGridY + ", " + maxGridX + ", " + maxGridY);
+
+        Vec2D min = new Vec2D(minGridX, minGridY);
+        Vec2D max = new Vec2D(maxGridX, maxGridY);
+
+        return new Pair<Vec2D, Vec2D>(min, max);
     }
 
     @Override
@@ -218,5 +233,10 @@ public class Tile extends GameObject {
         return (other.getGridX() == this.getGridX() &&
                 other.getGridY() == this.getGridY() &&
                 other.getSize() == this.getSize());
+    }
+
+    @Override
+    public String toString() {
+        return getClass().getName() + ": [x: " + this.getGridX() + ", y: " + this.getGridY() + "]";
     }
 }

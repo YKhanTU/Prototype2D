@@ -228,7 +228,6 @@ public class GameWindow {
         long start = System.currentTimeMillis();
 
         while(!hasWindowRequestedClose() && isRunning) {
-
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
             if (gui instanceof GUILoadingScreen) {
@@ -253,6 +252,11 @@ public class GameWindow {
             }
 
             gui.render();
+
+            int err2 = glGetError();
+            if(err2 != 0) {
+                System.out.println(err2);
+            }
 
             glfwSwapBuffers(handle);
 

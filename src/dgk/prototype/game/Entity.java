@@ -1,12 +1,11 @@
 package dgk.prototype.game;
 
-import dgk.prototype.game.tile.Node;
-import dgk.prototype.game.tile.Pathfinder;
-import dgk.prototype.game.tile.Tile;
-import dgk.prototype.game.tile.TileMap;
+import dgk.prototype.game.tile.*;
+import dgk.prototype.util.AABB;
 import dgk.prototype.util.Vec2D;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.Stack;
 
 public abstract class Entity implements IEntity, Serializable {
@@ -42,22 +41,29 @@ public abstract class Entity implements IEntity, Serializable {
     /**
      * The assigned pathfinder instance for this Entity.
      */
-    protected Pathfinder pathFinder;
+    protected Pathfinder pathFinder = null;
 
     /**
      * Current path given by the Pathfinder.
      */
-    public Stack<Node> currentPath;
+    public Stack<Node> currentPath = null;
     /**
      * For when the player is pathfinding. The current node is the node they
      * are currently walking towards for a task, or simply given a 'Move' command.
      */
-    public Node currentNode;
+    public Node currentNode = null;
 
     /**
      * This is for remembering/storing the last position of the player temporarily in order
      * to resolve collisions
      */
+    public boolean isPathComplete = false;
+
+    /**
+     * This value just tells us if we are colliding with an object or not.
+     */
+    public boolean isCollidingWithSomething = false;
+
     protected Vec2D lastPosition;
 
     /**
@@ -70,8 +76,6 @@ public abstract class Entity implements IEntity, Serializable {
         this.position = new Vec2D(x, y);
         this.velocity = new Vec2D();
         this.isSelected = false;
-
-
 
         this.name = name;
 
@@ -189,12 +193,64 @@ public abstract class Entity implements IEntity, Serializable {
         return isSelected;
     }
 
-    private void walkToNode(Tile tile) {
-        if(currentNode == null)
-            return;
+    /**
+     * Checks for collision between Entities, then checks for Collision between this Entity and Tiles.
+     * @param world
+     */
+    protected void checkForCollision(World world) {
+        List<Entity> entityList = world.getEntities();
+        List<GameObject> gameObjects = world.getTileMap().getGameObjects();
 
-        int tX = tile.getGridX();
-        int tY = tile.getGridY();
+        for(Entity e : entityList) {
+            if(e.equals(this))
+                continue;
+
+            if(this.getPosition().getDistance(e.getPosition()) > (128))
+                continue;
+
+            if(this.getAABB().isIntersecting(e.getAABB())) {
+                this.position = lastPosition;
+
+                isCollidingWithSomething = true;
+
+                return;
+            }
+        }
+
+        for(GameObject gameObject : gameObjects) {
+            boolean isTree = false;
+
+            if(gameObject instanceof Tile) {
+                Tile tile = (Tile) gameObject;
+
+                if(tile.isPassable()) {
+                    continue;
+                }
+
+                if(tile instanceof TileTree) {
+                    isTree = true;
+                }
+            }
+
+            if(this.getAABB().isIntersecting(gameObject.getAABB())) {
+                this.position = lastPosition;
+
+                return;
+            }
+        }
+
+        isCollidingWithSomething = false;
+    }
+
+    private void walkToNode(Tile tile) {
+        if(currentNode == null) {
+            return;
+        }
+
+        //int tX = tile.getGridX();
+        //int tY = tile.getGridY();
+        int tX = this.getGridX();
+        int tY = this.getGridY();
         int nX = currentNode.getGridX();
         int nY = currentNode.getGridY();
 
@@ -228,29 +284,81 @@ public abstract class Entity implements IEntity, Serializable {
 
     @Override
     public void onUpdate() {
-        final int gridX = (int) Math.floor(this.getPosition().x / TileMap.TILE_SIZE);
-        final int gridY = (int) Math.floor(this.getPosition().y / TileMap.TILE_SIZE);
+        int gridX = this.getGridX();
+        int gridY = this.getGridY();
 
         Tile currentTile = GameWindow.getInstance().world.getTileMap().getTile(gridX, gridY);
 
-        if(currentNode != null) {
+        if (currentNode != null) {
             if (currentNode.getGridX() == gridX && currentNode.getGridY() == gridY) {
-                if (currentNode.equals(currentPath.peek())) {
-                    this.currentNode = null;
-                    this.isMoving = false;
+
+                Node endNode = pathFinder.getEndNode();
+
+                if (currentTile.equals(endNode.getTile())) {
+                    if (!isPathComplete) {
+                        System.out.println("We have completed the path.");
+                        isPathComplete = true;
+                    }
                 }else{
-                    currentNode = currentPath.pop();
+                    if(isCollidingWithSomething) {
+                        currentNode = currentPath.pop();
+                    }
                 }
             }
         }
 
-        if(currentPath == null) {
-            return;
-        }else if(currentPath.size() == 0) {
-            currentPath = null;
-        }else{
-            walkToNode(currentTile);
+        if (currentPath != null) {
+            if (currentPath.empty() && isPathComplete) {
+                currentPath = null;
+                currentNode = null;
+                isMoving = false;
+
+                System.out.println("TileMap Selections Reset");
+                GameWindow.getInstance().world.getTileMap().resetTileSelections();
+            } else {
+                if(currentPath != null) {
+                    for(Node n : currentPath) {
+                        GameWindow.getInstance().world.getTileMap().onTileSelection(n.getTile());
+                    }
+                }
+
+                walkToNode(currentTile);
+            }
         }
+    }
+
+    public void goToTile(Tile goal) {
+        if(currentNode != null) {
+            return;
+        }
+
+        int gridX = this.getGridX();
+        int gridY = this.getGridY();
+
+        TileMap tileMap = GameWindow.getInstance().world.getTileMap();
+        Tile tile = tileMap.getTile(gridX, gridY);
+
+        if(tile == null) {
+            System.out.println("Invalid tile (or your Entity is outside of the proper World bounds!");
+
+            return;
+        }
+
+        setNewPath(tile, goal);
+    }
+
+    protected Vec2D getBottomOfEntity() {
+        AABB aabb = this.getAABB();
+
+        return new Vec2D(aabb.getMin().getX() + 32, aabb.getMax().getY());
+    }
+
+    public int getGridX() {
+        return ((int) Math.floor(getBottomOfEntity().getX() / TileMap.TILE_SIZE));
+    }
+
+    public int getGridY() {
+        return ((int) Math.floor(getBottomOfEntity().getY() / TileMap.TILE_SIZE));
     }
 
     /**
@@ -259,12 +367,16 @@ public abstract class Entity implements IEntity, Serializable {
      * @param start
      * @param end
      */
-    public void setNewPath(Tile start, Tile end) {
+    private void setNewPath(Tile start, Tile end) {
         pathFinder = new Pathfinder(GameWindow.getInstance().world.getTileMap(), start, end, false);
 
         pathFinder.constructFastestPath();
-        this.currentPath = pathFinder.getPathAsStack();
-        this.currentNode = currentPath.pop();
+        currentPath = pathFinder.getPathAsStack();
+        currentNode = currentPath.pop();
+
+        isPathComplete = false;
+
+        System.out.println("FKLDSJFLKSDJFLKSDFJKLSDFJLSKDFJSDLKFJSDLKFSDJl");
     }
 
 }

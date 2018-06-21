@@ -1,5 +1,8 @@
 package dgk.prototype.game.tile;
 
+import dgk.prototype.util.Vec2D;
+import javafx.util.Pair;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
@@ -163,48 +166,11 @@ public class Pathfinder {
         return false;
     }
 
-//    public ArrayList<Node> getAdjacentTiles(Node node) {
-//        int gridX = node.getGridX();
-//        int gridY = node.getGridY();
-//
-//        ArrayList<Node> adjacentTiles = new ArrayList<Node>();
-//
-//        // RIGHT TILE
-//        if(tileMap.getTile(gridX + 1, gridY) != null) {
-//            Tile tile = tileMap.getTile(gridX + 1, gridY);
-//
-//            Node right = new Node(tile, endNode.getTile(), node.getGScore() + 1, false);
-//            adjacentTiles.add(right);
-//        }
-//        // LEFT TILE
-//        if(tileMap.getTile(gridX - 1, gridY) != null) {
-//            Tile tile = tileMap.getTile(gridX - 1, gridY);
-//
-//            Node left = new Node(tile, endNode.getTile(), node.getGScore() + 1, false);
-//            adjacentTiles.add(left);
-//        }
-//        // TOP TILE
-//        if(tileMap.getTile(gridX, gridY + 1) != null) {
-//            Tile tile = tileMap.getTile(gridX, gridY + 1);
-//
-//            Node top = new Node(tile, endNode.getTile(), node.getGScore() + 1, false);
-//            adjacentTiles.add(top);
-//        }
-//        // BOTTOM TILE
-//        if(tileMap.getTile(gridX, gridY - 1) != null) {
-//            Tile tile = tileMap.getTile(gridX, gridY - 1);
-//
-//            Node bottom = new Node(tile, endNode.getTile(), node.getGScore() + 1, false);
-//            adjacentTiles.add(bottom);
-//        }
-//
-//        return adjacentTiles;
-//    }
-
     /**
      * Returns an array of Nodes of the adjacent tiles. (Not diagonal)
      * @param node
-     * @return Array of length 4 containing an instance of a Node, or Null.
+     * @return Array of length 4 containing an instance of a Node, a length of 8
+     * if the Pathfinder isDiagonal, or Null (if no adjacent tiles are found!)
      */
     public Node[] getAdjacentTiles(Node node) {
         int gridX = node.getGridX();
@@ -278,10 +244,53 @@ public class Pathfinder {
             }
         }
 
+        ArrayList<GameObject> gameObjects = tileMap.getGameObjects();
+
+        for(GameObject go : gameObjects) {
+            if(!go.isInCameraView()) {
+                continue;
+            }
+
+            if(go.getPosition().getDistance(new Vec2D(gridX * TileMap.TILE_SIZE, gridY * TileMap.TILE_SIZE)) > 128) {
+                continue;
+            }
+
+            if(go instanceof Tile) {
+                Tile tile = (Tile) go;
+
+                Pair<Vec2D, Vec2D> vec2DPair = tile.getCoveredTiles();
+
+                Vec2D min = vec2DPair.getKey();
+                Vec2D max = vec2DPair.getValue();
+
+                for(int i = 0; i < adjacentTiles.length; i++) {
+                    Node n = adjacentTiles[i];
+
+                    if(n == null) {
+                        continue;
+                    }
+
+                    Tile t = n.getTile();
+
+                    if((t.getGridX() == min.getX() && t.getGridY() == min.getY())
+                            || (t.getGridX() == max.getX() && t.getGridY() == max.getY())) {
+                        adjacentTiles[i] = null;
+                        System.out.println("Removed tile from pathfinder");
+                    }
+                }
+            }else{
+                continue;
+            }
+        }
+
         return adjacentTiles;
     }
 
     public boolean isDiagonal() {
         return isDiagonal;
+    }
+
+    public Node getEndNode() {
+        return endNode;
     }
 }

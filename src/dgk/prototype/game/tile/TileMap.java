@@ -5,6 +5,7 @@ import dgk.prototype.util.Vec2D;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Random;
 
 public class TileMap implements Serializable {
@@ -127,17 +128,29 @@ public class TileMap implements Serializable {
      */
     public void onTileSelection(Tile tile) {
         if(testZone.isInside(tile.getGridX(), tile.getGridY())) {
-            System.out.println("Clicked inside of Test Zone!");
+            //System.out.println("Clicked inside of Test Zone!");
         }
 
         if(tile.isSelected) {
-            tile.isSelected = false;
-            selectedTiles.remove(tile);
+            //tile.isSelected = false;
+            //selectedTiles.remove(tile);
             return;
         }
 
         tile.isSelected = true;
         selectedTiles.add(tile);
+    }
+
+    public void resetTileSelections() {
+        for(Tile t : selectedTiles) {
+            if(t.isSelected) {
+                t.isSelected = false;
+            }
+        }
+
+        if(selectedTiles.size() > 0) {
+            selectedTiles.clear();
+        }
     }
 
     public void onPlace(int gridX, int gridY) {

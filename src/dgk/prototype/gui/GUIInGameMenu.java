@@ -2,6 +2,11 @@ package dgk.prototype.gui;
 
 import dgk.prototype.game.GameCamera;
 import dgk.prototype.game.GameWindow;
+import dgk.prototype.game.entities.Ruler;
+import dgk.prototype.game.tile.Tile;
+import dgk.prototype.game.tile.TileMap;
+import dgk.prototype.game.tile.World;
+import dgk.prototype.util.Color;
 
 public class GUIInGameMenu extends GUI {
 
@@ -90,5 +95,25 @@ public class GUIInGameMenu extends GUI {
         nationMenu.addElement(new GUILabel(this, nationMenu, 40, 30, "100"));
 
         addMenu(nationMenu);
+    }
+
+    @Override
+    public void render() {
+//        GameWindow gw = GameWindow.getInstance();
+//        World world = gw.world;
+//
+//        Ruler r = world.ruler;
+//
+//        if(r != null) {
+//            Tile t = world.getTileMap().getTile(r.getGridX(), r.getGridY());
+//
+//            double gX = t.getGridX() * TileMap.TILE_SIZE;
+//            double gY = t.getGridY() * TileMap.TILE_SIZE;
+//
+//            this.drawRect(gX - gw.getWorldCamera().getPosition().getX(), gY  - gw.getWorldCamera().getPosition().getY(), t.getSize(), t.getSize(),
+//                    new Color(1f, 1f, 1f, .3f));
+//        }
+
+        super.render();
     }
 }

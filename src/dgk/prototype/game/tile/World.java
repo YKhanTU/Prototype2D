@@ -56,10 +56,10 @@ public class World {
             }
         }
 
-        addGameObject(new TileShrub(150, 200));
-        addGameObject(new TileShrub(600, 234));
+        addGameObject(new TileShrub(48 * 4, 48 * 3));
+        //addGameObject(new TileShrub(600, 234));
         addGameObject(new TileTree(600, 500));
-        addGameObject(new TileTree(300, 200));
+        //addGameObject(new TileTree(300, 200));
 
         //addGameObject(gateAnimation);
 
@@ -71,8 +71,6 @@ public class World {
         //entities.add(new Peasant(96, 64));
 
         this.weatherSystem = new ParticleSystemRain(new Vec2D(0, -96), 800 - (48));
-
-        ruler.setNewPath(tileMap.getTile(0, 0), tileMap.getTile(15, 15));
     }
 
     private void addTile(Tile tile, int x, int y) {
@@ -179,15 +177,15 @@ public class World {
             int gridX = (int) Math.floor((mX + GameWindow.getInstance().getWorldCamera().getPosition().getX()) / (TileMap.TILE_SIZE * worldCamera.getZoom()));
             int gridY = (int) Math.floor((mY + GameWindow.getInstance().getWorldCamera().getPosition().getY()) / (TileMap.TILE_SIZE * worldCamera.getZoom()));
 
-            tileMap.onPlace(gridX, gridY);
+            //tileMap.onPlace(gridX, gridY);
 
-//            Tile tile = tileMap.getTile((int) gridCoords.getX(), (int) gridCoords.getY());
-//
-//            if(tile == null) {
-//                return true;
-//            }
-//
-//            tileMap.onTileSelection(tile);
+            Tile tile = tileMap.getTile((int) gridCoords.getX(), (int) gridCoords.getY());
+
+            if(tile == null) {
+                return true;
+            }
+
+            ruler.goToTile(tile);
 
             return true;
         }

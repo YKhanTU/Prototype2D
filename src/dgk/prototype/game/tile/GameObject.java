@@ -1,5 +1,7 @@
 package dgk.prototype.game.tile;
 
+import dgk.prototype.game.Camera;
+import dgk.prototype.game.GameWindow;
 import dgk.prototype.game.IEntity;
 import dgk.prototype.util.AABB;
 import dgk.prototype.util.Vec2D;
@@ -47,6 +49,14 @@ public abstract class GameObject implements IEntity, Serializable {
 
     public void setHeight(int height) {
         this.height = height;
+    }
+
+    public boolean isInCameraView() {
+        Camera camera = GameWindow.getInstance().getWorldCamera();
+        Vec2D pos = getPosition();
+
+        return (((pos.getX() >= camera.getPosition().getX()) && (pos.getX() <= camera.getPosition().getX() + camera.getWidth())) &&
+                (pos.getY() >= camera.getPosition().getY() && pos.getY() <= camera.getPosition().getY() + camera.getHeight()));
     }
 
 }

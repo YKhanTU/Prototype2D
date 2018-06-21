@@ -81,45 +81,6 @@ public abstract class Person extends Entity {
     }
 
     /**
-     * Checks for collision between Entities, then checks for Collision between this Entity and Tiles.
-     * @param world
-     */
-    protected void checkForCollision(World world) {
-        List<Entity> entityList = world.getEntities();
-        List<GameObject> gameObjects = world.getTileMap().getGameObjects();
-
-        for(Entity e : entityList) {
-            if(e.equals(this))
-                continue;
-
-            if(this.getPosition().getDistance(e.getPosition()) > (WIDTH + 5))
-                continue;
-
-            if(this.getAABB().isIntersecting(e.getAABB())) {
-                this.position = lastPosition;
-                System.out.println("Collision detected.");
-
-                return;
-            }
-        }
-
-        for(GameObject gameObject : gameObjects) {
-            if(gameObject instanceof Tile) {
-                Tile tile = (Tile) gameObject;
-
-                if(tile.isPassable())
-                    continue;
-            }
-
-            if(this.getAABB().isIntersecting(gameObject.getAABB())) {
-                this.position = lastPosition;
-
-                return;
-            }
-        }
-    }
-
-    /**
      * Draws the shadow of the Person. For now, it just draws a simple low opacity eclipse that
      * goes under the player's name. This simplifies the implementation for 'ray tracing' or any
      * kind of advance lighting techniques (at least for now)

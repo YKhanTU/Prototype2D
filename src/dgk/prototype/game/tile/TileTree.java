@@ -10,6 +10,7 @@ public class TileTree extends StaticTile {
 
     public TileTree(int x, int y) {
         super(SpriteSheet.TREE, World.MID_LAYER, x, y, SIZE);
+        setPassable(false);
     }
 
     @Override
