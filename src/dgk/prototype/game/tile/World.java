@@ -56,9 +56,9 @@ public class World {
             }
         }
 
-        addGameObject(new TileShrub(48 * 4, 48 * 3));
+        //addGameObject(new TileShrub(48 * 4, 48 * 3));
         //addGameObject(new TileShrub(600, 234));
-        addGameObject(new TileTree(600, 500));
+        //addGameObject(new TileTree(600, 500));
         //addGameObject(new TileTree(300, 200));
 
         //addGameObject(gateAnimation);

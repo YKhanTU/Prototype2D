@@ -218,17 +218,11 @@ public abstract class Entity implements IEntity, Serializable {
         }
 
         for(GameObject gameObject : gameObjects) {
-            boolean isTree = false;
-
             if(gameObject instanceof Tile) {
                 Tile tile = (Tile) gameObject;
 
                 if(tile.isPassable()) {
                     continue;
-                }
-
-                if(tile instanceof TileTree) {
-                    isTree = true;
                 }
             }
 
@@ -300,9 +294,7 @@ public abstract class Entity implements IEntity, Serializable {
                         isPathComplete = true;
                     }
                 }else{
-                    if(isCollidingWithSomething) {
-                        currentNode = currentPath.pop();
-                    }
+                    currentNode = currentPath.pop();
                 }
             }
         }
@@ -316,6 +308,16 @@ public abstract class Entity implements IEntity, Serializable {
                 System.out.println("TileMap Selections Reset");
                 GameWindow.getInstance().world.getTileMap().resetTileSelections();
             } else {
+                if(isCollidingWithSomething) {
+                    pathFinder = new Pathfinder(GameWindow.getInstance().world.getTileMap(), currentNode.getTile(), pathFinder.getEndNode().getTile(), false);
+                    pathFinder.constructFastestPath();
+                    currentPath = pathFinder.getPathAsStack();
+                    currentNode = currentPath.pop();
+                    System.out.println("Re-routing!");
+
+                    isCollidingWithSomething = false;
+                }
+
                 if(currentPath != null) {
                     for(Node n : currentPath) {
                         GameWindow.getInstance().world.getTileMap().onTileSelection(n.getTile());
@@ -375,8 +377,6 @@ public abstract class Entity implements IEntity, Serializable {
         currentNode = currentPath.pop();
 
         isPathComplete = false;
-
-        System.out.println("FKLDSJFLKSDJFLKSDFJKLSDFJLSKDFJSDLKFJSDLKFSDJl");
     }
 
 }

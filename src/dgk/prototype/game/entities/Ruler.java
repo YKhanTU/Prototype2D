@@ -190,7 +190,6 @@ public class Ruler extends Person {
                         currentAnimation = westIdle;
                         break;
                 }
-
                 getVelocity().setX(0);
                 getVelocity().setY(0);
             }
