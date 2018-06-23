@@ -1,5 +1,8 @@
 package dgk.prototype.game.tile;
 
+import dgk.prototype.game.Entity;
+import dgk.prototype.game.GameWindow;
+import dgk.prototype.game.entities.Person;
 import dgk.prototype.util.Vec2D;
 import javafx.util.Pair;
 
@@ -26,6 +29,7 @@ public class Pathfinder {
      */
 
     private TileMap tileMap;
+    private Entity entity;
 
     private ArrayList<Node> openSet;
     private ArrayList<Node> closedSet;
@@ -36,8 +40,9 @@ public class Pathfinder {
 
     private boolean isDiagonal;
 
-    public Pathfinder(TileMap tileMap, Tile start, Tile end, boolean isDiagonal) {
+    public Pathfinder(TileMap tileMap, Entity e, Tile start, Tile end, boolean isDiagonal) {
         this.tileMap = tileMap;
+        this.entity = e;
 
         Node startNode = new Node(start, end, 0, false);
         endNode = new Node(end, start, 0, true);
@@ -247,6 +252,7 @@ public class Pathfinder {
         ArrayList<GameObject> gameObjects = tileMap.getGameObjects();
 
         for(GameObject go : gameObjects) {
+            // Eventually remove this. VERY dangerous.
             if(!go.isInCameraView()) {
                 continue;
             }
@@ -279,6 +285,40 @@ public class Pathfinder {
                     }
                 }
             }else{
+                continue;
+            }
+        }
+
+        for(Entity e : GameWindow.getInstance().world.getEntities()) {
+            if(e.equals(entity)) {
+                System.out.println("Found yourself");
+                continue;
+            }
+
+            if(e instanceof Person) {
+                Vec2D bottom = e.getBottomOfEntity();
+
+                int bgX = (int) Math.floor(bottom.getX() / TileMap.TILE_SIZE);
+                int bgY = (int) Math.floor(bottom.getY() / TileMap.TILE_SIZE);
+
+                for(int i = 0; i < adjacentTiles.length; i++) {
+                    Node n = adjacentTiles[i];
+
+                    if(n == null) {
+                        continue;
+                    }
+
+                    Tile t = n.getTile();
+
+                    if((t.getGridX() == bgX && t.getGridY() == bgY)
+                            || (t.getGridX() == bgX && t.getGridY() == bgY)) {
+                        adjacentTiles[i] = null;
+                        System.out.println("Removed Entity collision from pathfinder.");
+                    }
+                }
+
+            }else{
+                // TEMPORARY
                 continue;
             }
         }

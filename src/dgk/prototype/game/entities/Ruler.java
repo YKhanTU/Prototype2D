@@ -192,6 +192,8 @@ public class Ruler extends Person {
                 }
                 getVelocity().setX(0);
                 getVelocity().setY(0);
+
+                //isMoving = false;
             }
         }else {
             if (gw.isKeyPressed(GLFW.GLFW_KEY_S)) {
@@ -252,8 +254,11 @@ public class Ruler extends Person {
         currentAnimation.onUpdate();
 
         this.lastPosition = new Vec2D(getPosition().getX(), getPosition().getY());
+        //System.out.println(lastPosition);
 
         this.getPosition().add(getVelocity());
+
+        //System.out.println(getPosition());
 
         this.checkForCollision(GameWindow.getInstance().world);
 

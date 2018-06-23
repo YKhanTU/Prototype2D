@@ -40,7 +40,8 @@ public class ResourceManager implements IManager {
 
     @Override
     public void start() {
-        SpriteSheet tileSheet = new SpriteSheet(this,"sprites/test/A2/A1updated2");
+        //SpriteSheet tileSheet = new SpriteSheet(this,"sprites/test/A2/A1updated2");
+        SpriteSheet tileSheet = new SpriteSheet(this, "sprites/final/A1");
 
         // GRASS
         tileSheet.loadTexture(1, 2, 48, 48);
@@ -140,7 +141,7 @@ public class ResourceManager implements IManager {
 
         spriteSheetMap.put("RulerIdleAnimations", rulerBreathingAnims);
 
-        SpriteSheet peasantWalkingAnims = new SpriteSheet(this, "sprites/test/sprites2");
+        SpriteSheet peasantWalkingAnims = new SpriteSheet(this, "sprites/final/Peasant_walking");
 
         for(int col = 0; col < 4; col++) {
             for(int row = 0; row < 3; row++) {
@@ -150,7 +151,7 @@ public class ResourceManager implements IManager {
 
         spriteSheetMap.put("PeasantWalkAnimations", peasantWalkingAnims);
 
-        SpriteSheet peasantWalkingHighlights = new SpriteSheet(this, "sprites/test/sprites2_glow");
+        SpriteSheet peasantWalkingHighlights = new SpriteSheet(this, "sprites/final/Peasant_walking_glow");
 
         for(int col = 0; col < 4; col++) {
             for(int row = 0; row < 3; row++) {

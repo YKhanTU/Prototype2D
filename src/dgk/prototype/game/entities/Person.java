@@ -234,4 +234,9 @@ public abstract class Person extends Entity {
             isSelected = false;
         }
     }
+
+    @Override
+    public boolean equals(Object o) {
+        return super.equals(o);
+    }
 }

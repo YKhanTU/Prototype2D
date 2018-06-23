@@ -68,7 +68,7 @@ public class World {
         //addGameObject(testTile);
 
         entities.add(ruler);
-        //entities.add(new Peasant(96, 64));
+        entities.add(new Peasant(96, 64));
 
         this.weatherSystem = new ParticleSystemRain(new Vec2D(0, -96), 800 - (48));
     }

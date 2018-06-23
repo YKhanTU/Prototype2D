@@ -1,4 +1,6 @@
-package dgk.prototype.game;
+package dgk.prototype.game.entities;
+
+import dgk.prototype.game.Item;
 
 import java.util.Iterator;
 
@@ -62,5 +64,18 @@ public class Inventory {
         for(int i = 0; i < inventorySize; i++) {
             storage[i] = null;
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if(!(o instanceof Inventory)) {
+            return false;
+        }
+
+        Inventory i = (Inventory) o;
+
+        return (this.getInventorySize() == i.getInventorySize() &&
+                this.getStorage() == i.getStorage() &&
+                this.getWeaponSlot().equals(i.getStorage()));
     }
 }

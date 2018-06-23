@@ -1,5 +1,6 @@
 package dgk.prototype.game;
 
+import dgk.prototype.game.entities.Inventory;
 import dgk.prototype.game.tile.*;
 import dgk.prototype.util.AABB;
 import dgk.prototype.util.Vec2D;
@@ -209,7 +210,8 @@ public abstract class Entity implements IEntity, Serializable {
                 continue;
 
             if(this.getAABB().isIntersecting(e.getAABB())) {
-                this.position = lastPosition;
+                //this.position = lastPosition;
+                this.position = new Vec2D(lastPosition.getX(), lastPosition.getY());
 
                 isCollidingWithSomething = true;
 
@@ -227,7 +229,8 @@ public abstract class Entity implements IEntity, Serializable {
             }
 
             if(this.getAABB().isIntersecting(gameObject.getAABB())) {
-                this.position = lastPosition;
+                //this.position = lastPosition;
+                this.position = new Vec2D(lastPosition.getX(), lastPosition.getY());
 
                 return;
             }
@@ -236,6 +239,15 @@ public abstract class Entity implements IEntity, Serializable {
         isCollidingWithSomething = false;
     }
 
+    /**
+     * Walks to the current Node. If we are colliding with something, we will
+     * either change our route, wait, or change our speed (temporarily)
+     *
+     * When we walk to a Node, we want the Entity to 'walk' to the middle area of
+     * the tile with a random offset. We will use getBottomEntity to emulate this.
+     *
+     * @param tile
+     */
     private void walkToNode(Tile tile) {
         if(currentNode == null) {
             return;
@@ -243,37 +255,56 @@ public abstract class Entity implements IEntity, Serializable {
 
         //int tX = tile.getGridX();
         //int tY = tile.getGridY();
-        int tX = this.getGridX();
-        int tY = this.getGridY();
-        int nX = currentNode.getGridX();
-        int nY = currentNode.getGridY();
+        Vec2D feet = getBottomOfEntity();
+
+        double centerTileX = feet.getX();
+        double centerTileY = feet.getY();
+
+        Tile currentTile = currentNode.getTile();
+        //int nX = currentNode.getGridX();
+        //int nY = currentNode.getGridY();
+        double centerCurNodeX = currentTile.getPosition().getX() + TileMap.TILE_SIZE / 2;
+        double centerCurNodeY = currentTile.getPosition().getY() + TileMap.TILE_SIZE / 2;
 
         // Move Up if it is higher
-        if(nY < tY) {
+        if(centerCurNodeY < centerTileY) {
             setDirection(Direction.NORTH);
             getVelocity().setX(0);
             getVelocity().setY(-2D);
         }
         // Move Down
-        else if(nY > tY) {
+        else if(centerCurNodeY > centerTileY) {
             setDirection(Direction.SOUTH);
             getVelocity().setX(0);
             getVelocity().setY(2D);
         }
         // Move Left
-        else if(nX < tX) {
+        else if(centerCurNodeX < centerTileX) {
             setDirection(Direction.WEST);
             getVelocity().setX(-2D);
             getVelocity().setY(0);
         }
         // Move Right
-        else if(nX > tX) {
+        else if(centerCurNodeX > centerTileX) {
             setDirection(Direction.EAST);
             getVelocity().setX(2D);
             getVelocity().setY(0);
+        }else{
+            isMoving = false;
         }
 
         isMoving = true;
+    }
+
+    public boolean isAroundMiddleOfCurrentTile(Tile tile) {
+        Vec2D pos = tile.getPosition();
+        Vec2D feet = getBottomOfEntity();
+
+        return (feet.getX() == pos.getX() + (TileMap.TILE_SIZE / 2) &&
+                feet.getY() == pos.getY() + (TileMap.TILE_SIZE / 2));
+
+//        return ((feet.getX() > pos.getX() + 12 && feet.getX() < pos.getX() + (TileMap.TILE_SIZE - 12))
+//                && (feet.getY() > pos.getY() + 12 && feet.getY() < pos.getY() + (TileMap.TILE_SIZE - 12)));
     }
 
     @Override
@@ -288,13 +319,15 @@ public abstract class Entity implements IEntity, Serializable {
 
                 Node endNode = pathFinder.getEndNode();
 
-                if (currentTile.equals(endNode.getTile())) {
+                if (currentTile.equals(endNode.getTile()) && isAroundMiddleOfCurrentTile(currentTile)) {
                     if (!isPathComplete) {
                         System.out.println("We have completed the path.");
                         isPathComplete = true;
                     }
                 }else{
-                    currentNode = currentPath.pop();
+                    if(isAroundMiddleOfCurrentTile(currentTile)) {
+                        currentNode = currentPath.pop();
+                    }
                 }
             }
         }
@@ -308,15 +341,15 @@ public abstract class Entity implements IEntity, Serializable {
                 System.out.println("TileMap Selections Reset");
                 GameWindow.getInstance().world.getTileMap().resetTileSelections();
             } else {
-                if(isCollidingWithSomething) {
-                    pathFinder = new Pathfinder(GameWindow.getInstance().world.getTileMap(), currentNode.getTile(), pathFinder.getEndNode().getTile(), false);
-                    pathFinder.constructFastestPath();
-                    currentPath = pathFinder.getPathAsStack();
-                    currentNode = currentPath.pop();
-                    System.out.println("Re-routing!");
+                //if(isCollidingWithSomething) {
+                    //pathFinder = new Pathfinder(GameWindow.getInstance().world.getTileMap(), currentNode.getTile(), pathFinder.getEndNode().getTile(), false);
+                    //pathFinder.constructFastestPath();
+                    //currentPath = pathFinder.getPathAsStack();
+                    //currentNode = currentPath.pop();
+                    //System.out.println("Re-routing!");
 
-                    isCollidingWithSomething = false;
-                }
+                    //isCollidingWithSomething = false;
+                //}
 
                 if(currentPath != null) {
                     for(Node n : currentPath) {
@@ -349,7 +382,11 @@ public abstract class Entity implements IEntity, Serializable {
         setNewPath(tile, goal);
     }
 
-    protected Vec2D getBottomOfEntity() {
+    /**
+     * returns the location of the 'feet' of the Entity.
+     * @return
+     */
+    public Vec2D getBottomOfEntity() {
         AABB aabb = this.getAABB();
 
         return new Vec2D(aabb.getMin().getX() + 32, aabb.getMax().getY());
@@ -370,13 +407,33 @@ public abstract class Entity implements IEntity, Serializable {
      * @param end
      */
     private void setNewPath(Tile start, Tile end) {
-        pathFinder = new Pathfinder(GameWindow.getInstance().world.getTileMap(), start, end, false);
+        pathFinder = new Pathfinder(GameWindow.getInstance().world.getTileMap(), this, start, end, false);
 
         pathFinder.constructFastestPath();
         currentPath = pathFinder.getPathAsStack();
         currentNode = currentPath.pop();
 
         isPathComplete = false;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if(!(o instanceof Entity)) {
+            return false;
+        }
+
+        Entity e = (Entity) o;
+
+        return (e.getPosition() == this.getPosition());
+
+//        return (this.getPosition().equals(e.getPosition()) &&
+//                this.getVelocity().equals(e.getPosition()) &&
+//                this.getName().equals(e.getName()) &&
+//                this.getHealthPoints() == e.getHealthPoints() &&
+//                this.getArmorPoints() == e.getArmorPoints());
+
+        //&&
+                //this.getInventory().equals(e.getInventory()));
     }
 
 }
