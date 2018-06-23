@@ -100,8 +100,8 @@ public class Peasant extends Person {
 
         GL11.glPopMatrix();
 
-//        if(isSelected)
-//            drawOutline();
+        if(isSelected)
+            drawOutline();
 
         glDisable(GL_TEXTURE_2D);
     }

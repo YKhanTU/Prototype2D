@@ -270,24 +270,24 @@ public abstract class Entity implements IEntity, Serializable {
         if(centerCurNodeY < centerTileY) {
             setDirection(Direction.NORTH);
             getVelocity().setX(0);
-            getVelocity().setY(-2D);
+            getVelocity().setY(-1D);
         }
         // Move Down
         else if(centerCurNodeY > centerTileY) {
             setDirection(Direction.SOUTH);
             getVelocity().setX(0);
-            getVelocity().setY(2D);
+            getVelocity().setY(1D);
         }
         // Move Left
         else if(centerCurNodeX < centerTileX) {
             setDirection(Direction.WEST);
-            getVelocity().setX(-2D);
+            getVelocity().setX(-1D);
             getVelocity().setY(0);
         }
         // Move Right
         else if(centerCurNodeX > centerTileX) {
             setDirection(Direction.EAST);
-            getVelocity().setX(2D);
+            getVelocity().setX(1D);
             getVelocity().setY(0);
         }else{
             isMoving = false;
@@ -300,11 +300,11 @@ public abstract class Entity implements IEntity, Serializable {
         Vec2D pos = tile.getPosition();
         Vec2D feet = getBottomOfEntity();
 
-        return (feet.getX() == pos.getX() + (TileMap.TILE_SIZE / 2) &&
-                feet.getY() == pos.getY() + (TileMap.TILE_SIZE / 2));
+        //return (feet.getX() == pos.getX() + (TileMap.TILE_SIZE / 2 + 4) &&
+        //        feet.getY() == pos.getY() + (TileMap.TILE_SIZE / 2));
 
-//        return ((feet.getX() > pos.getX() + 12 && feet.getX() < pos.getX() + (TileMap.TILE_SIZE - 12))
-//                && (feet.getY() > pos.getY() + 12 && feet.getY() < pos.getY() + (TileMap.TILE_SIZE - 12)));
+        return ((feet.getX() > pos.getX() + 22 && feet.getX() < pos.getX() + (TileMap.TILE_SIZE - 22))
+                && (feet.getY() > pos.getY() + 12 && feet.getY() < pos.getY() + (TileMap.TILE_SIZE - 12)));
     }
 
     @Override
@@ -389,7 +389,7 @@ public abstract class Entity implements IEntity, Serializable {
     public Vec2D getBottomOfEntity() {
         AABB aabb = this.getAABB();
 
-        return new Vec2D(aabb.getMin().getX() + 32, aabb.getMax().getY());
+        return new Vec2D(aabb.getMin().getX() + 18, aabb.getMax().getY());
     }
 
     public int getGridX() {
