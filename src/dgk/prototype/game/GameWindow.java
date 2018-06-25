@@ -253,11 +253,6 @@ public class GameWindow {
 
             gui.render();
 
-            int err2 = glGetError();
-            if(err2 != 0) {
-                System.out.println(err2);
-            }
-
             glfwSwapBuffers(handle);
 
             glfwPollEvents();

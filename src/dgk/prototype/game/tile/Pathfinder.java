@@ -291,7 +291,6 @@ public class Pathfinder {
 
         for(Entity e : GameWindow.getInstance().world.getEntities()) {
             if(e.equals(entity)) {
-                System.out.println("Found yourself");
                 continue;
             }
 

@@ -167,14 +167,9 @@ public class Tile extends GameObject {
         }
         GL11.glEnd();
 
-        int err = glGetError();
-        if(err != 0) {
-            System.out.println(err);
-        }
+        GL11.glPopMatrix();
 
         GL11.glColor4f(1, 1, 1, 1f);
-
-        GL11.glPopMatrix();
     }
 
     public int getSize() {

@@ -49,6 +49,76 @@ public class WallComponent extends BuildingComponent {
      */
     public void onAdd(World world) {
         TileMap tileMap = world.getTileMap();
+        Zone zone = tileMap.testZone;
+        Direction dir = getDirection();
+
+        int gridX = getGridX();
+        int gridY = getGridY();
+
+        /* Four cases:
+                Case one:
+                    Single, unconnected piece (no neighbors in any direction).
+                    ONLY placed if there is no another directional piece near it.
+                Case two:
+                    Connected piece with another piece.
+                    Only happens if the other neighbor is the SAME direction.
+                Case three:
+                    Connected piece with two on either side.
+                    Only happens if they are in the SAME direction.
+                    If they are WEST OR EAST pieces then we remove the 'bottom' beam component.
+                Case four:
+                    Connected piece is a corner piece. If this is so, then we change the
+                    textures accordingly and move on.
+         */
+
+        if(zone.isInside(gridX, gridY)) {
+            // CASE ONE
+            if(!zone.hasVerticalNeighbors(gridX, gridY) && !zone.hasHorizontalNeighbors(gridX, gridY)) {
+                // place the object.
+            }else{
+
+                // CASE TWO
+                if(dir == Direction.SOUTH || dir == Direction.NORTH) {
+                    if(!zone.hasVerticalNeighbors(gridX, gridY)) {
+                        BuildingComponent left = zone.getBuildingComponent(gridX - 1, gridY);
+                        BuildingComponent right = zone.getBuildingComponent(gridX + 1, gridY);
+
+                        // left
+                        if(left != null && right == null) {
+                            // set them connected and place it.
+                        }
+                        // right
+                        else if(left == null && right != null) {
+                            // set them connected and place it.
+                        }else if(left != null && right != null) {
+                            // set them connected and place it.
+                            // both sides
+                        }
+                    }
+                }else if(dir == Direction.EAST || dir == Direction.WEST) {
+                    // CASE TWO
+                    if(zone.hasHorizontalNeighbors(gridX, gridY)) {
+                        BuildingComponent top = zone.getBuildingComponent(gridX, gridY - 1);
+                        BuildingComponent bottom = zone.getBuildingComponent(gridX, gridY + 1);
+
+                        if(bottom != null) {
+                            // do not have a third component
+                        }else{
+                            // have a third component
+                        }
+                        if(top != null) {
+                            // remove tops third component
+                        }else{
+                            // dont do anything
+                        }
+                    }
+                }
+
+                if(zone.hasBuildingComponent(gridX - 1, gridY)) {
+
+                }
+            }
+        }
 
         if(componentOne != null) {
             tileMap.addGameObject(componentOne);
@@ -81,7 +151,9 @@ public class WallComponent extends BuildingComponent {
 
     @Override
     public void onDirectionChange() {
+        // We need the TileMap for reference purposes.
         TileMap tileMap = GameWindow.getInstance().world.getTileMap();
+        // We need the building zone in order to place down walls and check for neighbors.
         Zone zone = tileMap.testZone;
 
         if(getType() == ComponentType.WOOD) {

@@ -2,11 +2,13 @@ package dgk.prototype.gui;
 
 import dgk.prototype.game.GameCamera;
 import dgk.prototype.game.GameWindow;
+import dgk.prototype.game.Nation;
 import dgk.prototype.game.entities.Ruler;
 import dgk.prototype.game.tile.Tile;
 import dgk.prototype.game.tile.TileMap;
 import dgk.prototype.game.tile.World;
 import dgk.prototype.util.Color;
+import dgk.prototype.util.SpriteSheet;
 
 public class GUIInGameMenu extends GUI {
 
@@ -85,6 +87,8 @@ public class GUIInGameMenu extends GUI {
 
         addMenu(buildMenu);
 
+        //Nation playerNation = GameWindow.getInstance().world.playerNation;
+
         GUIMenu nationMenu = new GUIMenu(this, "Nation Menu", GUILayout.TOP_LEFT, 5, 5, NATION_INFORMATION_WIDTH, NATION_INFORMATION_HEIGHT, false, true);
 
         nationMenu.addElement(new GUIButton(this, nationMenu, 122, "Currency", 5, 20, 32, 32) {
@@ -92,28 +96,45 @@ public class GUIInGameMenu extends GUI {
             public void onButtonClick() {}
         });
 
-        nationMenu.addElement(new GUILabel(this, nationMenu, 40, 30, "100"));
+        nationMenu.addElement(new GUILabel(this, nationMenu, "CurrencyLabel",40, 30, "0"));
+
+        nationMenu.addElement(new GUIButton(this, nationMenu, SpriteSheet.POPULATION_ICON, "Population", 5, 57, 32, 32) {
+
+            @Override
+            void onButtonClick() {}
+        });
+
+        nationMenu.addElement(new GUILabel(this, nationMenu, "PopulationLabel",40, 67, "1"));
+
+        nationMenu.addElement(new GUIButton(this, nationMenu, SpriteSheet.FOOD_ICON, "Food", 5, 94, 32, 32) {
+
+            @Override
+            void onButtonClick() {}
+        });
+
+        nationMenu.addElement(new GUILabel(this, nationMenu,"FoodLabel", 40, 104, "100"));
+
+        nationMenu.addElement(new GUIButton(this, nationMenu, SpriteSheet.WOOD_ICON, "Wood", 5, 131, 32, 32) {
+
+            @Override
+            void onButtonClick() {}
+        });
+
+        nationMenu.addElement(new GUILabel(this, nationMenu, "WoodLabel",40, 141, "100"));
+
 
         addMenu(nationMenu);
+
+
+        GUIOptionsList testDropdown = new GUIOptionsList(this, 50, 50, 150, 500);
+        testDropdown.addOption("Walk here", () -> System.out.println("RuneScape 2007 was the best of its kind."));
+        testDropdown.addOption("Select Tile", () -> System.out.println("Tiled Selected!"));
+
+        addDropDownMenu(testDropdown);
     }
 
     @Override
     public void render() {
-//        GameWindow gw = GameWindow.getInstance();
-//        World world = gw.world;
-//
-//        Ruler r = world.ruler;
-//
-//        if(r != null) {
-//            Tile t = world.getTileMap().getTile(r.getGridX(), r.getGridY());
-//
-//            double gX = t.getGridX() * TileMap.TILE_SIZE;
-//            double gY = t.getGridY() * TileMap.TILE_SIZE;
-//
-//            this.drawRect(gX - gw.getWorldCamera().getPosition().getX(), gY  - gw.getWorldCamera().getPosition().getY(), t.getSize(), t.getSize(),
-//                    new Color(1f, 1f, 1f, .3f));
-//        }
-
         super.render();
     }
 }

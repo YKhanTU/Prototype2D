@@ -1,7 +1,10 @@
 package dgk.prototype.gui;
 
 import dgk.prototype.game.Camera;
+import dgk.prototype.game.GameWindow;
+import dgk.prototype.game.ResourceManager;
 import dgk.prototype.util.Color;
+import dgk.prototype.util.Vec2D;
 import org.lwjgl.opengl.GL11;
 
 import java.util.*;
@@ -18,6 +21,8 @@ public class GUIOptionsList implements GUIElement {
 
     private GUI gui;
 
+    private ResourceManager resourceManager;
+
     protected double x;
     protected double y;
 
@@ -30,6 +35,7 @@ public class GUIOptionsList implements GUIElement {
 
     public GUIOptionsList(GUI gui, double x, double y, double width, double height) {
         this.gui = gui;
+        this.resourceManager = GameWindow.getInstance().resourceManager;
         this.x = x;
         this.y = y;
         this.width = width;
@@ -60,32 +66,29 @@ public class GUIOptionsList implements GUIElement {
 
     @Override
     public void render() {
-        GL11.glMatrixMode(GL11.GL_MODELVIEW);
-
-        GL11.glPushMatrix();
-
-        Camera camera = gui.getCamera();
-
-        GL11.glScalef(camera.getZoom(), camera.getZoom(), 0);
-        GL11.glTranslated(x - camera.getPosition().getX(), y - camera.getPosition().getY(), 0);
-
         drawOptions();
-
-        GL11.glPopMatrix();
-
-        GL11.glColor4f(1f, 1f, 1f, 1f);
     }
 
     private void drawOptions() {
+        if(!isShowing)
+            return;
+
         if(this.guiOptions.size() == 0)
             return;
 
-        double menuY = this.y;
+        double menuY = 0 + this.y;
+
+        int ctr = 0;
+
+        Set<String> nameSet = guiOptions.keySet();
+        String[] names = nameSet.toArray(new String[nameSet.size()]);
 
         for(GUIOption option : guiOptions.values()) {
             gui.drawBorderedRect(x, menuY, OPTION_WIDTH, OPTION_HEIGHT, 1.5f, new Color(.3f, .3f, .3f, .9f), new Color(0f, 0f, 0f, 1f));
-            // TODO gui.DrawString(option.getName(), x, y, ..., ....);
+            gui.drawString(resourceManager.getFont("GUILabelFont"), names[ctr], (float) x + 2, (float) menuY + 2);
             menuY += OPTION_HEIGHT;
+
+            ctr++;
         }
     }
 
@@ -97,7 +100,38 @@ public class GUIOptionsList implements GUIElement {
 
     @Override
     public boolean onMouseInput(double x, double y, boolean press) {
+        if(isMouseInside(x, y, this.x, this.y, OPTION_WIDTH, OPTION_HEIGHT * (guiOptions.size() + 1))) {
+
+            double optionX = this.x + 0;
+            double optionY = this.y + 0;
+
+            for(int i = 0; i < guiOptions.size(); i++) {
+                System.out.println(optionX + ", " + optionY);
+
+                if(isShowing && isMouseInside(x, y, optionX, optionY, OPTION_WIDTH, OPTION_HEIGHT) && press) {
+                    Set<String> nameSet = guiOptions.keySet();
+                    String[] names = nameSet.toArray(new String[nameSet.size()]);
+                    String key = names[i];
+                    GUIOption option = guiOptions.get(key);
+
+                    option.onSelection();
+
+                    isShowing = !isShowing;
+
+                    return true;
+                }
+
+                optionY += OPTION_HEIGHT;
+            }
+
+            return true;
+        }
+
         return false;
+    }
+
+    public boolean isMouseInside(double mX, double mY, double x, double y, double w, double h) {
+        return (mX >= x && mX <= (x + w)) && (mY >= y && mY <= (y + h));
     }
 
     @Override

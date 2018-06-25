@@ -184,13 +184,15 @@ public class TileMap implements Serializable {
     public void render(World world) {
         GameCamera camera = GameWindow.getInstance().getWorldCamera();
 
-        int sX = (int) Math.ceil(camera.getPosition().getX() / TileMap.TILE_SIZE) - 1;
-        int sY = (int) Math.ceil(camera.getPosition().getY() / TileMap.TILE_SIZE) - 1;
+        double tileMapSize = TileMap.TILE_SIZE * camera.getZoom();
+
+        int sX = (int) Math.ceil(camera.getPosition().getX() / tileMapSize) - 1;
+        int sY = (int) Math.ceil(camera.getPosition().getY() / tileMapSize) - 1;
 
         tileRenderCount = 0;
 
-        for(int i = sX; i < (camera.getWidth() / TileMap.TILE_SIZE) + sX + 2; i++) {
-            for(int j = sY; j < (camera.getHeight() / TileMap.TILE_SIZE) + sY + 2; j++) {
+        for(int i = sX; i < (camera.getWidth() / tileMapSize) + sX + 2; i++) {
+            for(int j = sY; j < (camera.getHeight() / tileMapSize) + sY + 2; j++) {
                 if(i < 0 || j < 0)
                     continue;
 
@@ -230,6 +232,8 @@ public class TileMap implements Serializable {
                 world.renderLayerList.add(go);
             }
         }
+
+        //System.out.println(tileRenderCount);
 
     }
 

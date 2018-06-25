@@ -78,15 +78,15 @@ public class Zone {
 
         Direction direction = buildingComponent.getDirection();
 
-        if((direction == WEST || direction == EAST) && hasHorizontalNeighbors(gridX, gridY)) {
-            System.out.println("You cannot place here because you have horizontal neighbors.");
-            return;
-        }
+        //if((direction == WEST || direction == EAST) && hasHorizontalNeighbors(gridX, gridY)) {
+        //    System.out.println("You cannot place here because you have horizontal neighbors.");
+        //    return;
+       // }
 
-        if((direction == NORTH || direction == SOUTH) && hasVerticalNeighbors(gridX, gridY)) {
-            System.out.println("You cannot place here because you have vertical neighbors.");
-            return;
-        }
+        //if((direction == NORTH || direction == SOUTH) && hasVerticalNeighbors(gridX, gridY)) {
+        //    System.out.println("You cannot place here because you have vertical neighbors.");
+        //    return;
+        //}
 
         int convertedGridX = gridX - (int) origin.getX();
         int convertedGridY = gridY - (int) origin.getY();

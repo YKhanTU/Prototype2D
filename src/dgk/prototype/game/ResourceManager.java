@@ -219,13 +219,11 @@ public class ResourceManager implements IManager {
 
         spriteSheetMap.put("RulerBreathingFull", rulerBreathingAnim);
 
-        SpriteSheet uiTest = new SpriteSheet(this, "sprites/test/A2/UI");
+        SpriteSheet uiTest = new SpriteSheet(this, "sprites/final/UI");
 
         for(int i = 0; i < 3; i++) {
             uiTest.loadTexture(i, 0, 32, 32);
         }
-
-        spriteSheetMap.put("TestIcons", uiTest);
 
         SpriteSheet rulerBreathingAnimGlow = new SpriteSheet(this, "sprites/test/A2/Ruler_breathing_glow");
 
@@ -265,6 +263,12 @@ public class ResourceManager implements IManager {
 
 
         spriteSheetMap.put("TileSpriteSheet", tileSheet);
+
+        for(int i = 3; i <= 10; i++) {
+            uiTest.loadTexture(i, 0, 32, 32);
+        }
+
+        spriteSheetMap.put("TestIcons", uiTest);
 
         loadFonts();
 

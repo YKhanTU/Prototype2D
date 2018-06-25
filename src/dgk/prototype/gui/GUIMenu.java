@@ -122,6 +122,20 @@ public class GUIMenu implements GUIElement {
                 2f, new Color(.7f, .7f, .7f, .85f), new Color(0f, 0f, 0f, 1f));
     }
 
+    public GUILabel getGUILabel(String name) {
+        for(GUIElement element : elements) {
+            if(element instanceof GUILabel) {
+                GUILabel label = (GUILabel) element;
+
+                if(name.equalsIgnoreCase(label.getName())) {
+                    return label;
+                }
+            }
+        }
+
+        return null;
+    }
+
     @Override
     public void render() {
         drawMenu();
@@ -271,5 +285,13 @@ public class GUIMenu implements GUIElement {
 
     public boolean shouldRemove() {
         return shouldRemove;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }

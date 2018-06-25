@@ -52,6 +52,14 @@ public class BuildingComponent extends AnimatableTile {
         onDirectionChange();
     }
 
+    public int getHealth() {
+        return health;
+    }
+
+    public void setHealth(int health) {
+        this.health = health;
+    }
+
     public boolean isDestroyed() {
         return (health <= 0);
     }

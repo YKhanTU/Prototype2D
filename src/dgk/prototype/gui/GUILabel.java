@@ -10,6 +10,8 @@ public class GUILabel implements GUIElement {
 
     private TrueTypeFont font;
 
+    private String name;
+
     private String text;
 
     private double x;
@@ -18,15 +20,20 @@ public class GUILabel implements GUIElement {
     private double refX;
     private double refY;
 
-    public GUILabel(GUI gui, GUIMenu guiMenu, double x, double y, String text) {
+    public GUILabel(GUI gui, GUIMenu guiMenu, String name, double x, double y, String text) {
         this.gui = gui;
         this.guiMenu = guiMenu;
+        this.name = name;
         this.x = guiMenu.x + x;
         this.y = guiMenu.y + y;
         this.refX = x;
         this.refY = y;
         this.font = GameWindow.getInstance().resourceManager.getFont("GUILabelFont");
         this.text = text;
+    }
+
+    public String getName() {
+        return this.name;
     }
 
     public String getText() {

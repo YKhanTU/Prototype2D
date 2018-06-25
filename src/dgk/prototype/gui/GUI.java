@@ -39,6 +39,7 @@ public abstract class GUI {
 
     private ArrayList<GUIMenu> guiMenus;
     private ArrayList<GUINotification> guiNotifications;
+    private ArrayList<GUIOptionsList> dropdownMenus;
 
     private int textureId;
 
@@ -47,6 +48,7 @@ public abstract class GUI {
 
         this.guiMenus = new ArrayList<GUIMenu>();
         this.guiNotifications = new ArrayList<GUINotification>();
+        this.dropdownMenus = new ArrayList<GUIOptionsList>();
 
         onWindowResize();
     }
@@ -60,6 +62,20 @@ public abstract class GUI {
 
     public void addMenu(GUIMenu menu) {
         guiMenus.add(menu);
+    }
+
+    public GUIMenu getMenu(String name) {
+        for(GUIMenu guiMenu : guiMenus) {
+            if(guiMenu.getName().equals(name)) {
+                return guiMenu;
+            }
+        }
+
+        return null;
+    }
+
+    public void addDropDownMenu(GUIOptionsList optionsList) {
+        dropdownMenus.add(optionsList);
     }
 
     public void drawString(TrueTypeFont trueTypeFont, String text, float x, float y) {
@@ -191,19 +207,16 @@ public abstract class GUI {
             }
         }
 
+        for(GUIOptionsList dropdown : dropdownMenus) {
+            if(dropdown.onMouseInput(x, y, press)) {
+                if(!guiMenuClicked)
+                    guiMenuClicked = true;
+            }
+        }
+
         if(!guiMenuClicked) {
             GameWindow.getInstance().world.onMouseInput(x, y, press);
         }
-
-        // DEBUG CODE --------------------------------------------------------------------------------
-
-//        if(!guiMenuClicked) {
-//            if(press) {
-//                addNotification(new GUINotification(this, "You just lost 1000000 Gold!"));
-//            }
-//        }
-
-        // DEBUG CODE --------------------------------------------------------------------------------
     }
 
     public void update() {
@@ -249,6 +262,10 @@ public abstract class GUI {
         }
 
         drawGUINotifications();
+
+        for(GUIOptionsList dropdown : dropdownMenus) {
+            dropdown.render();
+        }
     }
 
     public void onWindowResize() {

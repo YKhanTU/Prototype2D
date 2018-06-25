@@ -23,8 +23,8 @@ public class GUIOptions extends GUI {
             protected void addUtilButtons() {}
         };
 
-        GUILabel volumeLabel = new GUILabel(this, optionsMenu, 35, 10, "Volume: ");
-        GUILabel sliderLabel = new GUILabel(this, optionsMenu, 320, 10, "" + soundManager.getCurrentVolume());
+        GUILabel volumeLabel = new GUILabel(this, optionsMenu, "VolumeLabel", 35, 10, "Volume: ");
+        GUILabel sliderLabel = new GUILabel(this, optionsMenu, "VolumeLabel2", 320, 10, "" + soundManager.getCurrentVolume());
 
         optionsMenu.addElement(new GUISlider(this, optionsMenu, 100, 20, 200, soundManager.getCurrentVolume()) {
             @Override

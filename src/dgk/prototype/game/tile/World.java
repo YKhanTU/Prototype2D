@@ -21,6 +21,8 @@ public class World {
     private ArrayList<Entity> entities;
     private TileMap tileMap;
 
+    public Nation playerNation;
+
     private ParticleSystem weatherSystem;
 
     /**
@@ -33,6 +35,8 @@ public class World {
     public World() {
         this.entities = new ArrayList<Entity>();
         this.tileMap = new TileMap(this);
+
+        this.playerNation = new Nation("Player");
 
         this.renderLayerList = new ArrayList<IEntity>();
     }
@@ -105,6 +109,8 @@ public class World {
         }
 
         weatherSystem.onUpdate();
+
+        playerNation.onUpdate();
     }
 
     public void render() {
@@ -126,7 +132,6 @@ public class World {
 
         for(Entity entity : entities) {
             renderLayerList.add(entity);
-            //entity.render();
         }
 
         Collections.sort(renderLayerList, new Comparator<IEntity>() {
